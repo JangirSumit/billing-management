@@ -5,12 +5,12 @@ namespace BillingManagement.Managers;
 
 public class VendorsManager : IVendorsManager
 {
-    public void GetVendorDetail(string gstNumber)
+    public void GetVendorByGstNumber(string gstNumber)
     {
         throw new NotImplementedException();
     }
 
-    public Guid InsertRecord(VendorDto vendorDto)
+    public Guid Add(VendorDto vendorDto)
     {
         throw new NotImplementedException();
     }

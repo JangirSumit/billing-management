@@ -4,7 +4,9 @@ namespace BillingManagement.Abstrations
 {
     public interface IVendorsManager
     {
-        void GetVendorDetail(string gstNumber);
-        Guid InsertRecord(VendorDto vendorDto);
+        void GetVendorByGstNumber(string gstNumber);
+        Guid Add(VendorDto vendorDto);
+
+        VendorDto
     }
 }
