@@ -1,4 +1,12 @@
-﻿document.getElementById("add-vendor").addEventListener("click", async function () {
+﻿const VENDORS_API = '/api/Vendors';
+
+window.onload = async function () {
+    await renderVendors();
+};
+
+/* EVENT LISTENERS */
+
+document.getElementById("add-vendor").addEventListener("click", async function () {
     const name = document.getElementById("vendor-name").value;
     const address = document.getElementById("vendor-address").value;
     const gstNumber = document.getElementById("gst-number").value;
@@ -11,13 +19,83 @@
         }
 
         const result = await addVendor(data);
+        console.log(result);
+    }
+});
+
+document.getElementById("vendors-list").addEventListener("click", async function () {
+    const vendorId = e.target.dataset.vendorId;
+    if (vendorId) {
+        await deleteVendor(vendorId);
+        await renderVendors();
     }
 });
 
 
+/* INTERNALS */
+
+async function renderVendors() {
+
+    const result = await getVendors()
+
+    if (result) {
+        const d = JSON.parse(result);
+        let body = "";
+
+        if (d && d.length) {
+            const companyListHeader = getVendorItem(d[0])
+
+            body = companyListHeader + "<tbody>";
+
+            d.forEach((element, index) => {
+                body += getVendorListHeader(element, index);
+            });
+
+            body += "</tbody>";
+        }
+
+        document.getElementById("vendors-list").innerHTML = body;
+    }
+}
+
+function getVendorItem(data, index) {
+    return `
+            <tr>
+                <td scope="row">${index + 1}</td>
+                <td>${data.name}</td>
+                <td>${data.gstNumber}</td>
+                <td>${data.adderss}</td>
+                <td data-companyId="${data.id}">
+                    <span class="badge bg-primary cursor-pointer" id="delete-company" data-companyId="${data.id}">X</span>
+                </td>
+            </tr>
+    `;
+}
+
+function getVendorListHeader(data) {
+    let ths = `<th scope="col">#</th>`
+
+    Object.keys(data).forEach((d) => {
+        if (d != "id") {
+            ths += `<th scope="col">${capitalizeString(d)}</th>`;
+        }
+    });
+    ths += `
+          <th scope="col"></th>`;
+    return `
+          <thead>
+                    <tr>
+                    ${ths}
+                    </tr>
+          </thead>`;
+}
+
+
+/* API CALLS */
+
 async function addVendor(data) {
     try {
-        const response = await fetch('/api/Vendors', {
+        const response = await fetch(VENDORS_API, {
             method: 'POST',
             body: JSON.stringify(data),
             headers: {
@@ -25,9 +103,45 @@ async function addVendor(data) {
             }
         });
 
-        const result = await response.json();
-        return result;
+        if (response.ok) {
+            return await response.json();
+        }
+    } catch (e) {
+        console.error(e);
+    }
+}
 
+async function deleteVendor(id) {
+    try {
+        const response = await fetch(`${VENDORS_API}/${id}`, {
+            method: 'DELETE',
+        });
+
+        if (response.ok) {
+            return await response.json();
+        }
+    } catch (e) {
+        console.error(e);
+    }
+}
+
+async function getVendors() {
+    try {
+        const response = await fetch(VENDORS_API);
+        if (response.ok) {
+            return await response.json();
+        }
+    } catch (e) {
+        console.error(e);
+    }
+}
+
+async function getVendor(id) {
+    try {
+        const response = await fetch(`${VENDORS_API}/${id}`);
+        if (response.ok) {
+            return await response.json();
+        }
     } catch (e) {
         console.error(e);
     }
