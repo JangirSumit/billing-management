@@ -16,7 +16,47 @@
     <header>
     </header>
 
-    <div class="container"></div>
+    <div class="veritical-divider-2rem"></div>
+
+    <div class="container">
+        <div class="mb-3 row">
+            <label for="Company-name" class="col-sm-2 col-form-label">Name</label>
+            <div class="col-sm-10">
+                <input id="company-name"
+                       type="text"
+                       class="form-control"
+                       placeholder="ABC Interiors..."
+                       aria-label="ABC Interiors..."
+                       aria-describedby="button-addon2" />
+            </div>
+        </div>
+        <div class="mb-3 row">
+            <label for="company-name" class="col-sm-2 col-form-label">GST Number</label>
+            <div class="col-sm-10">
+                <input id="gst-number"
+                       type="text"
+                       class="form-control"
+                       placeholder="Company GST Number..."
+                       aria-label="Company GST Number..."
+                       aria-describedby="button-addon2" />
+            </div>
+        </div>
+        <div class="mb-3 row">
+            <label for="company-address" class="col-sm-2 col-form-label">Address</label>
+            <div class="col-sm-10">
+                <textarea class="form-control"
+                          id="company-address"
+                          placeholder="Company Address..."></textarea>
+            </div>
+        </div>
+        <div class="mb-3">
+            <button class="btn btn-primary col-sm-2"
+                    type="button"
+                    id="add-company">
+                Add
+            </button>
+        </div>
+    </div>
 
     <footer class="fixed-bottom p-3 bg-white">
     </footer>

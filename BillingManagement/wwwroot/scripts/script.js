@@ -6,7 +6,7 @@ function renderHeader() {
     const headerHtml = `
             <nav class="navbar navbar-expand-lg bd-navbar sticky-top bg-dark border-bottom box-shadow mb-3" data-bs-theme="dark">
             <div class="container">
-                <a class="navbar-brand">Billing Management</a>
+                <a class="navbar-brand" href="/">Billing Management</a>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
                         aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
@@ -39,6 +39,7 @@ function renderHeader() {
 
 function activateHeader() {
     const pathName = window.location.pathname;
+
     const tab = document.querySelector(`nav a[href='${pathName}']`);
     if (tab) {
         tab.classList.add("active");
