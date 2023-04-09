@@ -19,7 +19,9 @@ document.getElementById("add-vendor").addEventListener("click", async function (
         }
 
         const result = await addVendor(data);
-        console.log(result);
+        if (result.id !== EMPTY_GUID) {
+            await renderVendors();
+        }
     }
 });
 
@@ -36,23 +38,20 @@ document.getElementById("vendors-list").addEventListener("click", async function
 
 async function renderVendors() {
 
-    const result = await getVendors()
+    const d = await getVendors();
 
-    if (result) {
-        const d = JSON.parse(result);
+    if (d && d.length) {
         let body = "";
 
-        if (d && d.length) {
-            const companyListHeader = getVendorItem(d[0])
+        const companyListHeader = getVendorListHeader(d[0])
 
-            body = companyListHeader + "<tbody>";
+        body = companyListHeader + "<tbody>";
 
-            d.forEach((element, index) => {
-                body += getVendorListHeader(element, index);
-            });
+        d.forEach((element, index) => {
+            body += getVendorItem(element, index);
+        });
 
-            body += "</tbody>";
-        }
+        body += "</tbody>";
 
         document.getElementById("vendors-list").innerHTML = body;
     }
@@ -84,7 +83,7 @@ function getVendorListHeader(data) {
           <th scope="col"></th>`;
     return `
           <thead>
-                    <tr>
+                    <tr class="table-primary">
                     ${ths}
                     </tr>
           </thead>`;

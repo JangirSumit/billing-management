@@ -9,36 +9,34 @@ namespace BillingManagement.Controllers;
 [ApiController]
 public class VendorsController : ControllerBase
 {
-    [HttpGet]
-    [Route("{gstNumber}")]
-    public string GetByGstNumber(string gstNumber)
+    public VendorsController()
     {
-        return gstNumber;
     }
 
-    //// GET api/<VendonrsController>/5
-    //[HttpGet("{id}")]
-    //public string Get(int id)
-    //{
-    //    return "value";
-    //}
+    [HttpGet]
+    public List<VendorDto> Get()
+    {
+        return new List<VendorDto>() {
+            new VendorDto(Guid.NewGuid(), "Dummy", "Description", "ABC-DEF-GHI-JKL")
+        };
+    }
 
-    // POST api/<VendonrsController>
+    [HttpGet("{id}")]
+    public VendorDto Get(Guid id)
+    {
+        return new VendorDto(Guid.NewGuid(), "Dummy", "Description", "ABC-DEF-GHI-JKL");
+    }
+
     [HttpPost]
     public VendorDto Post([FromBody] VendorDto vendorDto)
     {
-        return vendorDto;
+        var result = new VendorDto(Guid.NewGuid(), vendorDto.Name, vendorDto.Address, vendorDto.GstNumber);
+        return result;
     }
 
-    //// PUT api/<VendonrsController>/5
-    //[HttpPut("{id}")]
-    //public void Put(int id, [FromBody] string value)
-    //{
-    //}
-
-    //// DELETE api/<VendonrsController>/5
-    //[HttpDelete("{id}")]
-    //public void Delete(int id)
-    //{
-    //}
+    [HttpDelete("{id}")]
+    public bool Delete(Guid id)
+    {
+        return true;
+    }
 }
