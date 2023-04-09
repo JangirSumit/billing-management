@@ -1,4 +1,7 @@
-﻿using BillingManagement.Models.Dto;
+﻿using BillingManagement.Abstrations;
+using BillingManagement.ExtensionMethods;
+using BillingManagement.Managers;
+using BillingManagement.Models.Dto;
 using Microsoft.AspNetCore.Mvc;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
@@ -9,16 +12,17 @@ namespace BillingManagement.Controllers;
 [ApiController]
 public class VendorsController : ControllerBase
 {
-    public VendorsController()
+    private readonly IVendorsManager _vendorsManager;
+
+    public VendorsController(IVendorsManager vendorsManager)
     {
+        _vendorsManager = vendorsManager;
     }
 
     [HttpGet]
     public List<VendorDto> Get()
     {
-        return new List<VendorDto>() {
-            new VendorDto(Guid.NewGuid(), "Dummy", "Description", "ABC-DEF-GHI-JKL")
-        };
+        return _vendorsManager.GetAll().Map();
     }
 
     [HttpGet("{id}")]
