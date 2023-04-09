@@ -25,8 +25,8 @@ document.getElementById("add-vendor").addEventListener("click", async function (
     }
 });
 
-document.getElementById("vendors-list").addEventListener("click", async function () {
-    const vendorId = e.target.dataset.vendorId;
+document.getElementById("vendors-list").addEventListener("click", async function (e) {
+    const vendorId = e.target.dataset.vendorid;
     if (vendorId) {
         await deleteVendor(vendorId);
         await renderVendors();
@@ -62,10 +62,10 @@ function getVendorItem(data, index) {
             <tr>
                 <td scope="row">${index + 1}</td>
                 <td>${data.name}</td>
+                <td>${data.address}</td>
                 <td>${data.gstNumber}</td>
-                <td>${data.adderss}</td>
-                <td data-companyId="${data.id}">
-                    <span class="badge bg-primary cursor-pointer" id="delete-company" data-companyId="${data.id}">X</span>
+                <td data-vendorId="${data.id}">
+                    <span class="badge bg-primary cursor-pointer" id="delete-company" data-vendorId="${data.id}">X</span>
                 </td>
             </tr>
     `;
@@ -83,7 +83,7 @@ function getVendorListHeader(data) {
           <th scope="col"></th>`;
     return `
           <thead>
-                    <tr class="table-primary">
+                    <tr">
                     ${ths}
                     </tr>
           </thead>`;
