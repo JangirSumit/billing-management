@@ -20,9 +20,9 @@
 
     <div class="container">
         <div class="mb-3 row">
-            <label for="Company-name" class="col-sm-2 col-form-label">Name</label>
+            <label for="vendor-name" class="col-sm-2 col-form-label">Name</label>
             <div class="col-sm-10">
-                <input id="company-name"
+                <input id="vendor-name"
                        type="text"
                        class="form-control"
                        placeholder="ABC Interiors..."
@@ -31,32 +31,36 @@
             </div>
         </div>
         <div class="mb-3 row">
-            <label for="company-name" class="col-sm-2 col-form-label">GST Number</label>
+            <label for="vendor-name" class="col-sm-2 col-form-label">GST Number</label>
             <div class="col-sm-10">
                 <input id="gst-number"
                        type="text"
                        class="form-control"
-                       placeholder="Company GST Number..."
-                       aria-label="Company GST Number..."
+                       placeholder="Vendor GST Number..."
+                       aria-label="Vendor GST Number..."
                        aria-describedby="button-addon2" />
             </div>
         </div>
         <div class="mb-3 row">
-            <label for="company-address" class="col-sm-2 col-form-label">Address</label>
+            <label for="vendor-address" class="col-sm-2 col-form-label">Address</label>
             <div class="col-sm-10">
                 <textarea class="form-control"
-                          id="company-address"
-                          placeholder="Company Address..."></textarea>
+                          id="vendor-address"
+                          placeholder="Vendor Address..."></textarea>
             </div>
         </div>
         <div class="mb-3">
             <button class="btn btn-primary col-sm-2"
                     type="button"
-                    id="add-company">
+                    id="add-vendor">
                 Add
             </button>
         </div>
     </div>
+
+    <div class="veritical-divider-1rem"></div>
+
+    <table class="table" id="vendors-list"></table>
 
     <footer class="fixed-bottom p-3 bg-white">
     </footer>
@@ -65,5 +69,6 @@
             integrity="sha384-qKXV1j0HvMUeCBQ+QVp7JcfGl760yU08IQ+GpUo5hlbpg51QRiuqHAJz8+BrxE/N"
             crossorigin="anonymous"></script>
     <script src="scripts/script.js"></script>
+    <script src="scripts/vendors.js"></script>
 </body>
 </html>
