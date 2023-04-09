@@ -5,6 +5,13 @@ VisualStudioVersion = 17.4.33403.182
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BillingManagement", "BillingManagement.csproj", "{B4FA167C-C823-4218-B371-385357E29F8C}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "$repo", "$repo", "{9BE29F9D-D6FF-4F51-812A-5C87F9DB3BB3}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "$solution", "$solution", "{83DDC195-3F53-4F51-8E11-6818DB8B85E4}"
+	ProjectSection(SolutionItems) = preProject
+		Nuget.config = Nuget.config
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -18,6 +25,9 @@ Global
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{83DDC195-3F53-4F51-8E11-6818DB8B85E4} = {9BE29F9D-D6FF-4F51-812A-5C87F9DB3BB3}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {145E3274-5667-48E1-82DB-1607039CF134}
