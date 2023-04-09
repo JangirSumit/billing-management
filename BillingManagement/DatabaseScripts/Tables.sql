@@ -6,7 +6,7 @@ CREATE TABLE [dbo].[Vendors]
 Id UNIQUEIDENTIFIER NOT NULL PRIMARY KEY DEFAULT NEWID(),
 [Name] nvarchar(200) NOT NULL,
 GstNumber nvarchar(50) NOT NULL,
-Address nvarchar(2000) NOT NULL,
+[Address] nvarchar(2000) NOT NULL,
 );
 
 END
