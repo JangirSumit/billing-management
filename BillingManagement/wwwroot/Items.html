@@ -2,48 +2,93 @@
 <html>
 <head>
     <meta charset="utf-8" />
-    <title>Billing Management - Workflow</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Billing Management - Items</title>
 
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha2/dist/css/bootstrap.min.css"
           rel="stylesheet"
           integrity="sha384-aFq/bzH65dt+w6FI2ooMVUpc+21e0SRygnTpmBvdBgSdnuTN7QbdgL+OapgHtvPp"
           crossorigin="anonymous" />
+    <link href="styles/style.css" rel="stylesheet" />
 </head>
 
 <body>
     <header>
-        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-dark border-bottom box-shadow mb-3" data-bs-theme="dark">
-            <div class="container">
-                <a class="navbar-brand">Billing Management</a>
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
-                        aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-                <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
-                    <ul class="navbar-nav flex-grow-1">
-                        <li class="nav-item">
-                            <a class="nav-link text-white" href="./Index.html">Home</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-white" href="./Venders.html">Venders</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-white active" aria-current="page"  href="./Items.html">Items</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-white" href="./Workflow.html">Workflow</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-white" href="./Help.html">Help</a>
-                        </li>
-                    </ul>
+    </header>
+
+    <div class="container">
+        <main>
+            <div class="mb-3 row">
+                <label for="item-name" class="col-sm-2 col-form-label">Name</label>
+                <div class="col-sm-10">
+                    <input type="text"
+                           class="form-control"
+                           id="item-name"
+                           placeholder="Item 1..." />
                 </div>
             </div>
-        </nav>
-    </header>
+
+            <div class="mb-3 row">
+                <label for="item-description" class="col-sm-2 col-form-label">Description</label>
+                <div class="col-sm-10">
+                    <textarea class="form-control"
+                              id="item-description"
+                              placeholder="Item Description..."></textarea>
+                </div>
+            </div>
+
+            <div class="mb-3 row">
+                <label for="item-quantity" class="col-sm-2 col-form-label">Quantity</label>
+                <div class="col-sm-10">
+                    <input type="text"
+                           class="form-control"
+                           id="item-quantity"
+                           placeholder="Quantity..." />
+                </div>
+            </div>
+
+            <div class="mb-3 row">
+                <label for="item-unit" class="col-sm-2 col-form-label">Unit</label>
+                <div class="col-sm-10">
+                    <select class="form-select" id="item-unit">
+                        <option selected value="0">- Select option -</option>
+                        <option value="1">Number(s)</option>
+                        <option value="2">Kg(s)</option>
+                        <option value="3">Gram(s)</option>
+                        <option value="4">Liter(s)</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="mb-3 row">
+                <label for="item-rate" class="col-sm-2 col-form-label">Rate</label>
+                <div class="col-sm-5">
+                    <input type="text"
+                           class="form-control"
+                           id="item-rate-range-1"
+                           placeholder="Minimum Amount..." />
+                </div>
+                <div class="col-sm-5">
+                    <input type="text"
+                           class="form-control"
+                           id="item-rate-range-2"
+                           placeholder="Maximum Amount..." />
+                </div>
+            </div>
+
+            <div class="mb-3">
+                <button class="btn btn-primary col-sm-2"
+                        type="button"
+                        id="add-item">
+                    Add
+                </button>
+            </div>
+        </main>
+    </div>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha2/dist/js/bootstrap.bundle.min.js"
             integrity="sha384-qKXV1j0HvMUeCBQ+QVp7JcfGl760yU08IQ+GpUo5hlbpg51QRiuqHAJz8+BrxE/N"
             crossorigin="anonymous"></script>
+    <script src="scripts/script.js"></script>
 </body>
 </html>

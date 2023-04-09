@@ -8,36 +8,36 @@ namespace BillingManagement.Controllers
     [ApiController]
     public class VendorsController : ControllerBase
     {
-        // GET: api/<VendonrsController>
         [HttpGet]
-        public IEnumerable<string> Get()
+        [Route("{gstNumber}")]
+        public string GetByGstNumber(string gstNumber)
         {
-            return new string[] { "value1", "value2" };
+            return gstNumber;
         }
 
-        // GET api/<VendonrsController>/5
-        [HttpGet("{id}")]
-        public string Get(int id)
-        {
-            return "value";
-        }
+        //// GET api/<VendonrsController>/5
+        //[HttpGet("{id}")]
+        //public string Get(int id)
+        //{
+        //    return "value";
+        //}
 
-        // POST api/<VendonrsController>
-        [HttpPost]
-        public void Post([FromBody] string value)
-        {
-        }
+        //// POST api/<VendonrsController>
+        //[HttpPost]
+        //public void Post([FromBody] string value)
+        //{
+        //}
 
-        // PUT api/<VendonrsController>/5
-        [HttpPut("{id}")]
-        public void Put(int id, [FromBody] string value)
-        {
-        }
+        //// PUT api/<VendonrsController>/5
+        //[HttpPut("{id}")]
+        //public void Put(int id, [FromBody] string value)
+        //{
+        //}
 
-        // DELETE api/<VendonrsController>/5
-        [HttpDelete("{id}")]
-        public void Delete(int id)
-        {
-        }
+        //// DELETE api/<VendonrsController>/5
+        //[HttpDelete("{id}")]
+        //public void Delete(int id)
+        //{
+        //}
     }
 }
