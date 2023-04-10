@@ -14,9 +14,55 @@ public class VendorsManager : IVendorsManager
         _configuration = configuration;
     }
 
-    public Guid Add(VendorDetail vendorDto)
+    public Guid Add(VendorDetail vendorDetail)
     {
-        throw new NotImplementedException();
+        var connectionString = _configuration.GetConnectionString("Hosted");
+
+        using (SqlConnection con = new(connectionString))
+        {
+            SqlCommand command = new()
+            {
+                Connection = con,
+                CommandText = "[dbo].[AddVendor]",
+                CommandType = CommandType.StoredProcedure
+            };
+
+            SqlParameter[] parameters =
+            {
+                new()
+                {
+                    ParameterName = "@Name",
+                    SqlDbType = SqlDbType.UniqueIdentifier,
+                    Direction = ParameterDirection.Input,
+                    Value = vendorDetail.Name
+                },
+                new()
+                {
+                    ParameterName = "@Address",
+                    SqlDbType = SqlDbType.UniqueIdentifier,
+                    Direction = ParameterDirection.Input,
+                    Value = vendorDetail.Address
+                },
+                new()
+                {
+                    ParameterName = "@GstNumber",
+                    SqlDbType = SqlDbType.UniqueIdentifier,
+                    Direction = ParameterDirection.Input,
+                    Value = vendorDetail.GstNumber
+                }
+            };
+
+            command.Parameters.AddRange(parameters);
+
+            con.Open();
+
+            if (command.ExecuteNonQuery() > 0)
+            {
+                return Guid.NewGuid();
+            }
+        }
+
+        return Guid.Empty;
     }
 
     public List<VendorDetail> GetAll()
