@@ -73,6 +73,46 @@ public class VendorsManager : IVendorsManager
 
     public VendorDetail GetById(Guid vendorId)
     {
-        throw new NotImplementedException();
+        var connectionString = _configuration.GetConnectionString("Hosted");
+        VendorDetail vendorDetail = VendorDetail.Empty;
+
+        using (SqlConnection con = new(connectionString))
+        {
+            SqlCommand command = new()
+            {
+                Connection = con,
+                CommandText = "[dbo].[GetVendor]",
+                CommandType = CommandType.StoredProcedure
+            };
+
+            SqlParameter parameter = new()
+            {
+                ParameterName = "@Id",
+                SqlDbType = SqlDbType.UniqueIdentifier,
+                Direction = ParameterDirection.Input,
+                Value = vendorId
+            };
+
+            command.Parameters.Add(parameter);
+
+            con.Open();
+
+            SqlDataReader reader = command.ExecuteReader();
+
+            if (reader.HasRows)
+            {
+                while (reader.Read())
+                {
+                    vendorDetail = GetVendor(reader);
+                }
+            }
+            else
+            {
+                Console.WriteLine("No rows found.");
+            }
+            reader.Close();
+        }
+
+        return vendorDetail;
     }
 }

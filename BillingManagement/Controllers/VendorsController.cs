@@ -28,7 +28,7 @@ public class VendorsController : ControllerBase
     [HttpGet("{id}")]
     public VendorDto Get(Guid id)
     {
-        return new VendorDto(Guid.NewGuid(), "Dummy", "Description", "ABC-DEF-GHI-JKL");
+        return _vendorsManager.GetById(id).Map();
     }
 
     [HttpPost]
