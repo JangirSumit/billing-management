@@ -8,17 +8,17 @@ namespace BillingManagement.Managers;
 public class VendorsManager : IVendorsManager
 {
     private readonly IConfiguration _configuration;
+    private readonly string _connectionString;
 
     public VendorsManager(IConfiguration configuration)
     {
         _configuration = configuration;
+        _connectionString = _configuration.GetConnectionString("Hosted");
     }
 
-    public Guid Add(VendorDetail vendorDetail)
+    public VendorDetail Add(VendorDetail vendorDetail)
     {
-        var connectionString = _configuration.GetConnectionString("Hosted");
-
-        using (SqlConnection con = new(connectionString))
+        using (SqlConnection con = new(_connectionString))
         {
             SqlCommand command = new()
             {
@@ -58,19 +58,18 @@ public class VendorsManager : IVendorsManager
 
             if (command.ExecuteNonQuery() > 0)
             {
-                return Guid.NewGuid();
+                return new VendorDetail(Guid.NewGuid(), vendorDetail.Name, vendorDetail.Address, vendorDetail.Address);
             }
         }
 
-        return Guid.Empty;
+        return vendorDetail;
     }
 
     public List<VendorDetail> GetAll()
     {
-        var connectionString = _configuration.GetConnectionString("Hosted");
         List<VendorDetail> vendorDetails = new();
 
-        using (SqlConnection con = new(connectionString))
+        using (SqlConnection con = new(_connectionString))
         {
             SqlCommand command = new()
             {
@@ -119,10 +118,9 @@ public class VendorsManager : IVendorsManager
 
     public VendorDetail GetById(Guid vendorId)
     {
-        var connectionString = _configuration.GetConnectionString("Hosted");
         VendorDetail vendorDetail = VendorDetail.Empty;
 
-        using (SqlConnection con = new(connectionString))
+        using (SqlConnection con = new(_connectionString))
         {
             SqlCommand command = new()
             {
@@ -160,5 +158,30 @@ public class VendorsManager : IVendorsManager
         }
 
         return vendorDetail;
+    }
+
+    public bool Delete(Guid id)
+    {
+        using SqlConnection con = new(_connectionString);
+        SqlCommand command = new()
+        {
+            Connection = con,
+            CommandText = "[dbo].[AddVendor]",
+            CommandType = CommandType.StoredProcedure
+        };
+
+        SqlParameter parameter = new()
+        {
+            ParameterName = "@Id",
+            SqlDbType = SqlDbType.UniqueIdentifier,
+            Direction = ParameterDirection.Input,
+            Value = id
+        };
+
+        command.Parameters.Add(parameter);
+
+        con.Open();
+
+        return command.ExecuteNonQuery() > 0;
     }
 }

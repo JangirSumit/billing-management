@@ -1,6 +1,5 @@
 ﻿using BillingManagement.Abstrations;
 using BillingManagement.ExtensionMethods;
-using BillingManagement.Managers;
 using BillingManagement.Models.Dto;
 using Microsoft.AspNetCore.Mvc;
 
@@ -34,13 +33,14 @@ public class VendorsController : ControllerBase
     [HttpPost]
     public VendorDto Post([FromBody] VendorDto vendorDto)
     {
-        var result = new VendorDto(Guid.NewGuid(), vendorDto.Name, vendorDto.Address, vendorDto.GstNumber);
-        return result;
+        var vendorDetail = vendorDto.Map();
+        vendorDetail = _vendorsManager.Add(vendorDetail);
+        return vendorDetail.Map();
     }
 
     [HttpDelete("{id}")]
     public bool Delete(Guid id)
     {
-        return true;
+        return _vendorsManager.Delete(id);
     }
 }
