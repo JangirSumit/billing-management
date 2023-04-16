@@ -56,7 +56,7 @@ function renderFooter() {
               <li class="nav-item"><a href="#" class="nav-link px-2 text-body-secondary">FAQs</a></li>
               <li class="nav-item"><a href="#" class="nav-link px-2 text-body-secondary">About</a></li>-->
             </ul>
-        <p class="text-center text-body-secondary">© 2023, Jangir Technologies</p>
+        <p class="text-center text-body-secondary"><b>© 2023, Jangir Technologies</b></p>
     `;
 
     document.querySelector("footer").innerHTML = footerHtml;
