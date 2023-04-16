@@ -33,6 +33,10 @@ document.getElementById("create-user")?.addEventListener("click", async function
     window.location.href = "/Register.html";
 });
 
+document.getElementById("existing-user")?.addEventListener("click", async function () {
+    window.location.href = "/Login.html";
+});
+
 async function loginUser(userName, password) {
     try {
         const response = await fetch(TOKENS_API,
