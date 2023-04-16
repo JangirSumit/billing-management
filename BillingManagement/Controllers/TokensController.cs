@@ -60,6 +60,28 @@ public class TokensController : ControllerBase
         return ReturnToken(expiry, token);
     }
 
+    [HttpGet]
+    [Authorize]
+    [Route("validate")]
+    public IActionResult Validate()
+    {
+        var currentAccessToken = Request.Headers["Authorization"];
+        if (string.IsNullOrEmpty(currentAccessToken))
+        {
+            return BadRequest("Invalid access token");
+        }
+
+        var accessToken = currentAccessToken.ToString().Replace("Bearer ", "");
+
+        var principal = GetPrincipalFromExpiredToken(accessToken);
+        if (principal == null)
+        {
+            return BadRequest("Invalid access token");
+        }
+
+        return Ok();
+    }
+
     private ClaimsPrincipal? GetPrincipalFromExpiredToken(string? token)
     {
         var tokenValidationParameters = new TokenValidationParameters

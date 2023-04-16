@@ -1,6 +1,8 @@
-﻿renderHeader();
-activateHeader();
-renderFooter();
+﻿window.onload = async function () {
+    renderHeader();
+    activateHeader();
+    renderFooter();
+};
 
 function renderHeader() {
     const headerHtml = `
