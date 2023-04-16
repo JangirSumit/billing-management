@@ -1,7 +1,10 @@
 ﻿using BillingManagement.Models.Dto;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
+using System.Text;
 
 namespace BillingManagement.Controllers;
 
@@ -16,17 +19,29 @@ public class TokensController : ControllerBase
         _configuration = configuration;
     }
 
-    public void Post([FromBody] UserDto userDetail)
+    [HttpPost]
+    [AllowAnonymous]
+    public IActionResult Post([FromBody] UserDto userDetail)
     {
         //create claims details based on the user information
         var claims = new[] {
-                        new Claim(JwtRegisteredClaimNames.Sub, _configuration["Jwt:Subject"]),
-                        new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
-                        new Claim(JwtRegisteredClaimNames.Iat, DateTime.UtcNow.ToString()),
-                        //new Claim("UserId", user.UserId.ToString()),
-                        //new Claim("DisplayName", user.DisplayName),
-                        //new Claim("UserName", user.UserName),
-                        //new Claim("Email", user.Email)
+                        new Claim(ClaimTypes.Name, userDetail.UserName),
+                        new Claim(ClaimTypes.NameIdentifier, Guid.NewGuid().ToString())
                     };
+
+        var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["Jwt:Key"]));
+        var signIn = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
+        var token = new JwtSecurityToken(
+            _configuration["Jwt:Issuer"],
+            _configuration["Jwt:Audience"],
+            claims,
+            expires: DateTime.UtcNow.AddMinutes(20),
+            signingCredentials: signIn);
+
+        return Ok(new
+        {
+            accessToken = new JwtSecurityTokenHandler().WriteToken(token),
+            expiry = 20
+        });
     }
 }

@@ -17,4 +17,17 @@
     <Folder Include="Constants\" />
   </ItemGroup>
 
+  <ItemGroup>
+    <None Include="wwwroot\Help.html" />
+    <None Include="wwwroot\Index.html" />
+    <None Include="wwwroot\Items.html" />
+    <None Include="wwwroot\scripts\common.js" />
+    <None Include="wwwroot\scripts\items.js" />
+    <None Include="wwwroot\scripts\script.js" />
+    <None Include="wwwroot\scripts\vendors.js" />
+    <None Include="wwwroot\styles\style.css" />
+    <None Include="wwwroot\Venders.html" />
+    <None Include="wwwroot\Workflow.html" />
+  </ItemGroup>
+
 </Project>
