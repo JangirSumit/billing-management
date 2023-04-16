@@ -35,28 +35,6 @@ public class TokensController : ControllerBase
         return ReturnToken(expiry, token);
     }
 
-    private IActionResult ReturnToken(DateTime expiry, JwtSecurityToken token)
-    {
-        return Ok(new
-        {
-            accessToken = new JwtSecurityTokenHandler().WriteToken(token),
-            expiry
-        });
-    }
-
-    private JwtSecurityToken GenerateToken(Claim[] claims, DateTime expiry)
-    {
-        var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["Jwt:Key"]));
-        var signIn = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
-        var token = new JwtSecurityToken(
-            _configuration["Jwt:Issuer"],
-            _configuration["Jwt:Audience"],
-            claims,
-            expires: expiry,
-            signingCredentials: signIn);
-        return token;
-    }
-
     [HttpGet]
     [Authorize]
     [Route("refresh")]
@@ -99,5 +77,27 @@ public class TokensController : ControllerBase
             throw new SecurityTokenException("Invalid token");
 
         return principal;
+    }
+
+    private IActionResult ReturnToken(DateTime expiry, JwtSecurityToken token)
+    {
+        return Ok(new
+        {
+            accessToken = new JwtSecurityTokenHandler().WriteToken(token),
+            expiry
+        });
+    }
+
+    private JwtSecurityToken GenerateToken(Claim[] claims, DateTime expiry)
+    {
+        var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["Jwt:Key"]));
+        var signIn = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
+        var token = new JwtSecurityToken(
+            _configuration["Jwt:Issuer"],
+            _configuration["Jwt:Audience"],
+            claims,
+            expires: expiry,
+            signingCredentials: signIn);
+        return token;
     }
 }
