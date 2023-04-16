@@ -29,7 +29,7 @@ function redirectToHome() {
 
 async function validateSession(token) {
     try {
-        const response = await fetch(TOKENS_API,
+        const response = await fetch(`${TOKENS_API}/validate`,
             {
                 headers: { Authorization: `Bearer ${token}` }
             });
