@@ -1,5 +1,6 @@
-using BillingManagement.Abstrations;
-using BillingManagement.Managers;
+using BillingManagement.Repository;
+using BillingManagement.Repository.Abstrations;
+using BillingManagement.Repository.Common;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -10,8 +11,9 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-builder.Services.AddScoped<IVendorsManager, VendorsManager>();
-builder.Services.AddScoped<IItemsManager, ItemsManager>();
+builder.Services.AddScoped<IVendorsRepository, VendorsRepository>();
+builder.Services.AddScoped<IItemsRepository, ItemsRepository>();
+builder.Services.AddScoped<IDataAccess, DataAccess>();
 
 var app = builder.Build();
 
@@ -27,6 +29,7 @@ app.UseStaticFiles();
 
 app.UseHttpsRedirection();
 
+app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();

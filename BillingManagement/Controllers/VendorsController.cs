@@ -1,6 +1,7 @@
-﻿using BillingManagement.Abstrations;
-using BillingManagement.ExtensionMethods;
+﻿using BillingManagement.ExtensionMethods;
 using BillingManagement.Models.Dto;
+using BillingManagement.Repository.Abstrations;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
@@ -9,11 +10,12 @@ namespace BillingManagement.Controllers;
 
 [Route("api/[controller]")]
 [ApiController]
+[Authorize]
 public class VendorsController : ControllerBase
 {
-    private readonly IVendorsManager _vendorsManager;
+    private readonly IVendorsRepository _vendorsManager;
 
-    public VendorsController(IVendorsManager vendorsManager)
+    public VendorsController(IVendorsRepository vendorsManager)
     {
         _vendorsManager = vendorsManager;
     }

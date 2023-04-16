@@ -1,8 +1,8 @@
-﻿using BillingManagement.Abstrations;
+﻿using BillingManagement.Repository.Abstrations;
 
-namespace BillingManagement.Managers;
+namespace BillingManagement.Repository;
 
-public class ItemsManager : IItemsManager
+public class ItemsRepository : IItemsRepository
 {
     public void DeleteRecord(Guid id)
     {

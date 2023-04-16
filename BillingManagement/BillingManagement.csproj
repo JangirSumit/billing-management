@@ -16,8 +16,4 @@
     <Folder Include="Constants\" />
   </ItemGroup>
 
-  <ItemGroup>
-    <ProjectReference Include="..\DatabaseLayer\DatabaseLayer.csproj" />
-  </ItemGroup>
-
 </Project>

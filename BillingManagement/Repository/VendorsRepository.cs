@@ -1,16 +1,16 @@
-﻿using BillingManagement.Abstrations;
-using BillingManagement.Models;
+﻿using BillingManagement.Models;
+using BillingManagement.Repository.Abstrations;
 using System.Data;
 using System.Data.SqlClient;
 
-namespace BillingManagement.Managers;
+namespace BillingManagement.Repository;
 
-public class VendorsManager : IVendorsManager
+public class VendorsRepository : IVendorsRepository
 {
     private readonly IConfiguration _configuration;
     private readonly string _connectionString;
 
-    public VendorsManager(IConfiguration configuration)
+    public VendorsRepository(IConfiguration configuration)
     {
         _configuration = configuration;
         _connectionString = _configuration.GetConnectionString("Hosted");
