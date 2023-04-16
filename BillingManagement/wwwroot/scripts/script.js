@@ -1,8 +1,11 @@
-﻿window.onload = async function () {
-    renderHeader();
-    activateHeader();
-    renderFooter();
-};
+﻿renderHeader();
+activateHeader();
+renderFooter();
+
+document.getElementById("logout").addEventListener("click", function () {
+    localStorage.removeItem(USER_DB_KEY);
+    window.location.href = "/Login.html"
+})
 
 function renderHeader() {
     const headerHtml = `
@@ -29,6 +32,12 @@ function renderHeader() {
                         </li>
                         <li class="nav-item">
                             <a class="nav-link text-white" href="/Help.html">Help</a>
+                        </li>
+                        
+                    </ul>
+                    <ul class="navbar-nav flex-row flex-wrap ms-md-auto">
+                        <li class="nav-item" style="float: right; width: 100%;">
+                            <button type="button" class="btn btn-light" id="logout">Logout</button>
                         </li>
                     </ul>
                 </div>
@@ -62,5 +71,15 @@ function renderFooter() {
     `;
 
     document.querySelector("footer").innerHTML = footerHtml;
+}
 
+function getToken() {
+    const USER_DB_KEY = 'user-session';
+    var userSession = localStorage.getItem(USER_DB_KEY);
+
+    if (userSession) {
+        userSession = JSON.parse(userSession);
+        return userSession.accessToken;
+    }
+    return "";
 }

@@ -99,6 +99,7 @@ async function addVendor(data) {
             body: JSON.stringify(data),
             headers: {
                 'Content-type': 'application/json; charset=UTF-8',
+                Authorization: `Bearer ${getToken()}`
             }
         });
 
@@ -114,6 +115,9 @@ async function deleteVendor(id) {
     try {
         const response = await fetch(`${VENDORS_API}/${id}`, {
             method: 'DELETE',
+            headers: {
+                Authorization: `Bearer ${getToken()}`
+            }
         });
 
         if (response.ok) {
@@ -126,7 +130,11 @@ async function deleteVendor(id) {
 
 async function getVendors() {
     try {
-        const response = await fetch(VENDORS_API);
+        const response = await fetch(VENDORS_API, {
+            headers: {
+                Authorization: `Bearer ${getToken()}`
+            }
+        });
         if (response.ok) {
             return await response.json();
         }
@@ -137,7 +145,11 @@ async function getVendors() {
 
 async function getVendor(id) {
     try {
-        const response = await fetch(`${VENDORS_API}/${id}`);
+        const response = await fetch(`${VENDORS_API}/${id}`, {
+            headers: {
+                Authorization: `Bearer ${getToken()}`
+            }
+        });
         if (response.ok) {
             return await response.json();
         }

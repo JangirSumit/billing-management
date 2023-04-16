@@ -1,4 +1,4 @@
-﻿const VENDORS_API = '/api/Tokens';
+﻿const TOKENS_API = '/api/Tokens';
 const USER_DB_KEY = 'user-session';
 
 checkActiveUser();
@@ -9,9 +9,10 @@ async function checkActiveUser() {
     if (userSession) {
         userSession = JSON.parse(userSession);
 
-        if (await validateSession(userSession) == false) {
+        if (new Date(userSession.expiry) - new Date() <= 0 &&
+            await validateSession(userSession.accessToken) == false) {
             rediretToLogin();
-        }
+        } 
     }
     else {
         rediretToLogin();
@@ -22,9 +23,13 @@ function rediretToLogin() {
     window.location.href = "/Login.html";
 }
 
+function redirectToHome() {
+    window.location.href = "/";
+}
+
 async function validateSession(token) {
     try {
-        const response = await fetch(VENDORS_API,
+        const response = await fetch(TOKENS_API,
             {
                 headers: { Authorization: `Bearer ${token}` }
             });
