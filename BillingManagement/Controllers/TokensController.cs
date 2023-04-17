@@ -1,5 +1,4 @@
-﻿using Azure.Core;
-using BillingManagement.Models.Dto;
+﻿using BillingManagement.Models.Dto;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
