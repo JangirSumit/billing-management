@@ -8,16 +8,17 @@ async function refreshToken() {
     var token = localStorage.getItem(USER_DB_KEY);
     if (token) {
         token = JSON.parse(token);
-        const timeout = new Date(token.expiry) - new Date();
+        const timeout = new Date(token.expiry) - new Date() - 10000;
 
         if (timeout < 0) {
-            refresh();
+            tokenExpired();
         }
 
         const refreshTonenInterval = setInterval(function () {
-            refresh();
+            refresh(token.accessToken);
             clearInterval(refreshTonenInterval);
-        }, timeout - 1000);
+            refreshToken();
+        }, timeout);
     }
 }
 
@@ -37,6 +38,10 @@ async function refresh(token) {
     } catch (e) {
         console.error(e);
     }
+}
+
+function tokenExpired() {
+    window.location.href = "/Login.html";
 }
 
 function refreshDB(token) {

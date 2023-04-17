@@ -37,8 +37,7 @@ builder.Services.AddSwaggerGen(swagger =>
     swagger.SwaggerDoc("v1", new OpenApiInfo
     {
         Version = "v1",
-        Title = "ASP.NET 5 Web API",
-        Description = "Authentication and Authorization in ASP.NET 5 with JWT and Swagger"
+        Title = "Billing Management",
     });
     // To Enable authorization using Swagger (JWT)    
     swagger.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme()
