@@ -1,7 +1,4 @@
-﻿const TOKENS_API = '/api/Tokens';
-const USER_DB_KEY = 'user-session';
-
-document.getElementById("login")?.addEventListener("click", async function () {
+﻿document.getElementById("login")?.addEventListener("click", async function () {
     const userName = document.getElementById("user-name").value;
     const password = document.getElementById("password").value;
 

@@ -1,8 +1,4 @@
-﻿const EMPTY_GUID = "00000000-0000-0000-0000-000000000000";
-const USER_DB_KEY = 'user-session';
-const TOKENS_API = '/api/Tokens';
-
-refreshToken();
+﻿refreshToken();
 
 function capitalizeString(str) {
     return str[0].toUpperCase() + str.substring(1);
@@ -25,7 +21,7 @@ async function refreshToken() {
     }
 }
 
-function refresh(token) {
+async function refresh(token) {
     try {
         const response = await fetch(`${TOKENS_API}/refresh`,
             {

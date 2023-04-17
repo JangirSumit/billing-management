@@ -1,7 +1,4 @@
-﻿const TOKENS_API = '/api/Tokens';
-const USER_DB_KEY = 'user-session';
-
-checkActiveUser();
+﻿checkActiveUser();
 
 async function checkActiveUser() {
     var userSession = localStorage.getItem(USER_DB_KEY);

@@ -1,6 +1,4 @@
-﻿const VENDORS_API = '/api/Vendors';
-
-window.onload = async function () {
+﻿window.onload = async function () {
     await renderVendors();
 };
 
