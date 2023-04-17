@@ -8,17 +8,19 @@ async function refreshToken() {
     var token = localStorage.getItem(USER_DB_KEY);
     if (token) {
         token = JSON.parse(token);
-        const timeout = new Date(token.expiry) - new Date() - 10000;
 
-        if (timeout < 0) {
-            tokenExpired();
+        if (token && token.expiry && token.accessToken) {
+            const timeout = new Date(token.expiry) - new Date() - 10000;
+
+            if (timeout < 0) {
+                tokenExpired();
+            }
+
+            setTimeout(async () => {
+                await refresh(token.accessToken);
+                refreshToken();
+            }, timeout);
         }
-
-        const refreshTonenInterval = setInterval(function () {
-            refresh(token.accessToken);
-            clearInterval(refreshTonenInterval);
-            refreshToken();
-        }, timeout);
     }
 }
 
@@ -33,7 +35,8 @@ async function refresh(token) {
             });
 
         if (response.ok) {
-            refreshDB(response.json());
+            const result = await response.json();
+            refreshDB(result);
         }
     } catch (e) {
         console.error(e);
@@ -44,7 +47,7 @@ function tokenExpired() {
     window.location.href = "/Login.html";
 }
 
-function refreshDB(token) {
+async function refreshDB(token) {
     localStorage.setItem(USER_DB_KEY, JSON.stringify(token));
-    refreshToken();
+    await refreshToken();
 }
