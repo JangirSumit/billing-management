@@ -1,4 +1,8 @@
-﻿IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[GetVendors]') AND type in (N'P', N'PC'))
+﻿/* 
+Vendors
+*/
+
+IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[GetVendors]') AND type in (N'P', N'PC'))
 DROP PROCEDURE [dbo].[GetVendors]
 GO
 
@@ -36,3 +40,55 @@ Delete from [dbo].[Vendors]
 Where Id = @Id
 END
 
+GO
+
+IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[AddVendor]') AND type in (N'P', N'PC'))
+DROP PROCEDURE [dbo].[AddVendor]
+GO
+
+create procedure [dbo].[AddVendor]
+@name nvarchar(200),
+@gstNumber nvarchar(50),
+@address nvarchar(2000)
+
+as
+BEGIN
+Insert int [dbo].[Vendors] ([Name], GstNumber, [Address])
+values(@name, @gstNumber, @address)
+END
+
+GO
+
+/* 
+Users
+*/
+
+IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[GetUserByName]') AND type in (N'P', N'PC'))
+DROP PROCEDURE [dbo].[GetUserByName]
+GO
+
+create procedure [dbo].[GetUserByName]
+@name nvarchar(200)
+as
+BEGIN
+Select * from [dbo].[Users]
+Where [Name] = @name
+END
+
+GO
+
+IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[AddUser]') AND type in (N'P', N'PC'))
+DROP PROCEDURE [dbo].[AddUser]
+GO
+
+create procedure [dbo].[AddUser]
+@name nvarchar(200),
+@password nvarchar(500)
+
+as
+BEGIN
+Insert into [dbo].[Users] ([Name], [Password])
+values(@name, @password)
+END
+
+GO

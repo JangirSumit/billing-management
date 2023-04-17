@@ -1,4 +1,9 @@
-﻿using BillingManagement.Models.Dto;
+﻿using BillingManagement.Enums;
+using BillingManagement.Helpers;
+using BillingManagement.Models;
+using BillingManagement.Models.Dto;
+using BillingManagement.Repository;
+using BillingManagement.Repository.Abstrations;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
@@ -14,24 +19,70 @@ namespace BillingManagement.Controllers;
 public class TokensController : ControllerBase
 {
     private readonly IConfiguration _configuration;
+    private readonly IUsersRepository _usersRepository;
 
-    public TokensController(IConfiguration configuration)
+    public TokensController(IConfiguration configuration, IUsersRepository usersRepository)
     {
         _configuration = configuration;
+        _usersRepository = usersRepository;
     }
 
     [HttpPost]
-    public IActionResult Post([FromBody] UserDto userDetail)
+    public IActionResult Post([FromBody] UserDto userDto)
     {
-        var expiry = DateTime.UtcNow.AddMinutes(20);
+        var user = _usersRepository.GetUserByName(userDto.UserName);
 
-        var claims = new[] {
-                        new Claim(ClaimTypes.Name, userDetail.UserName),
+        if (CryptoHelper.DecryptPassword(userDto.Password, user.Password))
+        {
+            var expiry = DateTime.UtcNow.AddMinutes(20);
+
+            var claims = new[] {
+                        new Claim(ClaimTypes.Name, userDto.UserName),
                         new Claim(ClaimTypes.NameIdentifier, Guid.NewGuid().ToString())
                     };
-        //create claims details based on the user information
-        JwtSecurityToken token = GenerateToken(claims, expiry);
-        return ReturnToken(expiry, token);
+            //create claims details based on the user information
+            JwtSecurityToken token = GenerateToken(claims, expiry);
+            return ReturnToken(expiry, token);
+        }
+
+        return BadRequest(new
+        {
+            Message = "Invalid Username or Password.",
+            FailureReason = FailureReason.InvalidCredentials
+        });
+    }
+
+    [HttpPost]
+    [Route("register")]
+    public IActionResult PostAddUser([FromBody] UserDto userDto)
+    {
+        var user = _usersRepository.GetUserByName(userDto.UserName);
+
+        if (user != null)
+        {
+            return BadRequest("User already Exists.");
+        }
+
+        var passwordEncrypted = CryptoHelper.EncryptPassword(userDto.Password);
+
+        if (_usersRepository.Add(new UserDetail(userDto.UserName, passwordEncrypted)) > 0)
+        {
+            var expiry = DateTime.UtcNow.AddMinutes(20);
+
+            var claims = new[] {
+                        new Claim(ClaimTypes.Name, userDto.UserName),
+                        new Claim(ClaimTypes.NameIdentifier, Guid.NewGuid().ToString())
+                    };
+            //create claims details based on the user information
+            JwtSecurityToken token = GenerateToken(claims, expiry);
+            return ReturnToken(expiry, token);
+        }
+
+        return BadRequest(new
+        {
+            Message = "Failed to create User.",
+            FailureReason = FailureReason.UserCreationFailed
+        });
     }
 
     [HttpGet]
@@ -42,7 +93,11 @@ public class TokensController : ControllerBase
         var currentAccessToken = Request.Headers["Authorization"];
         if (string.IsNullOrEmpty(currentAccessToken))
         {
-            return BadRequest("Invalid access token");
+            return BadRequest(new
+            {
+                Message = "Invalid access token",
+                FailureReason = FailureReason.InvalidAccessToken
+            });
         }
 
         var accessToken = currentAccessToken.ToString().Replace("Bearer ", "");
@@ -50,7 +105,11 @@ public class TokensController : ControllerBase
         var principal = GetPrincipalFromExpiredToken(accessToken);
         if (principal == null)
         {
-            return BadRequest("Invalid access token");
+            return BadRequest(new
+            {
+                Message = "Invalid access token",
+                FailureReason = FailureReason.InvalidAccessToken
+            });
         }
 
         var expiry = DateTime.UtcNow.AddMinutes(20);
@@ -67,7 +126,11 @@ public class TokensController : ControllerBase
         var currentAccessToken = Request.Headers["Authorization"];
         if (string.IsNullOrEmpty(currentAccessToken))
         {
-            return BadRequest("Invalid access token");
+            return BadRequest(new
+            {
+                Message = "Invalid access token",
+                FailureReason = FailureReason.InvalidAccessToken
+            });
         }
 
         var accessToken = currentAccessToken.ToString().Replace("Bearer ", "");
@@ -75,7 +138,11 @@ public class TokensController : ControllerBase
         var principal = GetPrincipalFromExpiredToken(accessToken);
         if (principal == null)
         {
-            return BadRequest("Invalid access token");
+            return BadRequest(new
+            {
+                Message = "Invalid access token",
+                FailureReason = FailureReason.InvalidAccessToken
+            });
         }
 
         return Ok();

@@ -39,8 +39,10 @@ public class DataAccess : IDataAccess
     {
         using SqlConnection connection = new(_connectionString);
         connection.Open();
-        SqlCommand command = new(storedProcedureName, connection);
-        command.CommandType = CommandType.StoredProcedure;
+        SqlCommand command = new(storedProcedureName, connection)
+        {
+            CommandType = CommandType.StoredProcedure
+        };
 
         if (parameters != null)
         {
@@ -58,8 +60,10 @@ public class DataAccess : IDataAccess
     {
         using SqlConnection connection = new(_connectionString);
         connection.Open();
-        SqlCommand command = new(storedProcedureName, connection);
-        command.CommandType = CommandType.StoredProcedure;
+        SqlCommand command = new(storedProcedureName, connection)
+        {
+            CommandType = CommandType.StoredProcedure
+        };
 
         if (parameters != null)
         {
