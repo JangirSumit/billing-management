@@ -38,7 +38,7 @@ BEGIN
 CREATE TABLE [dbo].[Users]
 (
 Id UNIQUEIDENTIFIER NOT NULL PRIMARY KEY DEFAULT NEWID(),
-[Name] nvarchar(200) NOT NULL,
+[Name] nvarchar(200) NOT NULL UNIQUE,
 [Password] nvarchar(500) NOT NULL
 );
 

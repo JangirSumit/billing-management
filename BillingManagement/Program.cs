@@ -69,6 +69,7 @@ builder.Services.AddSwaggerGen(swagger =>
 builder.Services.AddScoped<IVendorsRepository, VendorsRepository>();
 builder.Services.AddScoped<IItemsRepository, ItemsRepository>();
 builder.Services.AddScoped<IDataAccess, DataAccess>();
+builder.Services.AddScoped<IUsersRepository, UsersRepository>();
 
 
 builder.Services.AddAuthorization(options =>

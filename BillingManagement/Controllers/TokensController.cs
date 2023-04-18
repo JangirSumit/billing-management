@@ -2,7 +2,6 @@
 using BillingManagement.Helpers;
 using BillingManagement.Models;
 using BillingManagement.Models.Dto;
-using BillingManagement.Repository;
 using BillingManagement.Repository.Abstrations;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -30,59 +29,77 @@ public class TokensController : ControllerBase
     [HttpPost]
     public IActionResult Post([FromBody] UserDto userDto)
     {
-        var user = _usersRepository.GetUserByName(userDto.UserName);
-
-        if (CryptoHelper.DecryptPassword(userDto.Password, user.Password))
+        try
         {
-            var expiry = DateTime.UtcNow.AddMinutes(20);
+            var user = _usersRepository.GetUserByName(userDto.UserName);
 
-            var claims = new[] {
+            if (user.IsEmpty == false && CryptoHelper.DecryptPassword(userDto.Password, user.Password))
+            {
+                var expiry = DateTime.UtcNow.AddMinutes(20);
+
+                var claims = new[] {
                         new Claim(ClaimTypes.Name, userDto.UserName),
                         new Claim(ClaimTypes.NameIdentifier, Guid.NewGuid().ToString())
                     };
-            //create claims details based on the user information
-            JwtSecurityToken token = GenerateToken(claims, expiry);
-            return ReturnToken(expiry, token);
-        }
+                //create claims details based on the user information
+                JwtSecurityToken token = GenerateToken(claims, expiry);
+                return ReturnToken(expiry, token);
+            }
 
-        return BadRequest(new
+            return BadRequest(new
+            {
+                Message = "Invalid Username or Password.",
+                FailureReason = FailureReason.InvalidCredentials
+            });
+        }
+        catch (Exception ex)
         {
-            Message = "Invalid Username or Password.",
-            FailureReason = FailureReason.InvalidCredentials
-        });
+            return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
+        }
     }
 
     [HttpPost]
     [Route("register")]
     public IActionResult PostAddUser([FromBody] UserDto userDto)
     {
-        var user = _usersRepository.GetUserByName(userDto.UserName);
-
-        if (user != null)
+        try
         {
-            return BadRequest("User already Exists.");
-        }
+            var user = _usersRepository.GetUserByName(userDto.UserName);
 
-        var passwordEncrypted = CryptoHelper.EncryptPassword(userDto.Password);
+            if (user.IsEmpty == false)
+            {
+                return BadRequest(new
+                {
+                    Message = "User already Exists.",
+                    FailureReason = FailureReason.UserAlreadyExists
+                });
+            }
 
-        if (_usersRepository.Add(new UserDetail(userDto.UserName, passwordEncrypted)) > 0)
-        {
-            var expiry = DateTime.UtcNow.AddMinutes(20);
+            var passwordEncrypted = CryptoHelper.EncryptPassword(userDto.Password);
 
-            var claims = new[] {
+            if (_usersRepository.Add(new UserDetail(userDto.UserName, passwordEncrypted)) > 0)
+            {
+                var expiry = DateTime.UtcNow.AddMinutes(20);
+
+                var claims = new[] {
                         new Claim(ClaimTypes.Name, userDto.UserName),
                         new Claim(ClaimTypes.NameIdentifier, Guid.NewGuid().ToString())
                     };
-            //create claims details based on the user information
-            JwtSecurityToken token = GenerateToken(claims, expiry);
-            return ReturnToken(expiry, token);
-        }
+                //create claims details based on the user information
+                JwtSecurityToken token = GenerateToken(claims, expiry);
+                return ReturnToken(expiry, token);
+            }
 
-        return BadRequest(new
+            return BadRequest(new
+            {
+                Message = "Failed to create User.",
+                FailureReason = FailureReason.UserCreationFailed
+            });
+        }
+        catch (Exception ex)
         {
-            Message = "Failed to create User.",
-            FailureReason = FailureReason.UserCreationFailed
-        });
+            return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
+        }
     }
 
     [HttpGet]
@@ -90,32 +107,39 @@ public class TokensController : ControllerBase
     [Route("refresh")]
     public IActionResult Get()
     {
-        var currentAccessToken = Request.Headers["Authorization"];
-        if (string.IsNullOrEmpty(currentAccessToken))
+        try
         {
-            return BadRequest(new
+            var currentAccessToken = Request.Headers["Authorization"];
+            if (string.IsNullOrEmpty(currentAccessToken))
             {
-                Message = "Invalid access token",
-                FailureReason = FailureReason.InvalidAccessToken
-            });
+                return BadRequest(new
+                {
+                    Message = "Invalid access token",
+                    FailureReason = FailureReason.InvalidAccessToken
+                });
+            }
+
+            var accessToken = currentAccessToken.ToString().Replace("Bearer ", "");
+
+            var principal = GetPrincipalFromExpiredToken(accessToken);
+            if (principal == null)
+            {
+                return BadRequest(new
+                {
+                    Message = "Invalid access token",
+                    FailureReason = FailureReason.InvalidAccessToken
+                });
+            }
+
+            var expiry = DateTime.UtcNow.AddMinutes(20);
+            var token = GenerateToken(principal.Claims.ToArray(), expiry);
+
+            return ReturnToken(expiry, token);
         }
-
-        var accessToken = currentAccessToken.ToString().Replace("Bearer ", "");
-
-        var principal = GetPrincipalFromExpiredToken(accessToken);
-        if (principal == null)
+        catch (Exception ex)
         {
-            return BadRequest(new
-            {
-                Message = "Invalid access token",
-                FailureReason = FailureReason.InvalidAccessToken
-            });
+            return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
         }
-
-        var expiry = DateTime.UtcNow.AddMinutes(20);
-        var token = GenerateToken(principal.Claims.ToArray(), expiry);
-
-        return ReturnToken(expiry, token);
     }
 
     [HttpGet]
@@ -123,29 +147,36 @@ public class TokensController : ControllerBase
     [Route("validate")]
     public IActionResult Validate()
     {
-        var currentAccessToken = Request.Headers["Authorization"];
-        if (string.IsNullOrEmpty(currentAccessToken))
+        try
         {
-            return BadRequest(new
+            var currentAccessToken = Request.Headers["Authorization"];
+            if (string.IsNullOrEmpty(currentAccessToken))
             {
-                Message = "Invalid access token",
-                FailureReason = FailureReason.InvalidAccessToken
-            });
+                return BadRequest(new
+                {
+                    Message = "Invalid access token",
+                    FailureReason = FailureReason.InvalidAccessToken
+                });
+            }
+
+            var accessToken = currentAccessToken.ToString().Replace("Bearer ", "");
+
+            var principal = GetPrincipalFromExpiredToken(accessToken);
+            if (principal == null)
+            {
+                return BadRequest(new
+                {
+                    Message = "Invalid access token",
+                    FailureReason = FailureReason.InvalidAccessToken
+                });
+            }
+
+            return Ok();
         }
-
-        var accessToken = currentAccessToken.ToString().Replace("Bearer ", "");
-
-        var principal = GetPrincipalFromExpiredToken(accessToken);
-        if (principal == null)
+        catch (Exception ex)
         {
-            return BadRequest(new
-            {
-                Message = "Invalid access token",
-                FailureReason = FailureReason.InvalidAccessToken
-            });
+            return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
         }
-
-        return Ok();
     }
 
     private ClaimsPrincipal? GetPrincipalFromExpiredToken(string? token)

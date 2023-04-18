@@ -19,15 +19,15 @@ public class UsersRepository : IUsersRepository
     public int Add(UserDetail userDetail)
     {
         return _dataAccess.ExecuteNonQuery("[dbo].[AddUser]", new SqlParameter[] {
-            new("@name", System.Data.SqlDbType.NVarChar, 200, userDetail.UserName),
-            new("@password", System.Data.SqlDbType.NVarChar, 500, userDetail.Password)
+            new("@name", userDetail.UserName),
+            new("@password", userDetail.Password)
         });
     }
 
     public UserDetail GetUserByName(string userName)
     {
         var result = _dataAccess.ExecuteQuery("[dbo].[GetUserByName]", new SqlParameter[] {
-             new("@name", System.Data.SqlDbType.NVarChar, 200, userName)
+             new("@name", userName)
         });
 
         if (result?.Rows?.Count > 0)
