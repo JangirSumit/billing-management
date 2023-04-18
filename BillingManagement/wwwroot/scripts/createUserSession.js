@@ -10,7 +10,10 @@
         }
     }
 
-    // TODO: Handle Faile Case
+    openModalDialog({
+        title: "Invalid Credentials",
+        body: "Username or Password can not be left blank."
+    });
 });
 
 document.getElementById("register")?.addEventListener("click", async function () {
