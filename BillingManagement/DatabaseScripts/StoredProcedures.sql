@@ -92,3 +92,21 @@ values(@name, @password)
 END
 
 GO
+
+IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[ChangePassword]') AND type in (N'P', N'PC'))
+DROP PROCEDURE [dbo].[ChangePassword]
+GO
+
+create procedure [dbo].[ChangePassword]
+@name nvarchar(200),
+@newPassword nvarchar(500)
+
+as
+BEGIN
+
+Update [dbo].[Users]
+Set [Password] = @newPassword
+Where [Name] = @name 
+END
+
+GO

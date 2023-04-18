@@ -9,6 +9,8 @@
             window.location.href = "/";
         }
     }
+
+    // TODO: Handle Faile Case
 });
 
 document.getElementById("register")?.addEventListener("click", async function () {
@@ -45,7 +47,13 @@ document.getElementById("change-password")?.addEventListener("click", async func
     if (userName && currentPassword &&
         newPassword && confirmPassword &&
         newPassword === confirmPassword) {
+        const passwordChanged = await changePassword(userName, currentPassword, newPassword);
 
+        if (passwordChanged) {
+            // TODO: Password changed successfully
+        }
+
+        // TODO: Handle failed cases
     }
 
     // TODO: Handle Validation failure
@@ -68,7 +76,10 @@ async function loginUser(userName, password) {
         const response = await fetch(TOKENS_API,
             {
                 method: 'POST',
-                body: JSON.stringify({ userName: userName, password: password }),
+                body: JSON.stringify({
+                    userName: userName,
+                    password: password
+                }),
                 headers: {
                     'Content-type': 'application/json; charset=UTF-8',
                 }
@@ -87,7 +98,31 @@ async function registerUser(userName, password) {
         const response = await fetch(`${USERS_API}/register`,
             {
                 method: 'POST',
-                body: JSON.stringify({ userName: userName, password: password }),
+                body: JSON.stringify({
+                    userName: userName,
+                    password: password
+                }),
+                headers: {
+                    'Content-type': 'application/json; charset=UTF-8',
+                }
+            });
+
+        return response.ok
+    } catch (e) {
+        console.error(e);
+    }
+}
+
+async function changePassword(userName, currentPassword, newPassword) {
+    try {
+        const response = await fetch(`${USERS_API}/changePassword`,
+            {
+                method: 'POST',
+                body: JSON.stringify({
+                    userName: userName,
+                    currentPassword: currentPassword,
+                    newPassword: newPassword
+                }),
                 headers: {
                     'Content-type': 'application/json; charset=UTF-8',
                 }

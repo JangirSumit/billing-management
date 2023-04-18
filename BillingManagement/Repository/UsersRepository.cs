@@ -26,9 +26,9 @@ public class UsersRepository : IUsersRepository
 
     public int ChangePassword(string userName, string newPassword)
     {
-        return _dataAccess.ExecuteNonQuery("[dbo].[AddUser]", new SqlParameter[] {
+        return _dataAccess.ExecuteNonQuery("[dbo].[ChangePassword]", new SqlParameter[] {
             new("@name", userName),
-            new("@password", newPassword)
+            new("@newPassword", newPassword)
         });
     }
 

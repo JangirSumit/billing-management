@@ -60,7 +60,6 @@ public class UsersController : ControllerBase
 
     [HttpPost]
     [Route("changePassword")]
-    [Authorize]
     public IActionResult PostChangePassword([FromBody] ChangePasswordDto changePasswordDto)
     {
         try
