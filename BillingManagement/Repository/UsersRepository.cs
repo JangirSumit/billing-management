@@ -24,6 +24,14 @@ public class UsersRepository : IUsersRepository
         });
     }
 
+    public int ChangePassword(string userName, string newPassword)
+    {
+        return _dataAccess.ExecuteNonQuery("[dbo].[AddUser]", new SqlParameter[] {
+            new("@name", userName),
+            new("@password", newPassword)
+        });
+    }
+
     public UserDetail GetUserByName(string userName)
     {
         var result = _dataAccess.ExecuteQuery("[dbo].[GetUserByName]", new SqlParameter[] {

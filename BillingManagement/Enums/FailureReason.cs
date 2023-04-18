@@ -7,5 +7,6 @@ public enum FailureReason
     InvalidCredentials,
     UserCreationFailed,
     InvalidAccessToken,
-    UserAlreadyExists
+    UserAlreadyExists,
+    IncorrectCurrentPassword
 }

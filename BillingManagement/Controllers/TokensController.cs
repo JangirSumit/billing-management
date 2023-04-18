@@ -49,51 +49,7 @@ public class TokensController : ControllerBase
             return BadRequest(new
             {
                 Message = "Invalid Username or Password.",
-                FailureReason = FailureReason.InvalidCredentials
-            });
-        }
-        catch (Exception ex)
-        {
-            return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
-        }
-    }
-
-    [HttpPost]
-    [Route("register")]
-    public IActionResult PostAddUser([FromBody] UserDto userDto)
-    {
-        try
-        {
-            var user = _usersRepository.GetUserByName(userDto.UserName);
-
-            if (user.IsEmpty == false)
-            {
-                return BadRequest(new
-                {
-                    Message = "User already Exists.",
-                    FailureReason = FailureReason.UserAlreadyExists
-                });
-            }
-
-            var passwordEncrypted = CryptoHelper.EncryptPassword(userDto.Password);
-
-            if (_usersRepository.Add(new UserDetail(userDto.UserName, passwordEncrypted)) > 0)
-            {
-                var expiry = DateTime.UtcNow.AddMinutes(20);
-
-                var claims = new[] {
-                        new Claim(ClaimTypes.Name, userDto.UserName),
-                        new Claim(ClaimTypes.NameIdentifier, Guid.NewGuid().ToString())
-                    };
-                //create claims details based on the user information
-                JwtSecurityToken token = GenerateToken(claims, expiry);
-                return ReturnToken(expiry, token);
-            }
-
-            return BadRequest(new
-            {
-                Message = "Failed to create User.",
-                FailureReason = FailureReason.UserCreationFailed
+                FailureReason = FailureReason.InvalidCredentials.ToString()
             });
         }
         catch (Exception ex)
@@ -127,7 +83,7 @@ public class TokensController : ControllerBase
                 return BadRequest(new
                 {
                     Message = "Invalid access token",
-                    FailureReason = FailureReason.InvalidAccessToken
+                    FailureReason = FailureReason.InvalidAccessToken.ToString()
                 });
             }
 
@@ -155,7 +111,7 @@ public class TokensController : ControllerBase
                 return BadRequest(new
                 {
                     Message = "Invalid access token",
-                    FailureReason = FailureReason.InvalidAccessToken
+                    FailureReason = FailureReason.InvalidAccessToken.ToString()
                 });
             }
 
@@ -167,7 +123,7 @@ public class TokensController : ControllerBase
                 return BadRequest(new
                 {
                     Message = "Invalid access token",
-                    FailureReason = FailureReason.InvalidAccessToken
+                    FailureReason = FailureReason.InvalidAccessToken.ToString()
                 });
             }
 

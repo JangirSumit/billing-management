@@ -18,19 +18,48 @@ document.getElementById("register")?.addEventListener("click", async function ()
 
     if (userName && password && confirmPassword &&
         password === confirmPassword) {
-        const result = await registerUser(userName, password);
-        if (result && result.accessToken) {
-            localStorage.setItem(USER_DB_KEY, JSON.stringify(result));
-            window.location.href = "/";
+
+        const userCreated = await registerUser(userName, password);
+
+        if (userCreated) {
+            const result = await loginUser(userName, password);
+
+            if (result && result.accessToken) {
+                localStorage.setItem(USER_DB_KEY, JSON.stringify(result));
+                window.location.href = "/";
+            }
         }
+
+        // TODO: Handle Failed case
     }
+
+    // TODO: Handle Validation failure
 });
 
-document.getElementById("create-user")?.addEventListener("click", async function () {
+document.getElementById("change-password")?.addEventListener("click", async function () {
+    const userName = document.getElementById("user-name").value;
+    const currentPassword = document.getElementById("current-password").value;
+    const newPassword = document.getElementById("new-password").value;
+    const confirmPassword = document.getElementById("confirm-password").value;
+
+    if (userName && currentPassword &&
+        newPassword && confirmPassword &&
+        newPassword === confirmPassword) {
+
+    }
+
+    // TODO: Handle Validation failure
+});
+
+document.getElementById("create-user")?.addEventListener("click", function () {
     window.location.href = "/Register.html";
 });
 
-document.getElementById("existing-user")?.addEventListener("click", async function () {
+document.getElementById("existing-user")?.addEventListener("click", function () {
+    window.location.href = "/Login.html";
+});
+
+document.getElementById("login-user")?.addEventListener("click", function () {
     window.location.href = "/Login.html";
 });
 
@@ -55,7 +84,7 @@ async function loginUser(userName, password) {
 
 async function registerUser(userName, password) {
     try {
-        const response = await fetch(`${TOKENS_API}/register`,
+        const response = await fetch(`${USERS_API}/register`,
             {
                 method: 'POST',
                 body: JSON.stringify({ userName: userName, password: password }),
@@ -64,9 +93,7 @@ async function registerUser(userName, password) {
                 }
             });
 
-        if (response.ok) {
-            return response.json();
-        }
+        return response.ok
     } catch (e) {
         console.error(e);
     }
