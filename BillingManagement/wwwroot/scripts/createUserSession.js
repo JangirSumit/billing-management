@@ -7,11 +7,19 @@
         if (result && result.accessToken) {
             localStorage.setItem(USER_DB_KEY, JSON.stringify(result));
             window.location.href = "/";
+            return;
+        } else if (result.failureReason == FailureReason.InvalidCredentials) {
+            openModalDialog({
+                headerType: BootstrapColor.Danger,
+                title: "Invalid Credentials",
+                body: "Username or Password is not correct."
+            });
+            return;
         }
     }
 
     openModalDialog({
-        title: "Invalid Credentials",
+        title: "Login",
         body: "Username or Password can not be left blank."
     });
 });
@@ -35,10 +43,18 @@ document.getElementById("register")?.addEventListener("click", async function ()
             }
         }
 
-        // TODO: Handle Failed case
+        openModalDialog({
+            headerType: BootstrapColor.Warning,
+            title: "User Registration",
+            body: "Failed to create user."
+        });
+        return;
     }
 
-    // TODO: Handle Validation failure
+    openModalDialog({
+        title: "User Registration",
+        body: "Please check the details."
+    });
 });
 
 document.getElementById("change-password")?.addEventListener("click", async function () {
@@ -53,13 +69,24 @@ document.getElementById("change-password")?.addEventListener("click", async func
         const passwordChanged = await changePassword(userName, currentPassword, newPassword);
 
         if (passwordChanged) {
-            // TODO: Password changed successfully
+            openModalDialog({
+                title: "Change Password",
+                body: "Password changed successfully."
+            });
+            return;
         }
 
-        // TODO: Handle failed cases
+        openModalDialog({
+            title: "Change Password",
+            body: "Failed to change the password."
+        });
+        return;
     }
 
-    // TODO: Handle Validation failure
+    openModalDialog({
+        title: "Change Password",
+        body: "Please check the details."
+    });
 });
 
 document.getElementById("create-user")?.addEventListener("click", function () {
@@ -88,9 +115,7 @@ async function loginUser(userName, password) {
                 }
             });
 
-        if (response.ok) {
-            return response.json();
-        }
+        return await response.json();
     } catch (e) {
         console.error(e);
     }

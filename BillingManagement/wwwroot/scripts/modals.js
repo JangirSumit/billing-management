@@ -7,7 +7,7 @@
     modalElement.innerHTML = `
     <div class="modal-dialog">
       <div class="modal-content">
-        <div class="modal-header">
+        <div class="modal-header ${options.headerType || ''}">
           <h5 class="modal-title">${options.title || "Header"}</h5>
         </div>
         <div class="modal-body">

@@ -7,11 +7,22 @@ const USERS_API = '/api/Users';
 const USER_DB_KEY = 'user-session';
 
 const FailureReason = {
-    None: 0,
-    Unknown: 1,
-    InvalidCredentials: 2,
-    UserCreationFailed: 3,
-    InvalidAccessToken: 4,
-    UserAlreadyExists: 5,
-    IncorrectCurrentPassword: 6
+    None: 'None',
+    Unknown: 'Unknown',
+    InvalidCredentials: 'InvalidCredentials',
+    UserCreationFailed: 'UserCreationFailed',
+    InvalidAccessToken: 'InvalidAccessToken',
+    UserAlreadyExists: 'UserAlreadyExists',
+    IncorrectCurrentPassword: 'IncorrectCurrentPassword'
 };
+
+const BootstrapColor = {
+    Primary: 'primary',
+    Secondary: 'secondary',
+    Success: 'success',
+    Danger: 'danger',
+    Warning: 'warning',
+    Info: 'info',
+    Light: 'light',
+    Dark: 'dark'
+}

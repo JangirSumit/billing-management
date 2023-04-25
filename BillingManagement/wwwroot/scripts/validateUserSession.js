@@ -6,10 +6,12 @@ async function checkActiveUser() {
     if (userSession) {
         userSession = JSON.parse(userSession);
 
-        if (new Date(userSession.expiry) - new Date() <= 0 &&
+        if (!userSession['accessToken']) {
+            rediretToLogin();
+        } else if (new Date(userSession.expiry) - new Date() <= 0 &&
             await validateSession(userSession.accessToken) == false) {
             rediretToLogin();
-        } 
+        }
     }
     else {
         rediretToLogin();
