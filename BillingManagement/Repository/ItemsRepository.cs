@@ -40,31 +40,38 @@ public class ItemsRepository : IItemsRepository
     {
         var result = new List<ItemDetail>();
 
-        var dt = _dataAccess.ExecuteQuery("[dbo].[getItems]");
+        var dt = _dataAccess.ExecuteQuery("[dbo].[GetItems]");
 
         if (dt == null)
             return result;
 
         foreach (DataRow row in dt.Rows)
         {
-            var item = new ItemDetail(Guid.Parse(Convert.ToString(row["Id"])),
-                                        Convert.ToString(row["Name"]),
-                                        Convert.ToString(row["Description"]),
-                                        Convert.ToInt32(row["Quantity"]),
-                                        (ItemUnit)Enum.Parse(typeof(ItemUnit), Convert.ToString(row["Unit"])),
-                                        Convert.ToDouble(row["RateRange1"]),
-                                        Convert.ToDouble(row["RateRange2"]),
-                                        Convert.ToDouble(row["Sgst"]),
-                                        Convert.ToDouble(row["Cgst"])
-                                        );
-            result.Add(item);
+            result.Add(GetItem(row));
         }
 
         return result;
     }
 
+    private static ItemDetail GetItem(DataRow row)
+    {
+        return new ItemDetail(Guid.Parse(Convert.ToString(row["Id"])),
+                                                Convert.ToString(row["Name"]),
+                                                Convert.ToString(row["Description"]),
+                                                (ItemUnit)Convert.ToInt32(row["Unit"]),
+                                                Convert.ToDouble(row["RateRange1"]),
+                                                Convert.ToDouble(row["RateRange2"]),
+                                                Convert.ToDouble(row["Sgst"]),
+                                                Convert.ToDouble(row["Cgst"])
+                                                );
+    }
+
     public ItemDetail GetById(Guid id)
     {
-        throw new NotImplementedException();
+        var dt = _dataAccess.ExecuteQuery("[dbo].[GetItemById]", new SqlParameter[] {
+            new("@id", id)
+        });
+
+        return dt.Rows.Count > 0 ? GetItem(dt.Rows[0]) : default;
     }
 }

@@ -19,11 +19,11 @@ DROP PROCEDURE [dbo].[GetVendor]
 GO
 
 create procedure [dbo].[GetVendor]
-@Id UniqueIdentifier
+@id UniqueIdentifier
 as
 BEGIN
 Select * from [dbo].[Vendors]
-Where Id = @Id
+Where Id = @id
 END
 
 GO
@@ -33,11 +33,11 @@ DROP PROCEDURE [dbo].[DeleteVendor]
 GO
 
 create procedure [dbo].[DeleteVendor]
-@Id UniqueIdentifier
+@id UniqueIdentifier
 as
 BEGIN
 Delete from [dbo].[Vendors]
-Where Id = @Id
+Where Id = @id
 END
 
 GO
@@ -107,6 +107,72 @@ BEGIN
 Update [dbo].[Users]
 Set [Password] = @newPassword
 Where [Name] = @name 
+END
+
+GO
+
+/*
+Items
+*/
+
+
+IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[GetItems]') AND type in (N'P', N'PC'))
+DROP PROCEDURE [dbo].[GetItems]
+GO
+
+create procedure [dbo].[GetItems]
+as
+BEGIN
+Select * from [dbo].[Items]
+END
+
+GO
+
+IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[GetItem]') AND type in (N'P', N'PC'))
+DROP PROCEDURE [dbo].[GetItem]
+GO
+
+create procedure [dbo].[GetItem]
+@Id UniqueIdentifier
+as
+BEGIN
+Select * from [dbo].[Items]
+Where Id = @Id
+END
+
+GO
+
+
+IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[DeleteItem]') AND type in (N'P', N'PC'))
+DROP PROCEDURE [dbo].[DeleteItem]
+GO
+
+create procedure [dbo].[DeleteItem]
+@id UniqueIdentifier
+as
+BEGIN
+Delete from [dbo].[Items]
+Where Id = @id
+END
+
+GO
+
+IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[AddItem]') AND type in (N'P', N'PC'))
+DROP PROCEDURE [dbo].[AddItem]
+GO
+
+create procedure [dbo].[AddItem]
+@name nvarchar(200),
+@description nvarchar(2000),
+@unit int,
+@cgst decimal,
+@sgst decimal,
+@rateRange1 decimal,
+@rateRange2 decimal
+as
+BEGIN
+Insert into [dbo].[Items] ([Name], [Description], unit, Cgst, Sgst, RateRange1, RateRange2)
+values(@name, @description, @unit, @cgst, @sgst, @rateRange1, @rateRange2)
 END
 
 GO
