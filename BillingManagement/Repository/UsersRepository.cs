@@ -7,12 +7,10 @@ namespace BillingManagement.Repository;
 
 public class UsersRepository : IUsersRepository
 {
-    private readonly IConfiguration _configuration;
     private readonly IDataAccess _dataAccess;
 
-    public UsersRepository(IConfiguration configuration, IDataAccess dataAccess)
+    public UsersRepository(IDataAccess dataAccess)
     {
-        _configuration = configuration; ;
         _dataAccess = dataAccess;
     }
 

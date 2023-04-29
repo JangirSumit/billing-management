@@ -16,7 +16,7 @@ public static class VendorExtensions
 
         foreach (VendorDto vendor in vendors)
         {
-            vendorDetails.Add(new VendorDetail(vendor.Id, vendor.Name, vendor.Address, vendor.GstNumber));
+            vendorDetails.Add(vendor.Map());
         }
         return vendorDetails;
     }
@@ -32,7 +32,7 @@ public static class VendorExtensions
 
         foreach (VendorDetail vendor in vendors)
         {
-            vendorDtos.Add(new VendorDto(vendor.Id, vendor.Name, vendor.Address, vendor.GstNumber));
+            vendorDtos.Add(vendor.Map());
         }
 
         return vendorDtos;

@@ -1,10 +1,12 @@
-﻿namespace BillingManagement.Repository.Abstrations;
+﻿using BillingManagement.Models;
+using BillingManagement.Models.Dto;
+
+namespace BillingManagement.Repository.Abstrations;
 
 public interface IItemsRepository
 {
-    void GetRecords();
-    void GetRecord(Guid id);
-    void InsertRecord();
-    void DeleteRecord(Guid id);
-    void UpdateRecord(Guid id);
+    List<ItemDetail> Get();
+    ItemDetail GetById(Guid id);
+    bool Add(ItemDetail item);
+    bool Delete(Guid id);
 }

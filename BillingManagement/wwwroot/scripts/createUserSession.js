@@ -10,7 +10,7 @@
             return;
         } else if (result.failureReason == FailureReason.InvalidCredentials) {
             openModalDialog({
-                headerType: BootstrapColor.Danger,
+                headerType: BootstrapColor.Warning,
                 title: "Invalid Credentials",
                 body: "Username or Password is not correct."
             });
@@ -19,6 +19,7 @@
     }
 
     openModalDialog({
+        headerType: BootstrapColor.Warning,
         title: "Login",
         body: "Username or Password can not be left blank."
     });

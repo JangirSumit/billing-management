@@ -40,16 +40,6 @@
             </div>
 
             <div class="mb-3 row">
-                <label for="item-quantity" class="col-sm-2 col-form-label">Quantity</label>
-                <div class="col-sm-10">
-                    <input type="text"
-                           class="form-control"
-                           id="item-quantity"
-                           placeholder="Quantity..." />
-                </div>
-            </div>
-
-            <div class="mb-3 row">
                 <label for="item-unit" class="col-sm-2 col-form-label">Unit</label>
                 <div class="col-sm-10">
                     <select class="form-select" id="item-unit">
@@ -68,13 +58,37 @@
                     <input type="text"
                            class="form-control"
                            id="item-rate-range-1"
-                           placeholder="Minimum Amount..." />
+                           placeholder="Minimum Amount..." 
+                           value="0"/>
                 </div>
                 <div class="col-sm-5">
                     <input type="text"
                            class="form-control"
                            id="item-rate-range-2"
-                           placeholder="Maximum Amount..." />
+                           placeholder="Maximum Amount..." 
+                           value="0"/>
+                </div>
+            </div>
+
+            <div class="mb-3 row">
+                <label for="item-name" class="col-sm-2 col-form-label">CGST</label>
+                <div class="col-sm-10">
+                    <input type="text"
+                           class="form-control item-gst"
+                           id="item-cgst"
+                           placeholder="Center GST %" 
+                           value="0"/>
+                </div>
+            </div>
+
+            <div class="mb-3 row">
+                <label for="item-name" class="col-sm-2 col-form-label">SGST</label>
+                <div class="col-sm-10">
+                    <input type="text"
+                           class="form-control item-gst"
+                           id="item-sgst"
+                           placeholder="State GST %" 
+                           value="0"/>
                 </div>
             </div>
 

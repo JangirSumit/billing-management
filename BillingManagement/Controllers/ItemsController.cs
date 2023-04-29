@@ -1,7 +1,9 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿using BillingManagement.ExtensionMethods;
+using BillingManagement.Models.Dto;
+using BillingManagement.Repository;
+using BillingManagement.Repository.Abstrations;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-
-// For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
 namespace BillingManagement.Controllers;
 
@@ -10,35 +12,34 @@ namespace BillingManagement.Controllers;
 [Authorize]
 public class ItemsController : ControllerBase
 {
-    // GET: api/<ItemsController>
+    private readonly IItemsRepository _itemsRepository;
+
+    public ItemsController(IItemsRepository itemsRepository)
+    {
+        _itemsRepository = itemsRepository;
+    }
+
     [HttpGet]
-    public IEnumerable<string> Get()
+    public IEnumerable<ItemDto> Get()
     {
-        return new string[] { "value1", "value2" };
+        return _itemsRepository.Get().Map();
     }
 
-    // GET api/<ItemsController>/5
     [HttpGet("{id}")]
-    public string Get(int id)
+    public ItemDto Get(Guid id)
     {
-        return "value";
+        return _itemsRepository.GetById(id).Map();
     }
 
-    // POST api/<ItemsController>
     [HttpPost]
-    public void Post([FromBody] string value)
+    public bool Post([FromBody] ItemDto item)
     {
+        return _itemsRepository.Add(item.Map());
     }
 
-    // PUT api/<ItemsController>/5
-    [HttpPut("{id}")]
-    public void Put(int id, [FromBody] string value)
-    {
-    }
-
-    // DELETE api/<ItemsController>/5
     [HttpDelete("{id}")]
-    public void Delete(int id)
+    public bool Delete(Guid id)
     {
+        return _itemsRepository.Delete(id);
     }
 }

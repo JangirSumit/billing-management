@@ -13,36 +13,36 @@ namespace BillingManagement.Controllers;
 [Authorize]
 public class VendorsController : ControllerBase
 {
-    private readonly IVendorsRepository _vendorsManager;
+    private readonly IVendorsRepository _vendorsRepository;
 
-    public VendorsController(IVendorsRepository vendorsManager)
+    public VendorsController(IVendorsRepository vendorsRepository)
     {
-        _vendorsManager = vendorsManager;
+        _vendorsRepository = vendorsRepository;
     }
 
     [HttpGet]
     public List<VendorDto> Get()
     {
-        return _vendorsManager.GetAll().Map();
+        return _vendorsRepository.GetAll().Map();
     }
 
     [HttpGet("{id}")]
     public VendorDto Get(Guid id)
     {
-        return _vendorsManager.GetById(id).Map();
+        return _vendorsRepository.GetById(id).Map();
     }
 
     [HttpPost]
     public VendorDto Post([FromBody] VendorDto vendorDto)
     {
         var vendorDetail = vendorDto.Map();
-        vendorDetail = _vendorsManager.Add(vendorDetail);
+        vendorDetail = _vendorsRepository.Add(vendorDetail);
         return vendorDetail.Map();
     }
 
     [HttpDelete("{id}")]
     public bool Delete(Guid id)
     {
-        return _vendorsManager.Delete(id);
+        return _vendorsRepository.Delete(id);
     }
 }
