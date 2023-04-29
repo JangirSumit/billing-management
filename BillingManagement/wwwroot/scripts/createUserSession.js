@@ -3,7 +3,10 @@
     const password = document.getElementById("password").value;
 
     if (userName && password) {
+        showLoader();
         const result = await loginUser(userName, password);
+        hiderLoader();
+
         if (result && result.accessToken) {
             localStorage.setItem(USER_DB_KEY, JSON.stringify(result));
             window.location.href = "/";
