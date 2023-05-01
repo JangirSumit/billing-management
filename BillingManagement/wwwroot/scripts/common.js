@@ -18,7 +18,6 @@ async function refreshToken() {
 
             setTimeout(async () => {
                 await refresh(token.accessToken);
-                refreshToken();
             }, timeout);
         }
     }

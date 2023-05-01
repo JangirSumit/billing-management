@@ -1,5 +1,7 @@
 ﻿window.onload = async function () {
+    showLoader();
     await renderVendors();
+    hideLoader();
 };
 
 /* EVENT LISTENERS */
@@ -10,6 +12,7 @@ document.getElementById("add-vendor").addEventListener("click", async function (
     const gstNumber = document.getElementById("gst-number").value;
 
     if (name && address && gstNumber) {
+        showLoader();
         const data = {
             Name: name,
             Address: address,
@@ -19,6 +22,7 @@ document.getElementById("add-vendor").addEventListener("click", async function (
         const result = await addVendor(data);
         if (result.id !== EMPTY_GUID) {
             await renderVendors();
+            hideLoader();
         }
     }
 });
