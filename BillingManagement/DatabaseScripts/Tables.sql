@@ -24,7 +24,6 @@ Id UNIQUEIDENTIFIER NOT NULL PRIMARY KEY DEFAULT NEWID(),
 Unit int NOT NULL,
 RateRange1 decimal NOT NULL,
 RateRange2 decimal NOT NULL,
-Rate decimal NOT NULL,
 Sgst decimal NOT NULL,
 Cgst decimal NOT NULL
 );

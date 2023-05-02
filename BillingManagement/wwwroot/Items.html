@@ -10,6 +10,8 @@
           integrity="sha384-aFq/bzH65dt+w6FI2ooMVUpc+21e0SRygnTpmBvdBgSdnuTN7QbdgL+OapgHtvPp"
           crossorigin="anonymous" />
     <link href="styles/style.css" rel="stylesheet" />
+    <script src="scripts/constants.js"></script>
+
 </head>
 
 <body>
@@ -26,7 +28,8 @@
                     <input type="text"
                            class="form-control"
                            id="item-name"
-                           placeholder="Item 1..." />
+                           placeholder="Item 1..." 
+                           required/>
                 </div>
             </div>
 
@@ -35,14 +38,15 @@
                 <div class="col-sm-10">
                     <textarea class="form-control"
                               id="item-description"
-                              placeholder="Item Description..."></textarea>
+                              placeholder="Item Description..."
+                              required></textarea>
                 </div>
             </div>
 
             <div class="mb-3 row">
                 <label for="item-unit" class="col-sm-2 col-form-label">Unit</label>
                 <div class="col-sm-10">
-                    <select class="form-select" id="item-unit">
+                    <select class="form-select" id="item-unit" required>
                         <option selected value="0">- Select option -</option>
                         <option value="1">Number(s)</option>
                         <option value="2">Kg(s)</option>
@@ -59,14 +63,16 @@
                            class="form-control"
                            id="item-rate-range-1"
                            placeholder="Minimum Amount..." 
-                           value="0"/>
+                           value="0"
+                           required/>
                 </div>
                 <div class="col-sm-5">
                     <input type="text"
                            class="form-control"
                            id="item-rate-range-2"
                            placeholder="Maximum Amount..." 
-                           value="0"/>
+                           value="0"
+                           required/>
                 </div>
             </div>
 
@@ -77,7 +83,8 @@
                            class="form-control item-gst"
                            id="item-cgst"
                            placeholder="Center GST %" 
-                           value="0"/>
+                           value="0"
+                           required/>
                 </div>
             </div>
 
@@ -88,7 +95,8 @@
                            class="form-control item-gst"
                            id="item-sgst"
                            placeholder="State GST %" 
-                           value="0"/>
+                           value="0"
+                           required/>
                 </div>
             </div>
 
@@ -113,9 +121,10 @@
             integrity="sha384-qKXV1j0HvMUeCBQ+QVp7JcfGl760yU08IQ+GpUo5hlbpg51QRiuqHAJz8+BrxE/N"
             crossorigin="anonymous"></script>
 
-    <script src="scripts/constants.js"></script>
+    <script src="scripts/modals.js"></script>
     <script src="scripts/common.js"></script>
     <script src="scripts/script.js"></script>
     <script src="scripts/validateUserSession.js"></script>
+    <script src="scripts/items.js"></script>
 </body>
 </html>

@@ -67,3 +67,14 @@ function showLoader() {
 function hideLoader() {
     document.body.removeChild(document.querySelector(".overlay"));
 }
+
+function validateInputFields() {
+    //was-validated
+
+    const fields = document.querySelectorAll('input[type="text"], input[type="password"], textarea, select');
+    const invalidFields = Array.from(fields).filter(ele => !ele.value.trim());
+
+    invalidFields?.forEach(ele => ele.parentElement.classList.add("was-validated"));
+
+    return invalidFields?.length;
+}

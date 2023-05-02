@@ -5,7 +5,7 @@
     if (userName && password) {
         showLoader();
         const result = await loginUser(userName, password);
-        hiderLoader();
+        hideLoader();
 
         if (result && result.accessToken) {
             localStorage.setItem(USER_DB_KEY, JSON.stringify(result));

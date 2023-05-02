@@ -2,25 +2,32 @@
     await renderItems();
 };
 
-document.getElementById("add-item").addEventListener("click", function () {
+document.getElementById("add-item").addEventListener("click", async function () {
+    showLoader();
+
     const name = document.getElementById("item-name").value;
     const description = document.getElementById("item-description").value;
     const unit = document.getElementById("item-unit").value;
     const rateRange1 = document.getElementById("item-rate-range-1").value;
     const rateRange2 = document.getElementById("item-rate-range-2").value;
+    const cgst = document.getElementById("item-cgst").value;
+    const sgst = document.getElementById("item-sgst").value;
 
-    if (name && description && unit && rateRange1 && rateRange2) {
-
-    } else {
-        openModalDialog({
-            headerType: BootstrapColor.Warning,
-            title: "Create Item",
-            body: "All details are mandetory. Please fill the details."
+    if (validateInputFields() <= 0) {
+        const result = await addItem({
+            name: name,
+            description: description,
+            unit: parseInt(unit),
+            rateRange1: rateRange1,
+            rateRange2, rateRange2,
+            sgst: sgst,
+            cgst: cgst
         });
     }
+    hideLoader();
 })
 
-document.querySelectorAll("item-gst").addEventListener("change", function (event) {
+document.querySelectorAll(".item-gst")?.forEach(i => i.addEventListener("change", function (event) {
     const value = parseFloat(event.target.value || 0);
 
     if (value < 0 && value > 100) {
@@ -30,7 +37,8 @@ document.querySelectorAll("item-gst").addEventListener("change", function (event
             body: "GST number can not be greater than 100 and less than 0."
         });
     }
-});
+})
+);
 
 /* INTERNALS */
 
@@ -41,17 +49,17 @@ async function renderItems() {
     if (d && d.length) {
         let body = "";
 
-        const companyListHeader = getVendorListHeader(d[0])
+        const companyListHeader = getItemListHeader(d[0])
 
         body = companyListHeader + "<tbody>";
 
         d.forEach((element, index) => {
-            body += getVendorItem(element, index);
+            body += getItemListItem(element, index);
         });
 
         body += "</tbody>";
 
-        document.getElementById("vendors-list").innerHTML = body;
+        document.getElementById("items-list").innerHTML = body;
     }
 }
 
