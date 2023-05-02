@@ -166,7 +166,7 @@ public class VendorsRepository : IVendorsRepository
         SqlCommand command = new()
         {
             Connection = con,
-            CommandText = "[dbo].[AddVendor]",
+            CommandText = "[dbo].[DeleteVendor]",
             CommandType = CommandType.StoredProcedure
         };
 

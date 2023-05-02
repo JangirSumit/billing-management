@@ -2,39 +2,46 @@
     showLoader();
     await renderVendors();
     hideLoader();
+
+    attachEvents();
 };
 
 /* EVENT LISTENERS */
 
-document.getElementById("add-vendor").addEventListener("click", async function () {
-    const name = document.getElementById("vendor-name").value;
-    const address = document.getElementById("vendor-address").value;
-    const gstNumber = document.getElementById("gst-number").value;
+function attachEvents() {
 
-    if (name && address && gstNumber) {
-        showLoader();
-        const data = {
-            Name: name,
-            Address: address,
-            GstNumber: gstNumber
+    document.getElementById("add-vendor").addEventListener("click", async function () {
+        const name = document.getElementById("vendor-name").value;
+        const address = document.getElementById("vendor-address").value;
+        const gstNumber = document.getElementById("gst-number").value;
+
+        if (name && address && gstNumber) {
+            showLoader();
+            const data = {
+                Name: name,
+                Address: address,
+                GstNumber: gstNumber
+            }
+
+            const result = await addVendor(data);
+            if (result.id !== EMPTY_GUID) {
+                await renderVendors();
+            }
+
+            hideLoader();
         }
+    });
 
-        const result = await addVendor(data);
-        if (result.id !== EMPTY_GUID) {
+    document.getElementById("vendors-list").addEventListener("click", async function (e) {
+        const vendorId = e.target.dataset.vendorid;
+        if (vendorId) {
+            showLoader();
+            await deleteVendor(vendorId);
             await renderVendors();
             hideLoader();
         }
-    }
-});
-
-document.getElementById("vendors-list").addEventListener("click", async function (e) {
-    const vendorId = e.target.dataset.vendorid;
-    if (vendorId) {
-        await deleteVendor(vendorId);
-        await renderVendors();
-    }
-});
-
+    });
+}
 
 /* INTERNALS */
 
