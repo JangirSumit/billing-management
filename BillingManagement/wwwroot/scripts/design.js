@@ -89,6 +89,8 @@ function attchEvents() {
                     addVendorToStorage(id);
                     renderVendors();
                 }
+
+                menu.classList.remove("show");
             });
         });
     }
