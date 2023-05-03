@@ -19,7 +19,91 @@
     <header>
     </header>
 
-    <div class="container"></div>
+    <div class="container">
+        <div class="accordion accordion-flush" id="accordionFlushExample">
+            <div class="accordion-item">
+                <h2 class="accordion-header">
+                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseOne" aria-expanded="false" aria-controls="flush-collapseOne">
+                        Step #1 - Select Vendors
+                    </button>
+                </h2>
+                <div id="flush-collapseOne" class="accordion-collapse collapse" data-bs-parent="#accordionFlushExample">
+                    <div class="accordion-body">
+                        <div class="row justify-content-center">
+                            <div class="col-sm-6 dropdown">
+                                <input type="text" class="jAuto form-control dropdown-toggle"
+                                       placeholder="Select Vendor" autocomplete="off" id="search-vendor">
+                                <div class="dropdown-menu" style="width: 94%;">
+                                    <i class="hasNoResults">No matching results</i>
+                                    <div class="list-autocomplete">
+                                        <button type="button" class="dropdown-item">01 - Alpha  Barbuda</button>
+                                        <button type="button" class="dropdown-item">02 - Charlie Alpha</button>
+                                        <button type="button" class="dropdown-item">03 - Bravo Alpha</button>
+                                        <button type="button" class="dropdown-item">04 - Delta</button>
+                                    </div>
+                                    <hr>
+                                    <button type="button" class="dropdown-item">Custom button</button>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+            <div class="accordion-item">
+                <h2 class="accordion-header">
+                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseTwo" aria-expanded="false" aria-controls="flush-collapseTwo">
+                        step #2 - Select Items
+                    </button>
+                </h2>
+                <div id="flush-collapseTwo" class="accordion-collapse collapse" data-bs-parent="#accordionFlushExample">
+                    <div class="accordion-body">
+                        <div class="row justify-content-center">
+                            <div class="col-sm-6 dropdown">
+                                <input type="text" class="jAuto form-control dropdown-toggle"
+                                       placeholder="Select Item" autocomplete="off" id="search-item">
+                                <div class="dropdown-menu" style="width: 94%;">
+                                    <i class="hasNoResults">No matching results</i>
+                                    <div class="list-autocomplete">
+                                        <button type="button" class="dropdown-item">01 - Alpha  Barbuda</button>
+                                        <button type="button" class="dropdown-item">02 - Charlie Alpha</button>
+                                        <button type="button" class="dropdown-item">03 - Bravo Alpha</button>
+                                        <button type="button" class="dropdown-item">04 - Delta</button>
+                                    </div>
+                                    <hr>
+                                    <button type="button" class="dropdown-item">Custom button</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="accordion-item">
+                <h2 class="accordion-header">
+                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseThree" aria-expanded="false" aria-controls="flush-collapseThree">
+                        Step #3 - Generate Quote
+                    </button>
+                </h2>
+                <div id="flush-collapseThree" class="accordion-collapse collapse" data-bs-parent="#accordionFlushExample">
+                    <div class="accordion-body">
+                        <div class="mb-3">
+                            <button class="btn btn-secondary col-sm-2"
+                                    type="button"
+                                    id="preview-pdf">
+                                Preview Pdf
+                            </button>
+
+                            <button class="btn btn-primary col-sm-2"
+                                    type="button"
+                                    id="generate-pdf">
+                                Generate Pdf
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 
     <footer class="fixed-bottom p-3 bg-white">
     </footer>
@@ -31,5 +115,6 @@
     <script src="scripts/common.js"></script>
     <script src="scripts/validateUserSession.js"></script>
     <script src="scripts/script.js"></script>
+    <script src="scripts/searchBox.js"></script>
 </body>
 </html>
