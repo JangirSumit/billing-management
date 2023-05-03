@@ -27,7 +27,7 @@
     <None Include="wwwroot\scripts\vendors.js" />
     <None Include="wwwroot\styles\style.css" />
     <None Include="wwwroot\Venders.html" />
-    <None Include="wwwroot\Workflow.html" />
+    <None Include="wwwroot\Design.html" />
   </ItemGroup>
 
 </Project>
