@@ -29,7 +29,7 @@ function renderHeader() {
                             <a class="nav-link text-white" href="/Index.html">Home</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link text-white" href="/Venders.html">Venders</a>
+                            <a class="nav-link text-white" href="/Vendors.html">Vendors</a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link text-white" href="/Items.html">Items</a>

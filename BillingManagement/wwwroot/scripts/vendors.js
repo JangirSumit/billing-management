@@ -24,7 +24,7 @@ function attachEvents() {
             }
 
             const result = await addVendor(data);
-            if (result.id !== EMPTY_GUID) {
+            if (result) {
                 await renderVendors();
             }
 

@@ -19,6 +19,8 @@
     <header>
     </header>
 
+    <div class="veritical-divider-2rem"></div>
+
     <div class="container">
         <div class="accordion accordion-flush" id="accordionFlushExample">
             <div class="accordion-item">
@@ -36,16 +38,23 @@
                                 <div class="dropdown-menu" style="width: 94%;">
                                     <i class="hasNoResults">No matching results</i>
                                     <div class="list-autocomplete">
-                                        <!--<button type="button" class="dropdown-item">01 - Alpha  Barbuda</button>
-                                        <button type="button" class="dropdown-item">02 - Charlie Alpha</button>
-                                        <button type="button" class="dropdown-item">03 - Bravo Alpha</button>
-                                        <button type="button" class="dropdown-item">04 - Delta</button>-->
+
                                     </div>
                                     <hr>
                                     <button type="button" class="dropdown-item" id="add-missing-vendor">Add Vendor</button>
                                 </div>
                             </div>
+                            <div class="col-sm-2">
+                                <button class="btn btn-primary"
+                                        type="button"
+                                        id="add-search-vendor">
+                                    Add
+                                </button>
+                            </div>
                         </div>
+
+
+                        <table class="table" id="design-vendors-list"></table>
 
                     </div>
                 </div>
@@ -65,16 +74,22 @@
                                 <div class="dropdown-menu" style="width: 94%;">
                                     <i class="hasNoResults">No matching results</i>
                                     <div class="list-autocomplete">
-                                        <!--<button type="button" class="dropdown-item">01 - Alpha  Barbuda</button>
-                                        <button type="button" class="dropdown-item">02 - Charlie Alpha</button>
-                                        <button type="button" class="dropdown-item">03 - Bravo Alpha</button>
-                                        <button type="button" class="dropdown-item">04 - Delta</button>-->
+
                                     </div>
                                     <hr>
                                     <button type="button" class="dropdown-item" id="add-missing-item">Add Item...</button>
                                 </div>
+                            </div><div class="col-sm-2">
+                                <button class="btn btn-primary"
+                                        type="button"
+                                        id="add-search-item">
+                                    Add
+                                </button>
                             </div>
                         </div>
+
+                        <table class="table" id="design-items-list"></table>
+
                     </div>
                 </div>
             </div>

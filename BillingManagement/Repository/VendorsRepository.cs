@@ -1,5 +1,7 @@
-﻿using BillingManagement.Models;
+﻿using BillingManagement.Enums;
+using BillingManagement.Models;
 using BillingManagement.Repository.Abstrations;
+using BillingManagement.Repository.Common;
 using System.Data;
 using System.Data.SqlClient;
 
@@ -7,108 +9,46 @@ namespace BillingManagement.Repository;
 
 public class VendorsRepository : IVendorsRepository
 {
-    private readonly IConfiguration _configuration;
-    private readonly string _connectionString;
+    private readonly IDataAccess _dataAccess;
 
-    public VendorsRepository(IConfiguration configuration)
+    public VendorsRepository(IDataAccess dataAccess)
     {
-        _configuration = configuration;
-        _connectionString = _configuration.GetConnectionString("Hosted");
+        _dataAccess = dataAccess;
     }
 
-    public VendorDetail Add(VendorDetail vendorDetail)
+    public bool Add(VendorDetail vendorDetail)
     {
-        using (SqlConnection con = new(_connectionString))
-        {
-            SqlCommand command = new()
-            {
-                Connection = con,
-                CommandText = "[dbo].[AddVendor]",
-                CommandType = CommandType.StoredProcedure
-            };
-
-            SqlParameter[] parameters =
-            {
-                new()
-                {
-                    ParameterName = "@Name",
-                    SqlDbType = SqlDbType.UniqueIdentifier,
-                    Direction = ParameterDirection.Input,
-                    Value = vendorDetail.Name
-                },
-                new()
-                {
-                    ParameterName = "@Address",
-                    SqlDbType = SqlDbType.UniqueIdentifier,
-                    Direction = ParameterDirection.Input,
-                    Value = vendorDetail.Address
-                },
-                new()
-                {
-                    ParameterName = "@GstNumber",
-                    SqlDbType = SqlDbType.UniqueIdentifier,
-                    Direction = ParameterDirection.Input,
-                    Value = vendorDetail.GstNumber
-                }
-            };
-
-            command.Parameters.AddRange(parameters);
-
-            con.Open();
-
-            if (command.ExecuteNonQuery() > 0)
-            {
-                return new VendorDetail(Guid.NewGuid(), vendorDetail.Name, vendorDetail.Address, vendorDetail.Address);
-            }
-        }
-
-        return vendorDetail;
+        return _dataAccess.ExecuteNonQuery("[dbo].[AddVendor]", new SqlParameter[] {
+            new("@name", vendorDetail.Name),
+                new("@Address",vendorDetail.Address),
+                new("@GstNumber", vendorDetail.GstNumber)
+        }) > 0;
     }
 
     public List<VendorDetail> GetAll()
     {
         List<VendorDetail> vendorDetails = new();
 
-        using (SqlConnection con = new(_connectionString))
+        var dt = _dataAccess.ExecuteQuery("[dbo].[GetVendors]");
+
+        if (dt == null)
+            return vendorDetails;
+
+        foreach (DataRow row in dt.Rows)
         {
-            SqlCommand command = new()
-            {
-                Connection = con,
-                CommandText = "[dbo].[GetVendors]",
-                CommandType = CommandType.StoredProcedure
-            };
-
-            con.Open();
-
-            SqlDataReader reader = command.ExecuteReader();
-
-            if (reader.HasRows)
-            {
-                while (reader.Read())
-                {
-                    vendorDetails.Add(GetVendor(reader));
-                }
-            }
-            else
-            {
-                Console.WriteLine("No rows found.");
-            }
-            reader.Close();
+            vendorDetails.Add(GetVendor(row));
         }
 
         return vendorDetails;
     }
 
-    public VendorDetail GetVendor(SqlDataReader reader)
+    public VendorDetail GetVendor(DataRow row)
     {
-        var id = reader.GetGuid("Id");
-        var name = reader.GetString("Name");
-        var address = reader.GetString("Address");
-        var gstNumber = reader.GetString("GstNumber");
-
-        var vendor = new VendorDetail(id, name, address, gstNumber);
-
-        return vendor;
+        return new VendorDetail(Guid.Parse(Convert.ToString(row["Id"])),
+                                                Convert.ToString(row["Name"]),
+                                                Convert.ToString(row["Address"]),
+                                                Convert.ToString(row["GstNumber"])
+                                                );
     }
 
     public void GetByGstNumber(string gstNumber)
@@ -120,41 +60,14 @@ public class VendorsRepository : IVendorsRepository
     {
         VendorDetail vendorDetail = VendorDetail.Empty;
 
-        using (SqlConnection con = new(_connectionString))
+        var dt = _dataAccess.ExecuteQuery("[dbo].[GetVendors]");
+
+        if (dt == null)
+            return vendorDetail;
+
+        if (dt.Rows.Count > 0)
         {
-            SqlCommand command = new()
-            {
-                Connection = con,
-                CommandText = "[dbo].[GetVendor]",
-                CommandType = CommandType.StoredProcedure
-            };
-
-            SqlParameter parameter = new()
-            {
-                ParameterName = "@Id",
-                SqlDbType = SqlDbType.UniqueIdentifier,
-                Direction = ParameterDirection.Input,
-                Value = vendorId
-            };
-
-            command.Parameters.Add(parameter);
-
-            con.Open();
-
-            SqlDataReader reader = command.ExecuteReader();
-
-            if (reader.HasRows)
-            {
-                while (reader.Read())
-                {
-                    vendorDetail = GetVendor(reader);
-                }
-            }
-            else
-            {
-                Console.WriteLine("No rows found.");
-            }
-            reader.Close();
+            vendorDetail = GetVendor(dt.Rows[0]);
         }
 
         return vendorDetail;
@@ -162,26 +75,8 @@ public class VendorsRepository : IVendorsRepository
 
     public bool Delete(Guid id)
     {
-        using SqlConnection con = new(_connectionString);
-        SqlCommand command = new()
-        {
-            Connection = con,
-            CommandText = "[dbo].[DeleteVendor]",
-            CommandType = CommandType.StoredProcedure
-        };
-
-        SqlParameter parameter = new()
-        {
-            ParameterName = "@Id",
-            SqlDbType = SqlDbType.UniqueIdentifier,
-            Direction = ParameterDirection.Input,
-            Value = id
-        };
-
-        command.Parameters.Add(parameter);
-
-        con.Open();
-
-        return command.ExecuteNonQuery() > 0;
+        return _dataAccess.ExecuteNonQuery("[dbo].[DeleteVendor]", new SqlParameter[] {
+            new("@Id", id)
+        }) > 0;
     }
 }

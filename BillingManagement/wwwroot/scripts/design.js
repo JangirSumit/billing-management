@@ -109,6 +109,14 @@ function attchEvents() {
             document.location.href = "/Vendors.html";
         }
     });
+
+    document.getElementById("add-search-vendor").addEventListener("click", function () {
+
+    });
+
+    document.getElementById("add-search-item").addEventListener("click", function () {
+
+    });
 }
 
 function renderItemsSuggestion(items) {
@@ -139,6 +147,147 @@ function getSeachSuggestionDataItem(dataItem) {
     return `<button type="button" class="dropdown-item" data-id="${dataItem.id}">${dataItem.name}</button>`;
 }
 
+
+
+async function renderVendors() {
+
+    const d = await getVendorsFromStorage();
+
+    if (d && d.length) {
+        let body = "";
+
+        const companyListHeader = getVendorListHeader(d[0])
+
+        body = companyListHeader + "<tbody>";
+
+        d.forEach((element, index) => {
+            body += getVendorItem(element, index);
+        });
+
+        body += "</tbody>";
+
+        document.getElementById("search-vendors-list").innerHTML = body;
+    }
+}
+
+function getVendorItem(data, index) {
+    return `
+            <tr>
+                <td scope="row">${index + 1}</td>
+                <td>${data.name}</td>
+                <td>${data.address}</td>
+                <td>${data.gstNumber}</td>
+                <td data-vendorId="${data.id}">
+                    <span class="badge bg-primary cursor-pointer" id="delete-company" data-vendorId="${data.id}">X</span>
+                </td>
+            </tr>
+    `;
+}
+
+function getVendorListHeader(data) {
+    let ths = `<th scope="col">#</th>`
+
+    Object.keys(data).forEach((d) => {
+        if (d != "id") {
+            ths += `<th scope="col">${capitalizeString(d)}</th>`;
+        }
+    });
+    ths += `
+          <th scope="col"></th>`;
+    return `
+          <thead>
+                    <tr">
+                    ${ths}
+                    </tr>
+          </thead>`;
+}
+
+/*
+ STORAGE CALLS
+ */
+
+function getVendorsFromStorage() {
+    const data = localStorage.getItem(DESIGN_VENDORS_DB_KEY);
+
+    return data && JSON.parse(data);
+}
+
+function addVendorToStorage(id) {
+    let items = localStorage.getItem(DESIGN_VENDORS_DB_KEY);
+    const data = getServerVendorFromStorage(id);
+
+    if (items && data) {
+        items = JSON.parse(items);
+        items = [...items, data];
+    } else {
+        items = [data];
+    }
+
+    localStorage.setItem(DESIGN_VENDORS_DB_KEY, JSON.stringify(items));
+}
+
+function getServerVendorFromStorage(id) {
+    const result = localStorage.getItem(VENDORS_DB_KEY);
+    if (result) {
+        const records = JSON.parse(result);
+        if (records && records.length) {
+            return records.find(record => record.id == id);
+        }
+    }
+}
+
+function removeVendorFromStorage(id) {
+    let items = localStorage.getItem(DESIGN_VENDORS_DB_KEY);
+    if (items) {
+        items = JSON.parse(items).filter((c) => c.id !== id);
+    }
+    localStorage.setItem(DESIGN_VENDORS_DB_KEY, JSON.stringify(items));
+}
+
+
+
+function getItemsFromStorage() {
+    const data = localStorage.getItem(DESIGN_ITEMS_DB_KEY);
+
+    return data && JSON.parse(data);
+}
+
+function getServerItemFromStorage(id) {
+    const result = localStorage.getItem(ITEMS_DB_KEY);
+    if (result) {
+        const records = JSON.parse(result);
+        if (records && records.length) {
+            return records.find(record => record.id == id);
+        }
+    }
+}
+
+function addItemToStorage(id) {
+    let items = localStorage.getItem(DESIGN_ITEMS_DB_KEY);
+    const data = getserverItemFromStorage(id);
+
+    if (items && data) {
+        items = JSON.parse(items);
+        items = [...items, data];
+    } else {
+        items = [data];
+    }
+
+    localStorage.setItem(DESIGN_ITEMS_DB_KEY, JSON.stringify(items));
+}
+
+function removeItemFromStorage(id) {
+    let items = localStorage.getItem(DESIGN_ITEMS_DB_KEY);
+    if (items) {
+        items = JSON.parse(items).filter((c) => c.id !== id);
+    }
+    localStorage.setItem(DESIGN_ITEMS_DB_KEY, JSON.stringify(items));
+}
+
+/*
+ API CALLS
+ */
+
 async function getItems() {
     try {
         const response = await fetch(ITEMS_API, {
@@ -147,7 +296,9 @@ async function getItems() {
             }
         });
         if (response.ok) {
-            return await response.json();
+            const items = await response.json();
+            localStorage.setItem(ITEMS_DB_KEY, JSON.stringify(items));
+            return items;
         }
     } catch (e) {
         console.error(e);
@@ -162,7 +313,9 @@ async function getVendors() {
             }
         });
         if (response.ok) {
-            return await response.json();
+            const vendors = await response.json();
+            localStorage.setItem(VENDORS_DB_KEY, JSON.stringify(vendors));
+            return vendors;
         }
     } catch (e) {
         console.error(e);

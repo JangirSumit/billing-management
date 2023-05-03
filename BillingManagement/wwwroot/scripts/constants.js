@@ -7,6 +7,12 @@ const ITEMS_API = '/api/Items';
 
 const USER_DB_KEY = 'user-session';
 
+const DESIGN_VENDORS_DB_KEY = 'design-vendors';
+const DESIGN_ITEMS_DB_KEY = 'design-items';
+
+const VENDORS_DB_KEY = 'vendors';
+const ITEMS_DB_KEY = 'items';
+
 const FailureReason = {
     None: 'None',
     Unknown: 'Unknown',

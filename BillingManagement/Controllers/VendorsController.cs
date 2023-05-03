@@ -31,11 +31,10 @@ public class VendorsController : ControllerBase
     }
 
     [HttpPost]
-    public VendorDto Post([FromBody] VendorDto vendorDto)
+    public bool Post([FromBody] VendorDto vendorDto)
     {
         var vendorDetail = vendorDto.Map();
-        vendorDetail = _vendorsRepository.Add(vendorDetail);
-        return vendorDetail.Map();
+        return _vendorsRepository.Add(vendorDetail);
     }
 
     [HttpDelete("{id}")]

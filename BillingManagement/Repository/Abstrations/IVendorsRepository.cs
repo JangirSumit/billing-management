@@ -5,7 +5,7 @@ namespace BillingManagement.Repository.Abstrations;
 public interface IVendorsRepository
 {
     void GetByGstNumber(string gstNumber);
-    VendorDetail Add(VendorDetail vendorDto);
+    bool Add(VendorDetail vendorDto);
     VendorDetail GetById(Guid vendorId);
     List<VendorDetail> GetAll();
     bool Delete(Guid id);
