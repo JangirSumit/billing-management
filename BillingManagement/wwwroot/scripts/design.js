@@ -213,7 +213,7 @@ function getVendorListHeader(data) {
 
 async function renderItems() {
 
-    const d = await getItems();
+    const d = await getItemsFromStorage();
 
     if (d && d.length) {
         let body = "";
@@ -228,7 +228,7 @@ async function renderItems() {
 
         body += "</tbody>";
 
-        document.getElementById("items-list").innerHTML = body;
+        document.getElementById("design-items-list").innerHTML = body;
     }
 }
 
@@ -286,6 +286,9 @@ function addVendorToStorage(id) {
 
     if (items && data) {
         items = JSON.parse(items);
+        if (items.find(it => it.id == id)) {
+            return;
+        }
         items = [...items, data];
     } else {
         items = [data];
@@ -336,6 +339,9 @@ function addItemToStorage(id) {
 
     if (items && data) {
         items = JSON.parse(items);
+        if (items.find(it => it.id == id)) {
+            return;
+        }
         items = [...items, data];
     } else {
         items = [data];
