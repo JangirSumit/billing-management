@@ -124,7 +124,9 @@ function attchEvents() {
 
     document.getElementById("design-items-list").addEventListener("click", async function (e) {
         const itemId = e.target.dataset.itemid;
-        if (itemId) {
+        const domId = e.target.id;
+
+        if (domId === "delete-item" && itemId) {
             showLoader();
             await removeItemFromStorage(itemId);
             await renderItems();
@@ -140,6 +142,16 @@ function attchEvents() {
             await renderVendors();
             hideLoader();
         }
+    });
+}
+
+function addEventListnerForQuantities() {
+    const itemQuantityTexts = document.querySelectorAll(".item-quantity");
+
+    Array.from(itemQuantityTexts).forEach(function (textbox) {
+        textbox.addEventListener("change", function () {
+            changeItemQuantity(textbox.dataset.itemid, textbox.value);
+        });
     });
 }
 
@@ -251,23 +263,30 @@ async function renderItems() {
         body += "</tbody>";
     }
     document.getElementById("design-items-list").innerHTML = body;
+
+    addEventListnerForQuantities();
 }
 
 function getItemListItem(data, index) {
     return `
-      <tr>
-      <td scope="row">${index + 1}</td>
-      <td>${data.name}</td>
-      <td style="max-width: 400px;">${data.description}</td>
-      <td>${UNITS[data.unit]}</td>
-      <td>${data.rateRange1}</td>
-      <td>${data.rateRange2}</td>
-      <td>${data.cgst}</td>
-      <td>${data.sgst}</td>
-      <td data-item-id="${data.id
+          <tr>
+          <td scope="row">${index + 1}</td>
+          <td>${data.name}</td>
+          <td style="max-width: 400px;">${data.description}</td>
+          <td>${UNITS[data.unit]}</td>
+          <td>${data.rateRange1}</td>
+          <td>${data.rateRange2}</td>
+          <td>${data.cgst}</td>
+          <td>${data.sgst}</td>
+          <td><div class="input-group input-group-sm" style="width: 60px;">
+              <input type="number" class="form-control item-quantity" aria-label="Sizing example input"
+                    aria-describedby="inputGroup-sizing-sm" data-itemid="${data.id}" value="${data.quantity}"/>
+            </div>
+        </td>
+          <td data-item-id="${data.id
         }"><span class="badge bg-primary cursor-pointer" id="delete-item" data-itemId="${data.id
         }">X</span></td>
-    </tr>
+        </tr>
     `;
 }
 
@@ -285,7 +304,7 @@ function getItemListHeader(data) {
             ths += `<th scope="col">${capitalizeString(d)}</th>`;
         }
     });
-    ths += `
+    ths += `<th scope="col">Quantity</th>
           <th scope="col"></th>`;
 
     return `
@@ -336,9 +355,11 @@ function getServerVendorFromStorage(id) {
 
 function removeVendorFromStorage(id) {
     let items = localStorage.getItem(DESIGN_VENDORS_DB_KEY);
+
     if (items) {
         items = JSON.parse(items).filter((c) => c.id !== id);
     }
+
     localStorage.setItem(DESIGN_VENDORS_DB_KEY, JSON.stringify(items));
 }
 
@@ -383,6 +404,19 @@ function removeItemFromStorage(id) {
         items = JSON.parse(items).filter((c) => c.id !== id);
     }
     localStorage.setItem(DESIGN_ITEMS_DB_KEY, JSON.stringify(items));
+}
+
+function changeItemQuantity(itemId, value) {
+    let items = localStorage.getItem(DESIGN_ITEMS_DB_KEY);
+    if (items) {
+        const item = JSON.parse(items).find((c) => c.id == itemId);
+
+        item.quantity = value;
+
+        items = [...JSON.parse(items).filter((c) => c.id != itemId), item];
+
+        localStorage.setItem(DESIGN_ITEMS_DB_KEY, JSON.stringify(items));
+    }
 }
 
 /*
