@@ -7,6 +7,9 @@
     renderItemsSuggestion(items);
     renderVendorSuggestion(vendors);
 
+    renderItems();
+    renderVendors();
+
     attchEvents();
 }
 
@@ -76,9 +79,16 @@ function attchEvents() {
 
         listItems.forEach(function (item) {
             item.addEventListener("click", function (e) {
-                var text = item.textContent.trim();
-                input.value = text;
-                menu.classList.remove("show");
+                const id = item.dataset.id;
+                const target = item.dataset.target;
+
+                if (target === "item") {
+                    addItemToStorage(id);
+                    renderItems();
+                } else if (target === "vendor") {
+                    addVendorToStorage(id);
+                    renderVendors();
+                }
             });
         });
     }
@@ -109,14 +119,6 @@ function attchEvents() {
             document.location.href = "/Vendors.html";
         }
     });
-
-    document.getElementById("add-search-vendor").addEventListener("click", function () {
-
-    });
-
-    document.getElementById("add-search-item").addEventListener("click", function () {
-
-    });
 }
 
 function renderItemsSuggestion(items) {
@@ -125,7 +127,7 @@ function renderItemsSuggestion(items) {
     let html = '';
 
     items.forEach(function (item) {
-        html += getSeachSuggestionDataItem(item);
+        html += getSeachSuggestionDataItem(item, "item");
     });
 
     autoComplete.innerHTML += html;
@@ -137,16 +139,19 @@ function renderVendorSuggestion(vendors) {
     let html = '';
 
     vendors.forEach(function (item) {
-        html += getSeachSuggestionDataItem(item);
+        html += getSeachSuggestionDataItem(item, "vendor");
     });
 
     autoComplete.innerHTML += html;
 }
 
-function getSeachSuggestionDataItem(dataItem) {
-    return `<button type="button" class="dropdown-item" data-id="${dataItem.id}">${dataItem.name}</button>`;
+function getSeachSuggestionDataItem(dataItem, target) {
+    return `<button type="button" class="dropdown-item" data-id="${dataItem.id}" data-target="${target}">${dataItem.name}</button>`;
 }
 
+/*
+ RENDER VENDORS
+ */
 
 
 async function renderVendors() {
@@ -166,7 +171,7 @@ async function renderVendors() {
 
         body += "</tbody>";
 
-        document.getElementById("search-vendors-list").innerHTML = body;
+        document.getElementById("design-vendors-list").innerHTML = body;
     }
 }
 
@@ -200,6 +205,69 @@ function getVendorListHeader(data) {
                     ${ths}
                     </tr>
           </thead>`;
+}
+
+/*
+ RENDER ITEMS
+ */
+
+async function renderItems() {
+
+    const d = await getItems();
+
+    if (d && d.length) {
+        let body = "";
+
+        const companyListHeader = getItemListHeader(d[0])
+
+        body = companyListHeader + "<tbody>";
+
+        d.forEach((element, index) => {
+            body += getItemListItem(element, index);
+        });
+
+        body += "</tbody>";
+
+        document.getElementById("items-list").innerHTML = body;
+    }
+}
+
+function getItemListItem(data, index) {
+    return `
+      <tr>
+      <td scope="row">${index + 1}</td>
+      <td>${data.name}</td>
+      <td style="max-width: 400px;">${data.description}</td>
+      <td>${data.unit}</td>
+      <td>${data.rateRange1}</td>
+      <td>${data.rateRange2}</td>
+      <td>${data.cgst}</td>
+      <td>${data.sgst}</td>
+      <td data-item-id="${data.id
+        }"><span class="badge bg-primary cursor-pointer" id="delete-item" data-itemId="${data.id
+        }">X</span></td>
+    </tr>
+    `;
+}
+
+function getItemListHeader(data) {
+    let ths = `<th scope="col">#</th>`;
+
+    Object.keys(data).forEach((d) => {
+        if (d != "id") {
+            ths += `<th scope="col">${capitalizeString(d)}</th>`;
+        }
+    });
+    ths += `
+          <th scope="col"></th>`;
+
+    return `
+  <thead>
+                <tr>
+                  ${ths}
+                </tr>
+              </thead>
+  `;
 }
 
 /*
@@ -264,7 +332,7 @@ function getServerItemFromStorage(id) {
 
 function addItemToStorage(id) {
     let items = localStorage.getItem(DESIGN_ITEMS_DB_KEY);
-    const data = getserverItemFromStorage(id);
+    const data = getServerItemFromStorage(id);
 
     if (items && data) {
         items = JSON.parse(items);
