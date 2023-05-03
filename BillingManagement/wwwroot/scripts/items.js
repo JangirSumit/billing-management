@@ -98,7 +98,7 @@ function getItemListItem(data, index) {
       <td scope="row">${index + 1}</td>
       <td>${data.name}</td>
       <td style="max-width: 400px;">${data.description}</td>
-      <td>${data.unit}</td>
+      <td>${UNITS[data.unit]}</td>
       <td>${data.rateRange1}</td>
       <td>${data.rateRange2}</td>
       <td>${data.cgst}</td>
@@ -114,6 +114,12 @@ function getItemListHeader(data) {
     let ths = `<th scope="col">#</th>`;
 
     Object.keys(data).forEach((d) => {
+        if (d == 'rateRange1') {
+            d = 'Rate (Min)'
+        } else if (d == 'rateRange2') {
+            d = 'Rate (Max)'
+        }
+
         if (d != "id") {
             ths += `<th scope="col">${capitalizeString(d)}</th>`;
         }

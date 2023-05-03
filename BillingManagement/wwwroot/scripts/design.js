@@ -16,7 +16,6 @@
 function attchEvents() {
 
     function createAuto(elem) {
-        console.log("q");
         var input = elem;
         var dropdown = input.closest(".dropdown");
         var menu = dropdown.querySelector(".dropdown-menu");
@@ -122,6 +121,26 @@ function attchEvents() {
             document.location.href = "/Vendors.html";
         }
     });
+
+    document.getElementById("design-items-list").addEventListener("click", async function (e) {
+        const itemId = e.target.dataset.itemid;
+        if (itemId) {
+            showLoader();
+            await removeItemFromStorage(itemId);
+            await renderItems();
+            hideLoader();
+        }
+    });
+
+    document.getElementById("design-vendors-list").addEventListener("click", async function (e) {
+        const itemId = e.target.dataset.vendorid;
+        if (itemId) {
+            showLoader();
+            await removeVendorFromStorage(itemId);
+            await renderVendors();
+            hideLoader();
+        }
+    });
 }
 
 function renderItemsSuggestion(items) {
@@ -160,9 +179,9 @@ function getSeachSuggestionDataItem(dataItem, target) {
 async function renderVendors() {
 
     const d = await getVendorsFromStorage();
+    let body = "";
 
     if (d && d.length) {
-        let body = "";
 
         const companyListHeader = getVendorListHeader(d[0])
 
@@ -173,9 +192,9 @@ async function renderVendors() {
         });
 
         body += "</tbody>";
-
-        document.getElementById("design-vendors-list").innerHTML = body;
     }
+
+    document.getElementById("design-vendors-list").innerHTML = body;
 }
 
 function getVendorItem(data, index) {
@@ -217,9 +236,9 @@ function getVendorListHeader(data) {
 async function renderItems() {
 
     const d = await getItemsFromStorage();
+    let body = "";
 
     if (d && d.length) {
-        let body = "";
 
         const companyListHeader = getItemListHeader(d[0])
 
@@ -230,9 +249,8 @@ async function renderItems() {
         });
 
         body += "</tbody>";
-
-        document.getElementById("design-items-list").innerHTML = body;
     }
+    document.getElementById("design-items-list").innerHTML = body;
 }
 
 function getItemListItem(data, index) {
@@ -257,6 +275,12 @@ function getItemListHeader(data) {
     let ths = `<th scope="col">#</th>`;
 
     Object.keys(data).forEach((d) => {
+        if (d == 'rateRange1') {
+            d = 'Rate (Min)'
+        } else if (d == 'rateRange2') {
+            d = 'Rate (Max)'
+        }
+
         if (d != "id") {
             ths += `<th scope="col">${capitalizeString(d)}</th>`;
         }
