@@ -90,6 +90,7 @@ function attchEvents() {
                     renderVendors();
                 }
 
+                input.value = "";
                 menu.classList.remove("show");
             });
         });
@@ -240,7 +241,7 @@ function getItemListItem(data, index) {
       <td scope="row">${index + 1}</td>
       <td>${data.name}</td>
       <td style="max-width: 400px;">${data.description}</td>
-      <td>${data.unit}</td>
+      <td>${UNITS[data.unit]}</td>
       <td>${data.rateRange1}</td>
       <td>${data.rateRange2}</td>
       <td>${data.cgst}</td>

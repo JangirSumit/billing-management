@@ -33,3 +33,12 @@ const BootstrapColor = {
     Light: 'light',
     Dark: 'dark'
 }
+
+const UNITS = [
+    'Unknown',
+    'Number(s)',
+    'Kg(s)',
+    'Gram(s)',
+    'Liter(s)',
+    'ML'
+]
