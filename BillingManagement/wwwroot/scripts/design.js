@@ -143,6 +143,23 @@ function attchEvents() {
             hideLoader();
         }
     });
+
+    document.getElementById("generate-pdf").addEventListener("click", function () {
+        window.jsPDF = window.jspdf.jsPDF;
+
+        var doc = new jsPDF();
+
+        doc.html(document.body, {
+            callback: function (doc) {
+                // Save the PDF
+                doc.save('sample-document.pdf');
+            },
+            x: 15,
+            y: 15,
+            width: 170, //target width in the PDF document
+            windowWidth: 650 //window width in CSS pixels
+        });
+    });
 }
 
 function addEventListnerForQuantities() {
@@ -456,3 +473,6 @@ async function getVendors() {
         console.error(e);
     }
 }
+
+/*
+ */

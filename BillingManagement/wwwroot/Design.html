@@ -12,6 +12,7 @@
           crossorigin="anonymous" />
     <link href="styles/style.css" rel="stylesheet" />
     <script src="scripts/constants.js"></script>
+    <script src="https://cdn.tiny.cloud/1/8bbdfs3oe7s6mhndjo54ylctrwucseetl9cdvpon5vqpsa0e/tinymce/6/tinymce.min.js" referrerpolicy="origin"></script>
 
 </head>
 
@@ -92,8 +93,14 @@
                 <div id="flush-collapseThree" class="accordion-collapse collapse" data-bs-parent="#accordionFlushExample">
                     <div class="accordion-body">
 
-                        <div class="veritical-divider-2rem"></div>
-
+                        <div class="mb-3 row">
+                            <label for="pdf-terms-conditions" class="col-sm-2 col-form-label">Terms and conditions</label>
+                            <div class="col-sm-10">
+                                <textarea class="form-control"
+                                          id="pdf-terms-conditions"
+                                          placeholder="Terms and conditions"></textarea>
+                            </div>
+                        </div>
                         <div class="mb-3">
                             <button class="btn btn-secondary col-sm-2"
                                     type="button"
@@ -119,11 +126,16 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha2/dist/js/bootstrap.bundle.min.js"
             integrity="sha384-qKXV1j0HvMUeCBQ+QVp7JcfGl760yU08IQ+GpUo5hlbpg51QRiuqHAJz8+BrxE/N"
             crossorigin="anonymous"></script>
+    <script src="https://html2canvas.hertzen.com/dist/html2canvas.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"
+            integrity="sha512-qZvrmS2ekKPF2mSznTQsxqPgnpkI4DNTlrdUmTzrDgektczlKNRRhy5X5AAOnx5S09ydFYWWNSfcEqDTTHgtNA=="
+            crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 
     <script src="scripts/modals.js"></script>
     <script src="scripts/common.js"></script>
     <script src="scripts/validateUserSession.js"></script>
     <script src="scripts/script.js"></script>
     <script src="scripts/design.js"></script>
+    <script src="scripts/textEditor.js"></script>
 </body>
 </html>
