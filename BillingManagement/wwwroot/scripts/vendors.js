@@ -102,67 +102,17 @@ function getVendorListHeader(data) {
 /* API CALLS */
 
 async function addVendor(data) {
-    try {
-        const response = await fetch(VENDORS_API, {
-            method: 'POST',
-            body: JSON.stringify(data),
-            headers: {
-                'Content-type': 'application/json; charset=UTF-8',
-                Authorization: `Bearer ${getToken()}`
-            }
-        });
-
-        if (response.ok) {
-            return await response.json();
-        }
-    } catch (e) {
-        console.error(e);
-    }
+    return await REST_API.post(VENDORS_API, data);
 }
 
 async function deleteVendor(id) {
-    try {
-        const response = await fetch(`${VENDORS_API}/${id}`, {
-            method: 'DELETE',
-            headers: {
-                Authorization: `Bearer ${getToken()}`
-            }
-        });
-
-        if (response.ok) {
-            return await response.json();
-        }
-    } catch (e) {
-        console.error(e);
-    }
+    return await REST_API.delete(`${VENDORS_API}/${id}`);
 }
 
 async function getVendors() {
-    try {
-        const response = await fetch(VENDORS_API, {
-            headers: {
-                Authorization: `Bearer ${getToken()}`
-            }
-        });
-        if (response.ok) {
-            return await response.json();
-        }
-    } catch (e) {
-        console.error(e);
-    }
+    return await REST_API.get(VENDORS_API);
 }
 
 async function getVendor(id) {
-    try {
-        const response = await fetch(`${VENDORS_API}/${id}`, {
-            headers: {
-                Authorization: `Bearer ${getToken()}`
-            }
-        });
-        if (response.ok) {
-            return await response.json();
-        }
-    } catch (e) {
-        console.error(e);
-    }
+    return await REST_API.get(`${VENDORS_API}/${id}`);
 }

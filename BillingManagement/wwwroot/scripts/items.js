@@ -140,52 +140,13 @@ function getItemListHeader(data) {
 /* API CALLS */
 
 async function addItem(data) {
-    try {
-        const response = await fetch(ITEMS_API, {
-            method: 'POST',
-            body: JSON.stringify(data),
-            headers: {
-                'Content-type': 'application/json; charset=UTF-8',
-                Authorization: `Bearer ${getToken()}`
-            }
-        });
-
-        if (response.ok) {
-            return await response.json();
-        }
-    } catch (e) {
-        console.error(e);
-    }
+    return await REST_API.post(ITEMS_API, data);
 }
 
 async function getItems() {
-    try {
-        const response = await fetch(ITEMS_API, {
-            headers: {
-                Authorization: `Bearer ${getToken()}`
-            }
-        });
-        if (response.ok) {
-            return await response.json();
-        }
-    } catch (e) {
-        console.error(e);
-    }
+    return await REST_API.get(ITEMS_API);
 }
 
 async function deleteItem(id) {
-    try {
-        const response = await fetch(`${ITEMS_API}/${id}`, {
-            method: 'DELETE',
-            headers: {
-                Authorization: `Bearer ${getToken()}`
-            }
-        });
-
-        if (response.ok) {
-            return await response.json();
-        }
-    } catch (e) {
-        console.error(e);
-    }
+    return await REST_API.delete(`${ITEMS_API}/${id}`);
 }
