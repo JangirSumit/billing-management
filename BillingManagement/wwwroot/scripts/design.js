@@ -207,11 +207,16 @@ function renderTextEditor() {
         plugins: 'anchor autolink charmap codesample emoticons image link lists media searchreplace table visualblocks wordcount checklist mediaembed casechange export formatpainter pageembed linkchecker a11ychecker tinymcespellchecker permanentpen powerpaste advtable advcode editimage tinycomments tableofcontents footnotes mergetags autocorrect typography inlinecss',
         toolbar: 'undo redo | blocks fontfamily fontsize | bold italic underline strikethrough | link image media table mergetags | addcomment showcomments | spellcheckdialog a11ycheck typography | align lineheight | checklist numlist bullist indent outdent | emoticons charmap | removeformat',
         tinycomments_mode: 'embedded',
-        tinycomments_author: 'Author name',
-        mergetags_list: [
-            { value: 'First.Name', title: 'First Name' },
-            { value: 'Email', title: 'Email' },
-        ]
+        setup: function (editor) {
+            editor.on('init', function (e) {
+                editor.setContent(`<p><strong>Terms and Conditions</strong></p>
+                                        <ul><li>The rates are valid for a period of 30 days only.</li>
+                                            <li>The rates include delivery at the site including loading and unloading for delivery within the limits of the greater Hyderabad municipal corporation region.</li>
+                                            <li>The rates are including hardware, supply, local transport, and complete installations.</li>
+                                            <li>All items shall be fully completed at our factory in all aspects including polishing and shall be packed and delivered after inspection and approval by a client representative.Items once delivered shall not be accepted for return.</li>
+                                        </ul>`);
+            });
+        }
     });
 }
 
