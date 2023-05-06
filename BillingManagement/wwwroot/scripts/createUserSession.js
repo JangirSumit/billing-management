@@ -106,62 +106,23 @@ document.getElementById("login-user")?.addEventListener("click", function () {
 });
 
 async function loginUser(userName, password) {
-    try {
-        const response = await fetch(TOKENS_API,
-            {
-                method: 'POST',
-                body: JSON.stringify({
-                    userName: userName,
-                    password: password
-                }),
-                headers: {
-                    'Content-type': 'application/json; charset=UTF-8',
-                }
-            });
-
-        return await response.json();
-    } catch (e) {
-        console.error(e);
-    }
+    return await REST_API.post(TOKENS_API, {
+        userName: userName,
+        password: password
+    });
 }
 
 async function registerUser(userName, password) {
-    try {
-        const response = await fetch(`${USERS_API}/register`,
-            {
-                method: 'POST',
-                body: JSON.stringify({
-                    userName: userName,
-                    password: password
-                }),
-                headers: {
-                    'Content-type': 'application/json; charset=UTF-8',
-                }
-            });
-
-        return response.ok
-    } catch (e) {
-        console.error(e);
-    }
+    return await REST_API.post(`${USERS_API}/register`, {
+        userName: userName,
+        password: password
+    });
 }
 
 async function changePassword(userName, currentPassword, newPassword) {
-    try {
-        const response = await fetch(`${USERS_API}/changePassword`,
-            {
-                method: 'POST',
-                body: JSON.stringify({
-                    userName: userName,
-                    currentPassword: currentPassword,
-                    newPassword: newPassword
-                }),
-                headers: {
-                    'Content-type': 'application/json; charset=UTF-8',
-                }
-            });
-
-        return response.ok
-    } catch (e) {
-        console.error(e);
-    }
+    return await REST_API.post(`${USERS_API}/changePassword`, {
+        userName: userName,
+        currentPassword: currentPassword,
+        newPassword: newPassword
+    });
 }

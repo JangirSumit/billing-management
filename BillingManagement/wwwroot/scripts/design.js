@@ -11,6 +11,7 @@
     renderVendors();
 
     attchEvents();
+    renderTextEditor();
 }
 
 function attchEvents() {
@@ -198,6 +199,20 @@ function renderVendorSuggestion(vendors) {
 
 function getSeachSuggestionDataItem(dataItem, target) {
     return `<button type="button" class="dropdown-item" data-id="${dataItem.id}" data-target="${target}">${dataItem.name}</button>`;
+}
+
+function renderTextEditor() {
+    tinymce.init({
+        selector: 'textarea',
+        plugins: 'anchor autolink charmap codesample emoticons image link lists media searchreplace table visualblocks wordcount checklist mediaembed casechange export formatpainter pageembed linkchecker a11ychecker tinymcespellchecker permanentpen powerpaste advtable advcode editimage tinycomments tableofcontents footnotes mergetags autocorrect typography inlinecss',
+        toolbar: 'undo redo | blocks fontfamily fontsize | bold italic underline strikethrough | link image media table mergetags | addcomment showcomments | spellcheckdialog a11ycheck typography | align lineheight | checklist numlist bullist indent outdent | emoticons charmap | removeformat',
+        tinycomments_mode: 'embedded',
+        tinycomments_author: 'Author name',
+        mergetags_list: [
+            { value: 'First.Name', title: 'First Name' },
+            { value: 'Email', title: 'Email' },
+        ]
+    });
 }
 
 /*
@@ -441,37 +456,17 @@ function changeItemQuantity(itemId, value) {
  */
 
 async function getItems() {
-    try {
-        const response = await fetch(ITEMS_API, {
-            headers: {
-                Authorization: `Bearer ${getToken()}`
-            }
-        });
-        if (response.ok) {
-            const items = await response.json();
-            localStorage.setItem(ITEMS_DB_KEY, JSON.stringify(items));
-            return items;
-        }
-    } catch (e) {
-        console.error(e);
-    }
+    const items = await REST_API.get(ITEMS_API);
+
+    localStorage.setItem(ITEMS_DB_KEY, JSON.stringify(items));
+    return items;
 }
 
 async function getVendors() {
-    try {
-        const response = await fetch(VENDORS_API, {
-            headers: {
-                Authorization: `Bearer ${getToken()}`
-            }
-        });
-        if (response.ok) {
-            const vendors = await response.json();
-            localStorage.setItem(VENDORS_DB_KEY, JSON.stringify(vendors));
-            return vendors;
-        }
-    } catch (e) {
-        console.error(e);
-    }
+    const vendors = await REST_API.get(VENDORS_API);
+
+    localStorage.setItem(VENDORS_DB_KEY, JSON.stringify(vendors));
+    return vendors;
 }
 
 /*
