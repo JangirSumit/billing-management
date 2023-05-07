@@ -500,9 +500,12 @@ function getHTML(vendor, items) {
     const element = document.createElement('div');
     element.id = `temp-pdf-${vendor.id}`;
 
-    let viewHtml = `<p>${vendor.name}</p>`;
-    viewHtml += `<p>${vendor.gstNumber}</p>`;
-    viewHtml += `<p>${getDate()}</p>`;
+    let viewHtml = `<p style="margin:0px; padding: 5px 0px;">${vendor.name}</p>`;
+    viewHtml += `<p style="margin:0px; padding: 5px 0px;">${vendor.gstNumber}</p>`;
+    viewHtml += `<pstyle="margin:0px; padding: 5px 0px;">${getDate()}</p>`;
+    viewHtml += `<p style="font-size:16px; text-align: center; margin:0px; padding: 5px 0px;"><strong>QUOTATION</strong></p>`;
+
+    viewHtml += getItemsForPdf(items);
 
     viewHtml += getTermsAndConditions();
 
@@ -518,4 +521,38 @@ function getDate() {
 
 function getTermsAndConditions() {
     return tinymce.activeEditor.getContent();
+}
+
+function getItemsForPdf(items) {
+    let tableHtml = `<table>${getTableHeader()}`;
+
+    tableHtml += `<tbody>`;
+
+    items.forEach((item) => {
+        tableHtml += getTableItemRow(item);
+    });
+
+    tableHtml += `</tbody></table>`;
+
+    return tableHtml;
+}
+
+function getTableHeader() {
+    return `<thead>
+        <th>S. no.</th>
+        <th>Product</th>
+        <th>Qty</th>
+        <th>Unit</th>
+        <th>Amount</th>
+    </thead>`;
+}
+
+function getTableItemRow(item) {
+    return `<tr>
+        <td><p><strong>${item.name}</strong></p>
+            <p>${item.description}</p></td>
+        <td>${item.quantity}</td>
+        <td>${item.unit}</td>
+        <td>${item.quantity * item.rateRange1}</td>
+    </tr>`;
 }
