@@ -148,6 +148,10 @@ function attchEvents() {
     document.getElementById("generate-pdf").addEventListener("click", function () {
         generatePDF();
     });
+
+    document.getElementById("preview-pdf").addEventListener("click", function () {
+        preivewPDF();
+    });
 }
 
 function addEventListnerForQuantities() {
@@ -466,6 +470,19 @@ async function getVendors() {
  * PDF
  */
 
+function preivewPDF() {
+    const items = getItemsFromStorage();
+    const vendors = getVendorsFromStorage();
+
+    const pdfHTML = getHTML(vendors[0], items)
+
+    openModalDialog({
+        size: "modal-xl",
+        title: "Preview PDF",
+        body: pdfHTML.innerHTML
+    });
+}
+
 function generatePDF() {
     window.jsPDF = window.jspdf.jsPDF;
 
@@ -502,7 +519,7 @@ function getHTML(vendor, items) {
 
     let viewHtml = `<p style="margin:0px; padding: 5px 0px;">${vendor.name}</p>`;
     viewHtml += `<p style="margin:0px; padding: 5px 0px;">${vendor.gstNumber}</p>`;
-    viewHtml += `<pstyle="margin:0px; padding: 5px 0px;">${getDate()}</p>`;
+    viewHtml += `<p style="margin:0px; padding: 5px 0px;">${getDate()}</p>`;
     viewHtml += `<p style="font-size:16px; text-align: center; margin:0px; padding: 5px 0px;"><strong>QUOTATION</strong></p>`;
 
     viewHtml += getItemsForPdf(items);
@@ -524,12 +541,12 @@ function getTermsAndConditions() {
 }
 
 function getItemsForPdf(items) {
-    let tableHtml = `<table>${getTableHeader()}`;
+    let tableHtml = `<table class="table">${getTableHeader()}`;
 
     tableHtml += `<tbody>`;
 
-    items.forEach((item) => {
-        tableHtml += getTableItemRow(item);
+    items.forEach((item, index) => {
+        tableHtml += getTableItemRow(item, index);
     });
 
     tableHtml += `</tbody></table>`;
@@ -547,8 +564,9 @@ function getTableHeader() {
     </thead>`;
 }
 
-function getTableItemRow(item) {
+function getTableItemRow(item, index) {
     return `<tr>
+        <td>${index + 1}</td>
         <td><p><strong>${item.name}</strong></p>
             <p>${item.description}</p></td>
         <td>${item.quantity}</td>

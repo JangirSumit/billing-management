@@ -5,12 +5,12 @@
     // Set up the modal HTML
     modalElement.classList.add('modal', 'fade', 'show');
     modalElement.innerHTML = `
-    <div class="modal-dialog">
+    <div class="modal-dialog ${options.size || ""}">
       <div class="modal-content">
         <div class="modal-header bg-${options.headerType || ''}">
           <h5 class="modal-title">${options.title || "Header"}</h5>
         </div>
-        <div class="modal-body">
+        <div class="modal-body overflow-auto-x">
           <p>${options.body}</p>
         </div>
         <div class="modal-footer">
