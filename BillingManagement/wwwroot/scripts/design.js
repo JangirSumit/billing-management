@@ -146,20 +146,7 @@ function attchEvents() {
     });
 
     document.getElementById("generate-pdf").addEventListener("click", function () {
-        window.jsPDF = window.jspdf.jsPDF;
-
-        var doc = new jsPDF();
-
-        doc.html(document.body, {
-            callback: function (doc) {
-                // Save the PDF
-                doc.save('sample-document.pdf');
-            },
-            x: 15,
-            y: 15,
-            width: 170, //target width in the PDF document
-            windowWidth: 650 //window width in CSS pixels
-        });
+        generatePDF();
     });
 }
 
@@ -204,6 +191,7 @@ function getSeachSuggestionDataItem(dataItem, target) {
 function renderTextEditor() {
     tinymce.init({
         selector: 'textarea',
+        menubar: '',
         plugins: 'anchor autolink charmap codesample emoticons image link lists media searchreplace table visualblocks wordcount checklist mediaembed casechange export formatpainter pageembed linkchecker a11ychecker tinymcespellchecker permanentpen powerpaste advtable advcode editimage tinycomments tableofcontents footnotes mergetags autocorrect typography inlinecss',
         toolbar: 'undo redo | blocks fontfamily fontsize | bold italic underline strikethrough | link image media table mergetags | addcomment showcomments | spellcheckdialog a11ycheck typography | align lineheight | checklist numlist bullist indent outdent | emoticons charmap | removeformat',
         tinycomments_mode: 'embedded',
@@ -475,4 +463,59 @@ async function getVendors() {
 }
 
 /*
+ * PDF
  */
+
+function generatePDF() {
+    window.jsPDF = window.jspdf.jsPDF;
+
+    const items = getItemsFromStorage();
+    const vendors = getVendorsFromStorage();
+
+
+    generate(getHTML(vendors[0], items), vendors[0].name);
+
+    // GENERATE MULTIPLE
+    //vendors.forEach(function (vendor) {
+    //    generate(getHTML(vendor, items), vendor.name);
+    //});
+
+}
+
+function generate(viewHtml, name) {
+    const doc = new jsPDF();
+    doc.html(viewHtml, {
+        callback: function (doc) {
+            // Save the PDF
+            doc.save(`${name}.pdf`);
+        },
+        x: 15,
+        y: 15,
+        width: 170,
+        windowWidth: 650
+    });
+}
+
+function getHTML(vendor, items) {
+    const element = document.createElement('div');
+    element.id = `temp-pdf-${vendor.id}`;
+
+    let viewHtml = `<p>${vendor.name}</p>`;
+    viewHtml += `<p>${vendor.gstNumber}</p>`;
+    viewHtml += `<p>${getDate()}</p>`;
+
+    viewHtml += getTermsAndConditions();
+
+    viewHtml += `<p>${vendor.address}</p>`;
+
+    element.innerHTML = viewHtml;
+    return element;
+}
+
+function getDate() {
+    return new Date().toLocaleString().split(',')[0];
+}
+
+function getTermsAndConditions() {
+    return tinymce.activeEditor.getContent();
+}
