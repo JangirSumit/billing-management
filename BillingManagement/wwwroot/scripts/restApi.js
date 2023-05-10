@@ -61,3 +61,14 @@ async function getResult(response) {
 
     return data;
 }
+
+function getToken() {
+    const USER_DB_KEY = 'user-session';
+    var userSession = localStorage.getItem(USER_DB_KEY);
+
+    if (userSession) {
+        userSession = JSON.parse(userSession);
+        return userSession.accessToken;
+    }
+    return "";
+}

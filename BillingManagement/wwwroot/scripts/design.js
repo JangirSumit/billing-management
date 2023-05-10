@@ -476,11 +476,13 @@ function preivewPDF() {
 
     const pdfHTML = getHTML(vendors[0], items)
 
-    openModalDialog({
-        size: "modal-xl",
-        title: "Preview PDF",
-        body: pdfHTML.innerHTML
-    });
+    if (pdfHTML) {
+        openModalDialog({
+            size: "modal-xl",
+            title: "Preview PDF",
+            body: pdfHTML.innerHTML
+        });
+    }
 }
 
 function generatePDF() {
@@ -514,22 +516,42 @@ function generate(viewHtml, name) {
 }
 
 function getHTML(vendor, items) {
+
+    if (!validateDataBeforePdf()) {
+        openModalDialog({
+            title: "Pdf Generation",
+            body: "Please check the details."
+        });
+        return;
+    }
+
     const element = document.createElement('div');
     element.id = `temp-pdf-${vendor.id}`;
 
-    let viewHtml = `<p style="margin:0px; padding: 5px 0px;">${vendor.name}</p>`;
-    viewHtml += `<p style="margin:0px; padding: 5px 0px;">${vendor.gstNumber}</p>`;
-    viewHtml += `<p style="margin:0px; padding: 5px 0px;">${getDate()}</p>`;
-    viewHtml += `<p style="font-size:16px; text-align: center; margin:0px; padding: 5px 0px;"><strong>QUOTATION</strong></p>`;
-
-    viewHtml += getItemsForPdf(items);
-
-    viewHtml += getTermsAndConditions();
-
-    viewHtml += `<p>${vendor.address}</p>`;
+    let viewHtml = `${getHeaderNote(vendor)}
+                    ${getItemsForPdf(items)}
+                    ${getTermsAndConditions()}
+                    ${getSignature(vendor.name)}
+                    ${getFooterAddress(vendor)}`;
 
     element.innerHTML = viewHtml;
     return element;
+}
+
+function validateDataBeforePdf() {
+    return document.getElementById("pdf-project-name").value;
+}
+
+function getHeaderNote(vendor) {
+    return `<p class="fw-bold" style="margin:0px; padding: 5px 0px;">${vendor.name}</p>
+            <p class="fw-bold" style="margin:0px; padding: 5px 0px;">${vendor.gstNumber}</p>
+            <p class="fw-bold" style="margin:0px; padding: 5px 0px;">${getDate()}</p>
+            <p class="text-center fw-bold" style="font-size:16px; margin:0px; padding: 5px 0px;">QUOTATION</p>
+            <p class="fw-bold">${document.getElementById("pdf-project-name").value}<p>`;
+}
+
+function getFooterAddress(vendor) {
+    return `<p class="text-center class="fw-bold"">${vendor.address}</p>`;
 }
 
 function getDate() {
@@ -554,6 +576,12 @@ function getItemsForPdf(items) {
     return tableHtml;
 }
 
+function getSignature(name) {
+    return `<div class="float-end border-top border-dark border-3" style="padding-left: 10px; padding-right: 10px;">
+        For ${name}
+    </div><br/>`;
+}
+
 function getTableHeader() {
     return `<thead>
         <th>S. no.</th>
@@ -567,7 +595,7 @@ function getTableHeader() {
 function getTableItemRow(item, index) {
     return `<tr>
         <td>${index + 1}</td>
-        <td><p><strong>${item.name}</strong></p>
+        <td><strong>${item.name}</strong>
             <p>${item.description}</p></td>
         <td>${item.quantity}</td>
         <td>${item.unit}</td>

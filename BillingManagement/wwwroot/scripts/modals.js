@@ -11,7 +11,7 @@
           <h5 class="modal-title">${options.title || "Header"}</h5>
         </div>
         <div class="modal-body overflow-auto-x">
-          <p>${options.body}</p>
+          ${options.body}
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-primary close">Close</button>
