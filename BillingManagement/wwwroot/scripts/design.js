@@ -502,16 +502,15 @@ function generatePDF() {
 }
 
 function generate(viewHtml, name) {
-    const doc = new jsPDF();
+    const doc = new jsPDF("p", "mm", "a4");
     doc.html(viewHtml, {
         callback: function (doc) {
             // Save the PDF
             doc.save(`${name}.pdf`);
         },
-        x: 15,
-        y: 15,
-        width: 170,
-        windowWidth: 650
+        width: 180,
+        windowWidth: 700,
+        margin: [15, 15, 15, 15],
     });
 }
 
@@ -571,9 +570,9 @@ function getHeaderNote(vendor) {
 
 function getCustomerDetails() {
     return `<p class="fw-bold">
-        ${document.getElementById("pdf-customer-name").value.replaceAll("\n", "</br>") }<br/>
+        ${document.getElementById("pdf-customer-name").value.replaceAll("\n", "</br>")}<br/>
         ${document.getElementById("pdf-customer-address").value.replaceAll("\n", "</br>")}
-    </p><p class="fw-bold">${document.getElementById("pdf-project-name").value.replaceAll("\n", "</br>") }</p>`;
+    </p><p class="fw-bold">${document.getElementById("pdf-project-name").value.replaceAll("\n", "</br>")}</p>`;
 }
 
 function getQuatationNumber() {
@@ -585,7 +584,7 @@ function getUniqueNumber() {
 }
 
 function getFooterAddress(vendor) {
-    return `<p class="text-center class="fw-bold"">${vendor.address}</p>`;
+    return `<p class="text-center fw-bold">${vendor.address}</p>`;
 }
 
 function getDate() {
@@ -619,20 +618,31 @@ function getSignature(name) {
 function getTableHeader() {
     return `<thead>
         <th>S. no.</th>
-        <th style="max-width: 500px;">Product</th>
+        <th style="max-width: 300px;">Product</th>
         <th>Qty</th>
         <th>Unit</th>
+        <th>Rate</th>
+        <th>CGst (%)</th>
+        <th>SGst (%)</th>
         <th>Amount</th>
     </thead>`;
 }
 
 function getTableItemRow(item, index) {
+    const quantity = item.quantity || 0;
+    const rate = getRandomRate(item.rateRange1, item.rateRange2);
+    const cgst = (quantity * rate * item.cgst) / 100;
+    const sgst = (quantity * rate * item.sgst) / 100;
+    const total = quantity * rate + cgst + sgst;
+
     return `<tr>
         <td>${index + 1}</td>
-        <td><strong>${item.name}</strong>
-            <p>${item.description}</p></td>
-        <td>${item.quantity}</td>
-        <td>${item.unit}</td>
-        <td>${item.quantity * item.rateRange1}</td>
+        <td  style="max-width: 300px;"><strong>${item.name}</strong><p>${item.description}</p></td>
+        <td>${quantity}</td>
+        <td>${UNITS[item.unit]}</td>
+        <td>${rate}</td>
+        <td>${cgst}</td>
+        <td>${sgst}</td>
+        <td>${total}</td>
     </tr>`;
 }
