@@ -571,13 +571,17 @@ function getHeaderNote(vendor) {
 
 function getCustomerDetails() {
     return `<p class="fw-bold">
-        ${document.getElementById("pdf-customer-name").value}<br/>
+        ${document.getElementById("pdf-customer-name").value.replaceAll("\n", "</br>") }<br/>
         ${document.getElementById("pdf-customer-address").value.replaceAll("\n", "</br>")}
-    </p><p class="fw-bold">${document.getElementById("pdf-project-name").value}</p>`;
+    </p><p class="fw-bold">${document.getElementById("pdf-project-name").value.replaceAll("\n", "</br>") }</p>`;
 }
 
 function getQuatationNumber() {
-    return `<p>Quote No : ${getGUID()}</p>`;
+    return `<p>Quote No : ${getUniqueNumber()}</p>`;
+}
+
+function getUniqueNumber() {
+    return Math.floor(Math.random() * 90000) + 10000;
 }
 
 function getFooterAddress(vendor) {
@@ -615,7 +619,7 @@ function getSignature(name) {
 function getTableHeader() {
     return `<thead>
         <th>S. no.</th>
-        <th>Product</th>
+        <th style="max-width: 500px;">Product</th>
         <th>Qty</th>
         <th>Unit</th>
         <th>Amount</th>
