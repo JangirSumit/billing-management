@@ -78,3 +78,24 @@ function validateInputFields() {
 
     return invalidFields?.length;
 }
+
+function getRandomRate(rateRange1, rateRange2) {
+    if (!rateRange2) {
+        return rateRange1;
+    }
+
+    const newRate = Math.ceil(
+        Math.random() * (parseFloat(rateRange2) - parseFloat(rateRange1)) +
+        parseFloat(rateRange1)
+    );
+
+    return Math.ceil(newRate / 100) * 100;
+}
+
+function getGUID() {
+    return "xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx".replace(/[xy]/g, function (c) {
+        var r = (Math.random() * 16) | 0,
+            v = c == "x" ? r : (r & 0x3) | 0x8;
+        return v.toString(16);
+    });
+}

@@ -528,9 +528,11 @@ function getHTML(vendor, items) {
     }
 
     const element = document.createElement('div');
-    element.id = `temp-pdf-${vendor.id}`;
+    //element.id = `temp-pdf-${vendor.id}`;
 
     let viewHtml = `${getHeaderNote(vendor)}
+                    ${getQuatationNumber()}
+                    ${getCustomerDetails()}
                     ${getItemsForPdf(items)}
                     ${getTermsAndConditions()}
                     ${getSignature(vendor.name)}
@@ -541,23 +543,41 @@ function getHTML(vendor, items) {
 }
 
 function validateDataBeforePdf(vendor, items) {
-    if (!!vendor || !!vendor.name ) {
+    if (!vendor || !vendor.name) {
         return "Please add vendor(s)."
     }
 
-    if (!!items || !!items.length) {
+    if (!items || !items.length) {
         return "Please add items(s)."
     }
 
-    if (!!document.getElementById("pdf-project-name").value) {
+    if (!document.getElementById("pdf-project-name").value) {
         return "Please enter Project name."
+    }
+
+    if (!document.getElementById("pdf-customer-name").value) {
+        return "Please enter Customer name."
+    }
+
+    if (!document.getElementById("pdf-customer-address").value) {
+        return "Please enter Customer address."
     }
 }
 
 function getHeaderNote(vendor) {
     return `<p class="fw-bold" style="margin:0px; padding: 5px 0px;">${vendor.name}<br/>${vendor.gstNumber}</br>${getDate()}</p>
-            <p class="text-center fw-bold" style="font-size:16px; margin:0px; padding: 5px 0px;">QUOTATION</p>
-            <p class="fw-bold">${document.getElementById("pdf-project-name").value}<p>`;
+            <p class="text-center fw-bold" style="font-size:16px; margin:0px; padding: 5px 0px;">QUOTATION</p>`;
+}
+
+function getCustomerDetails() {
+    return `<p class="fw-bold">
+        ${document.getElementById("pdf-customer-name").value}<br/>
+        ${document.getElementById("pdf-customer-address").value}
+    </p><p class="fw-bold">${document.getElementById("pdf-project-name").value}</p>`;
+}
+
+function getQuatationNumber() {
+    return `<p>Quote No : ${getGUID()}</p>`;
 }
 
 function getFooterAddress(vendor) {
@@ -573,7 +593,7 @@ function getTermsAndConditions() {
 }
 
 function getItemsForPdf(items) {
-    let tableHtml = `<table class="table table-striped">${getTableHeader()}`;
+    let tableHtml = `<table class="table">${getTableHeader()}`;
 
     tableHtml += `<tbody>`;
 
