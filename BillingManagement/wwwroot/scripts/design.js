@@ -517,10 +517,12 @@ function generate(viewHtml, name) {
 
 function getHTML(vendor, items) {
 
-    if (!validateDataBeforePdf()) {
+    const message = validateDataBeforePdf(vendor, items);
+
+    if (message) {
         openModalDialog({
             title: "Pdf Generation",
-            body: "Please check the details."
+            body: message
         });
         return;
     }
@@ -538,14 +540,22 @@ function getHTML(vendor, items) {
     return element;
 }
 
-function validateDataBeforePdf() {
-    return document.getElementById("pdf-project-name").value;
+function validateDataBeforePdf(vendor, items) {
+    if (!!vendor || !!vendor.name ) {
+        return "Please add vendor(s)."
+    }
+
+    if (!!items || !!items.length) {
+        return "Please add items(s)."
+    }
+
+    if (!!document.getElementById("pdf-project-name").value) {
+        return "Please enter Project name."
+    }
 }
 
 function getHeaderNote(vendor) {
-    return `<p class="fw-bold" style="margin:0px; padding: 5px 0px;">${vendor.name}</p>
-            <p class="fw-bold" style="margin:0px; padding: 5px 0px;">${vendor.gstNumber}</p>
-            <p class="fw-bold" style="margin:0px; padding: 5px 0px;">${getDate()}</p>
+    return `<p class="fw-bold" style="margin:0px; padding: 5px 0px;">${vendor.name}<br/>${vendor.gstNumber}</br>${getDate()}</p>
             <p class="text-center fw-bold" style="font-size:16px; margin:0px; padding: 5px 0px;">QUOTATION</p>
             <p class="fw-bold">${document.getElementById("pdf-project-name").value}<p>`;
 }
@@ -563,7 +573,7 @@ function getTermsAndConditions() {
 }
 
 function getItemsForPdf(items) {
-    let tableHtml = `<table class="table">${getTableHeader()}`;
+    let tableHtml = `<table class="table table-striped">${getTableHeader()}`;
 
     tableHtml += `<tbody>`;
 
