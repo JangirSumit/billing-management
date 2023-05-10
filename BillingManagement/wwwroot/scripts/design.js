@@ -572,7 +572,7 @@ function getHeaderNote(vendor) {
 function getCustomerDetails() {
     return `<p class="fw-bold">
         ${document.getElementById("pdf-customer-name").value}<br/>
-        ${document.getElementById("pdf-customer-address").value}
+        ${document.getElementById("pdf-customer-address").value.replaceAll("\n", "</br>")}
     </p><p class="fw-bold">${document.getElementById("pdf-project-name").value}</p>`;
 }
 
