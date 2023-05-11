@@ -492,17 +492,18 @@ function generatePDF() {
     const vendors = getVendorsFromStorage();
 
 
-    generate(getHTML(vendors[0], items), vendors[0].name);
+    //generate(getHTML(vendors[0], items), vendors[0].name);
 
-    // GENERATE MULTIPLE
-    //vendors.forEach(function (vendor) {
-    //    generate(getHTML(vendor, items), vendor.name);
-    //});
+    //GENERATE MULTIPLE
+    vendors.forEach(function (vendor) {
+        generate(getHTML(vendor, items), vendor.name);
+    });
 
 }
 
 function generate(viewHtml, name) {
     const doc = new jsPDF("p", "mm", "a4");
+
     doc.html(viewHtml, {
         callback: function (doc) {
             // Save the PDF
