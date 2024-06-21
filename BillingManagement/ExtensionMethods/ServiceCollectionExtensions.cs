@@ -1,8 +1,5 @@
-﻿using SqliteDataAccess = BillingManagement.DB.Sqlite.DataAccess;
-using SqlServerDataAccess = BillingManagement.DB.SqlServer.DataAccess;
-using BillingManagement.DB.SqlServer.Repository;
-using BillingManagement.Contracts.Abstrations;
-
+﻿using BillingManagement.DB.Sqlite;
+using BillingManagement.DB.SqlServer;
 
 namespace BillingManagement.ExtensionMethods;
 
@@ -12,14 +9,11 @@ public static class ServiceCollectionExtensions
     {
         if (useDb == "Sqlite")
         {
-            services.AddScoped<IDataAccess, SqliteDataAccess>();
+            services.RegisterSqliteServices();
         }
         else
         {
-            services.AddScoped<IDataAccess, SqlServerDataAccess>().
-                AddScoped<IVendorsRepository, VendorsRepository>().
-            AddScoped<IItemsRepository, ItemsRepository>().
-            AddScoped<IUsersRepository, UsersRepository>();
+            services.RegisterSqlServerServices();
         }
 
         return services;
