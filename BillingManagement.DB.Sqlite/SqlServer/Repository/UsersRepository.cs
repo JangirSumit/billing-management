@@ -1,9 +1,8 @@
-﻿using BillingManagement.DB;
-using BillingManagement.Models;
-using BillingManagement.Repository.Abstrations;
-using System.Data.SqlClient;
+﻿using BillingManagement.Contracts.Abstrations;
+using BillingManagement.Contracts.Models;
+using Microsoft.Data.SqlClient;
 
-namespace BillingManagement.Repository;
+namespace BillingManagement.DB.SqlServer.Repository;
 
 public class UsersRepository : IUsersRepository
 {

@@ -1,11 +1,10 @@
-﻿using BillingManagement.DB;
-using BillingManagement.Enums;
-using BillingManagement.Models;
-using BillingManagement.Repository.Abstrations;
-using System.Data;
+﻿using System.Data;
 using Microsoft.Data.SqlClient;
+using BillingManagement.Contracts.Abstrations;
+using BillingManagement.Contracts.Models;
+using BillingManagement.Contracts.Enums;
 
-namespace BillingManagement.Repository;
+namespace BillingManagement.DB.SqlServer.Repository;
 
 public class ItemsRepository : IItemsRepository
 {

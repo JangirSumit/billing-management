@@ -1,6 +1,6 @@
-﻿using BillingManagement.Models;
+﻿using BillingManagement.Contracts.Models;
 
-namespace BillingManagement.Repository.Abstrations;
+namespace BillingManagement.Contracts.Abstrations;
 
 public interface IVendorsRepository
 {

@@ -1,4 +1,4 @@
-﻿namespace BillingManagement.Enums;
+﻿namespace BillingManagement.Contracts.Enums;
 
 public enum ItemUnit
 {

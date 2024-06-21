@@ -1,6 +1,6 @@
-﻿using BillingManagement.ExtensionMethods;
-using BillingManagement.Models.Dto;
-using BillingManagement.Repository.Abstrations;
+﻿using BillingManagement.Contracts.Abstrations;
+using BillingManagement.Dto;
+using BillingManagement.ExtensionMethods;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 

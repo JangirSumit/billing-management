@@ -1,3 +1,3 @@
-﻿namespace BillingManagement.Models.Dto;
+﻿namespace BillingManagement.Dto;
 
 public record RefreshTokenDto(string AccessToken);

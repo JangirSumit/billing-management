@@ -11,4 +11,8 @@
     <PackageReference Include="Microsoft.Data.Sqlite.Core" Version="9.0.0-preview.5.24306.3" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\BillingManagement.Contracts\BillingManagement.Contracts.csproj" />
+  </ItemGroup>
+
 </Project>

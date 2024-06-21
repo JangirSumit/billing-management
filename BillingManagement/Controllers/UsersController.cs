@@ -1,10 +1,10 @@
-﻿using BillingManagement.Enums;
-using BillingManagement.Helpers;
-using BillingManagement.Models.Dto;
-using BillingManagement.Models;
-using BillingManagement.Repository.Abstrations;
+﻿using BillingManagement.Helpers;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using BillingManagement.Dto;
+using BillingManagement.Contracts.Abstrations;
+using BillingManagement.Contracts.Enums;
+using BillingManagement.Contracts.Models;
 
 namespace BillingManagement.Controllers;
 

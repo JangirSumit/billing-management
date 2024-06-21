@@ -1,10 +1,9 @@
-﻿using BillingManagement.DB;
-using BillingManagement.Models;
-using BillingManagement.Repository.Abstrations;
+﻿using BillingManagement.Contracts.Abstrations;
+using BillingManagement.Contracts.Models;
+using Microsoft.Data.SqlClient;
 using System.Data;
-using System.Data.SqlClient;
 
-namespace BillingManagement.Repository;
+namespace BillingManagement.DB.SqlServer.Repository;
 
 public class VendorsRepository : IVendorsRepository
 {

@@ -1,7 +1,6 @@
-﻿using BillingManagement.Models;
-using BillingManagement.Models.Dto;
+﻿using BillingManagement.Contracts.Models;
 
-namespace BillingManagement.Repository.Abstrations;
+namespace BillingManagement.Contracts.Abstrations;
 
 public interface IItemsRepository
 {

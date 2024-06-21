@@ -1,8 +1,7 @@
-﻿using Microsoft.Data.SqlClient;
-using System.Data;
+﻿using System.Data;
 using System.Data.Common;
 
-namespace BillingManagement.DB;
+namespace BillingManagement.Contracts.Abstrations;
 
 public interface IDataAccess
 {

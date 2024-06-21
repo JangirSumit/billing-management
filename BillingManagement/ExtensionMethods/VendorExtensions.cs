@@ -1,5 +1,5 @@
-﻿using BillingManagement.Models;
-using BillingManagement.Models.Dto;
+﻿using BillingManagement.Contracts.Models;
+using BillingManagement.Dto;
 
 namespace BillingManagement.ExtensionMethods;
 

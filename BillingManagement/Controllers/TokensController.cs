@@ -1,7 +1,7 @@
-﻿using BillingManagement.Enums;
+﻿using BillingManagement.Contracts.Abstrations;
+using BillingManagement.Contracts.Enums;
+using BillingManagement.Dto;
 using BillingManagement.Helpers;
-using BillingManagement.Models.Dto;
-using BillingManagement.Repository.Abstrations;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;

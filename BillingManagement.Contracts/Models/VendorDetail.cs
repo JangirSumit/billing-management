@@ -1,4 +1,4 @@
-﻿namespace BillingManagement.Models;
+﻿namespace BillingManagement.Contracts.Models;
 
 public record VendorDetail(Guid Id, string Name, string Address, string GstNumber)
 {
