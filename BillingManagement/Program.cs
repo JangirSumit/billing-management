@@ -1,9 +1,6 @@
-using BillingManagement.Repository;
-using BillingManagement.Repository.Abstrations;
-using BillingManagement.Repository.Common;
+using BillingManagement.ExtensionMethods;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.Extensions.FileProviders;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using System.Text;
@@ -12,7 +9,11 @@ var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 
-builder.Services.AddControllers();
+builder.Services.AddControllers(options =>
+{
+    options.ReturnHttpNotAcceptable = true;
+}).AddXmlDataContractSerializerFormatters();
+
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer(options =>
 {
     options.RequireHttpsMetadata = false;
@@ -27,7 +28,7 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJw
     };
 });
 
-builder.Services.AddAntiforgery( );
+builder.Services.AddAntiforgery();
 
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
@@ -66,11 +67,7 @@ builder.Services.AddSwaggerGen(swagger =>
                 });
 });
 
-builder.Services.AddScoped<IVendorsRepository, VendorsRepository>();
-builder.Services.AddScoped<IItemsRepository, ItemsRepository>();
-builder.Services.AddScoped<IDataAccess, DataAccess>();
-builder.Services.AddScoped<IUsersRepository, UsersRepository>();
-
+builder.Services.AddApplicationServices(builder.Configuration["UseDb"]);
 
 builder.Services.AddAuthorization(options =>
 {

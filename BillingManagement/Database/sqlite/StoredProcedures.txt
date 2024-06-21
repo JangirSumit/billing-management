@@ -1,0 +1,53 @@
+﻿-- Vendors
+
+-- Get all vendors
+-- This can be a simple SELECT query in your application code
+SELECT * FROM Vendors;
+
+-- Get vendor by ID
+-- This can also be a simple SELECT query in your application code
+SELECT * FROM Vendors WHERE Id = ?; -- replace ? with the vendor ID
+
+-- Delete vendor by ID
+-- Use this DELETE query in your application code
+DELETE FROM Vendors WHERE Id = ?; -- replace ? with the vendor ID
+
+-- Add a new vendor
+-- Use this INSERT query in your application code
+INSERT INTO Vendors (Name, GstNumber, Address) VALUES (?, ?, ?); 
+-- replace ? with the respective values for Name, GstNumber, and Address
+
+-- Users
+
+-- Get user by name
+-- This can be a simple SELECT query in your application code
+SELECT * FROM Users WHERE Name = ?; -- replace ? with the user name
+
+-- Add a new user
+-- Use this INSERT query in your application code
+INSERT INTO Users (Name, Password) VALUES (?, ?); 
+-- replace ? with the respective values for Name and Password
+
+-- Change user password
+-- Use this UPDATE query in your application code
+UPDATE Users SET Password = ? WHERE Name = ?; 
+-- replace the first ? with the new password and the second ? with the user name
+
+-- Items
+
+-- Get all items
+-- This can be a simple SELECT query in your application code
+SELECT * FROM Items;
+
+-- Get item by ID
+-- This can also be a simple SELECT query in your application code
+SELECT * FROM Items WHERE Id = ?; -- replace ? with the item ID
+
+-- Delete item by ID
+-- Use this DELETE query in your application code
+DELETE FROM Items WHERE Id = ?; -- replace ? with the item ID
+
+-- Add a new item
+-- Use this INSERT query in your application code
+INSERT INTO Items (Name, Description, Unit, Cgst, Sgst, RateRange1, RateRange2) VALUES (?, ?, ?, ?, ?, ?, ?); 
+-- replace ? with the respective values for Name, Description, Unit, Cgst, Sgst, RateRange1, and RateRange2

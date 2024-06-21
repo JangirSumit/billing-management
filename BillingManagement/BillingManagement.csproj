@@ -4,13 +4,15 @@
     <TargetFramework>net7.0</TargetFramework>
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
+    <UserSecretsId>9d1f398d-027a-406b-afa9-fda681fbaf52</UserSecretsId>
   </PropertyGroup>
 
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="7.0.5" />
-    <PackageReference Include="Microsoft.Data.SqlClient" Version="5.1.1" />
+    <PackageReference Include="Microsoft.Data.SqlClient" Version="5.2.1" />
+    <PackageReference Include="Microsoft.Data.Sqlite" Version="8.0.6" />
     <PackageReference Include="Swashbuckle.AspNetCore" Version="6.2.3" />
-    <PackageReference Include="System.Data.SqlClient" Version="4.8.5" />
+    <PackageReference Include="System.Data.SqlClient" Version="4.8.6" />
   </ItemGroup>
 
   <ItemGroup>
@@ -29,6 +31,10 @@
     <None Include="wwwroot\styles\style.css" />
     <None Include="wwwroot\Vendors.html" />
     <None Include="wwwroot\Design.html" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\BillingManagement.DB.Sqlite\BillingManagement.DB.csproj" />
   </ItemGroup>
 
 </Project>

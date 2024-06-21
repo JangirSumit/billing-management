@@ -1,6 +1,6 @@
-﻿using BillingManagement.Models;
+﻿using BillingManagement.DB;
+using BillingManagement.Models;
 using BillingManagement.Repository.Abstrations;
-using BillingManagement.Repository.Common;
 using System.Data.SqlClient;
 
 namespace BillingManagement.Repository;

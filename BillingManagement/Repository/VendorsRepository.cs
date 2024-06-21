@@ -1,7 +1,6 @@
-﻿using BillingManagement.Enums;
+﻿using BillingManagement.DB;
 using BillingManagement.Models;
 using BillingManagement.Repository.Abstrations;
-using BillingManagement.Repository.Common;
 using System.Data;
 using System.Data.SqlClient;
 

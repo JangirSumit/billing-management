@@ -1,0 +1,26 @@
+﻿-- Create Vendors table if it does not exist
+CREATE TABLE IF NOT EXISTS Vendors (
+    Id TEXT NOT NULL PRIMARY KEY DEFAULT (lower(hex(randomblob(4)) || '-' || hex(randomblob(2)) || '-' || '4' || substr(hex(randomblob(2)), 2) || '-' || substr('89ab', abs(random() % 4) + 1, 1) || substr(hex(randomblob(2)), 2) || '-' || hex(randomblob(6)))),
+    Name TEXT NOT NULL,
+    GstNumber TEXT NOT NULL,
+    Address TEXT NOT NULL
+);
+
+-- Create Items table if it does not exist
+CREATE TABLE IF NOT EXISTS Items (
+    Id TEXT NOT NULL PRIMARY KEY DEFAULT (lower(hex(randomblob(4)) || '-' || hex(randomblob(2)) || '-' || '4' || substr(hex(randomblob(2)), 2) || '-' || substr('89ab', abs(random() % 4) + 1, 1) || substr(hex(randomblob(2)), 2) || '-' || hex(randomblob(6)))),
+    Name TEXT NOT NULL,
+    Description TEXT NOT NULL,
+    Unit INTEGER NOT NULL,
+    RateRange1 REAL NOT NULL,
+    RateRange2 REAL NOT NULL,
+    Sgst REAL NOT NULL,
+    Cgst REAL NOT NULL
+);
+
+-- Create Users table if it does not exist
+CREATE TABLE IF NOT EXISTS Users (
+    Id TEXT NOT NULL PRIMARY KEY DEFAULT (lower(hex(randomblob(4)) || '-' || hex(randomblob(2)) || '-' || '4' || substr(hex(randomblob(2)), 2) || '-' || substr('89ab', abs(random() % 4) + 1, 1) || substr(hex(randomblob(2)), 2) || '-' || hex(randomblob(6)))),
+    Name TEXT NOT NULL UNIQUE,
+    Password TEXT NOT NULL
+);
