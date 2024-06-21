@@ -1,8 +1,8 @@
-﻿using System.Data;
-using Microsoft.Data.SqlClient;
-using BillingManagement.Contracts.Abstrations;
-using BillingManagement.Contracts.Models;
+﻿using BillingManagement.Contracts.Abstrations;
 using BillingManagement.Contracts.Enums;
+using BillingManagement.Contracts.Models;
+using Microsoft.Data.Sqlite;
+using System.Data;
 
 namespace BillingManagement.DB.Sqlite.Repository;
 
@@ -17,7 +17,12 @@ public class ItemsRepository : IItemsRepository
 
     public bool Add(ItemDetail item)
     {
-        return _dataAccess.ExecuteNonQuery("[dbo].[AddItem]", new SqlParameter[] {
+        string query = @"
+                INSERT INTO Items (Name, Description, Unit, RateRange1, RateRange2, Sgst, Cgst)
+                VALUES (@name, @description, @unit, @rateRange1, @rateRange2, @sgst, @cgst)";
+
+        return _dataAccess.ExecuteNonQuery(query, new SqliteParameter[]
+        {
             new("@name", item.Name),
             new("@description", item.Description),
             new("@unit", item.Unit),
@@ -30,7 +35,10 @@ public class ItemsRepository : IItemsRepository
 
     public bool Delete(Guid id)
     {
-        return _dataAccess.ExecuteNonQuery("[dbo].[DeleteItem]", new SqlParameter[] {
+        string query = "DELETE FROM Items WHERE Id = @id";
+
+        return _dataAccess.ExecuteNonQuery(query, new SqliteParameter[]
+        {
             new("@id", id)
         }) > 0;
     }
@@ -39,7 +47,8 @@ public class ItemsRepository : IItemsRepository
     {
         var result = new List<ItemDetail>();
 
-        var dt = _dataAccess.ExecuteQuery("[dbo].[GetItems]");
+        string query = "SELECT * FROM Items";
+        var dt = _dataAccess.ExecuteQuery(query);
 
         if (dt == null)
             return result;
@@ -55,19 +64,21 @@ public class ItemsRepository : IItemsRepository
     private static ItemDetail GetItem(DataRow row)
     {
         return new ItemDetail(Guid.Parse(Convert.ToString(row["Id"])),
-                                                Convert.ToString(row["Name"]),
-                                                Convert.ToString(row["Description"]),
-                                                (ItemUnit)Convert.ToInt32(row["Unit"]),
-                                                Convert.ToDouble(row["RateRange1"]),
-                                                Convert.ToDouble(row["RateRange2"]),
-                                                Convert.ToDouble(row["Sgst"]),
-                                                Convert.ToDouble(row["Cgst"])
-                                                );
+                              Convert.ToString(row["Name"]),
+                              Convert.ToString(row["Description"]),
+                              (ItemUnit)Convert.ToInt32(row["Unit"]),
+                              Convert.ToDouble(row["RateRange1"]),
+                              Convert.ToDouble(row["RateRange2"]),
+                              Convert.ToDouble(row["Sgst"]),
+                              Convert.ToDouble(row["Cgst"]));
     }
 
     public ItemDetail GetById(Guid id)
     {
-        var dt = _dataAccess.ExecuteQuery("[dbo].[GetItemById]", new SqlParameter[] {
+        string query = "SELECT * FROM Items WHERE Id = @id";
+
+        var dt = _dataAccess.ExecuteQuery(query, new SqliteParameter[]
+        {
             new("@id", id)
         });
 

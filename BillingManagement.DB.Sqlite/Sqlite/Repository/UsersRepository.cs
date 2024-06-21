@@ -1,6 +1,6 @@
 ﻿using BillingManagement.Contracts.Abstrations;
 using BillingManagement.Contracts.Models;
-using Microsoft.Data.SqlClient;
+using Microsoft.Data.Sqlite;
 
 namespace BillingManagement.DB.Sqlite.Repository;
 
@@ -15,7 +15,12 @@ public class UsersRepository : IUsersRepository
 
     public int Add(UserDetail userDetail)
     {
-        return _dataAccess.ExecuteNonQuery("[dbo].[AddUser]", new SqlParameter[] {
+        string query = @"
+                INSERT INTO Users (UserName, Password)
+                VALUES (@name, @password)";
+
+        return _dataAccess.ExecuteNonQuery(query, new SqliteParameter[]
+        {
             new("@name", userDetail.UserName),
             new("@password", userDetail.Password)
         });
@@ -23,7 +28,13 @@ public class UsersRepository : IUsersRepository
 
     public int ChangePassword(string userName, string newPassword)
     {
-        return _dataAccess.ExecuteNonQuery("[dbo].[ChangePassword]", new SqlParameter[] {
+        string query = @"
+                UPDATE Users
+                SET Password = @newPassword
+                WHERE UserName = @name";
+
+        return _dataAccess.ExecuteNonQuery(query, new SqliteParameter[]
+        {
             new("@name", userName),
             new("@newPassword", newPassword)
         });
@@ -31,13 +42,16 @@ public class UsersRepository : IUsersRepository
 
     public UserDetail GetUserByName(string userName)
     {
-        var result = _dataAccess.ExecuteQuery("[dbo].[GetUserByName]", new SqlParameter[] {
-             new("@name", userName)
+        string query = "SELECT * FROM Users WHERE UserName = @name";
+
+        var result = _dataAccess.ExecuteQuery(query, new SqliteParameter[]
+        {
+            new("@name", userName)
         });
 
         if (result?.Rows?.Count > 0)
         {
-            return new UserDetail(result.Rows[0]["Name"].ToString(), result.Rows[0]["Password"].ToString());
+            return new UserDetail(result.Rows[0]["UserName"].ToString(), result.Rows[0]["Password"].ToString());
         }
 
         return UserDetail.Empty;
