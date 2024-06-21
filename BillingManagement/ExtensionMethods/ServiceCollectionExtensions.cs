@@ -1,5 +1,6 @@
 ﻿using BillingManagement.DB.Sqlite;
 using BillingManagement.DB.SqlServer;
+using SQLitePCL;
 
 namespace BillingManagement.ExtensionMethods;
 
@@ -9,6 +10,7 @@ public static class ServiceCollectionExtensions
     {
         if (useDb == "Sqlite")
         {
+            Batteries.Init();
             services.RegisterSqliteServices();
         }
         else

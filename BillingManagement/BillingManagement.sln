@@ -12,7 +12,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "$solution", "$solution", "{
 		Nuget.config = Nuget.config
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BillingManagement.DB", "..\BillingManagement.DB.Sqlite\BillingManagement.DB.csproj", "{867D68AD-5C14-46C2-B95B-FA12D8C802F6}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BillingManagement.DB", "..\BillingManagement.DB\BillingManagement.DB.csproj", "{867D68AD-5C14-46C2-B95B-FA12D8C802F6}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BillingManagement.Contracts", "..\BillingManagement.Contracts\BillingManagement.Contracts.csproj", "{3A90E030-2049-4BDB-8377-F9870FDA0BF1}"
 EndProject

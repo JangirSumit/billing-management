@@ -9,10 +9,8 @@
 
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="7.0.5" />
-    <PackageReference Include="Microsoft.Data.SqlClient" Version="5.2.1" />
-    <PackageReference Include="Microsoft.Data.Sqlite" Version="8.0.6" />
+    <PackageReference Include="SQLitePCLRaw.bundle_e_sqlite3" Version="2.1.8" />
     <PackageReference Include="Swashbuckle.AspNetCore" Version="6.2.3" />
-    <PackageReference Include="System.Data.SqlClient" Version="4.8.6" />
   </ItemGroup>
 
   <ItemGroup>
@@ -34,7 +32,13 @@
 
   <ItemGroup>
     <ProjectReference Include="..\BillingManagement.Contracts\BillingManagement.Contracts.csproj" />
-    <ProjectReference Include="..\BillingManagement.DB.Sqlite\BillingManagement.DB.csproj" />
+    <ProjectReference Include="..\BillingManagement.DB\BillingManagement.DB.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="Database\sqlite\DB.db">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
 
 </Project>

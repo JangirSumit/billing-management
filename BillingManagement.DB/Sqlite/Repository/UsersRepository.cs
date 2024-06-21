@@ -16,7 +16,7 @@ public class UsersRepository : IUsersRepository
     public int Add(UserDetail userDetail)
     {
         string query = @"
-                INSERT INTO Users (UserName, Password)
+                INSERT INTO Users (Name, Password)
                 VALUES (@name, @password)";
 
         return _dataAccess.ExecuteNonQuery(query, new SqliteParameter[]
@@ -31,7 +31,7 @@ public class UsersRepository : IUsersRepository
         string query = @"
                 UPDATE Users
                 SET Password = @newPassword
-                WHERE UserName = @name";
+                WHERE Name = @name";
 
         return _dataAccess.ExecuteNonQuery(query, new SqliteParameter[]
         {
@@ -42,7 +42,7 @@ public class UsersRepository : IUsersRepository
 
     public UserDetail GetUserByName(string userName)
     {
-        string query = "SELECT * FROM Users WHERE UserName = @name";
+        string query = "SELECT * FROM Users WHERE Name = @name";
 
         var result = _dataAccess.ExecuteQuery(query, new SqliteParameter[]
         {
