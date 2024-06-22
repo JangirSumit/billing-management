@@ -26,11 +26,11 @@ public class TokensController : ControllerBase
     }
 
     [HttpPost]
-    public IActionResult Post([FromBody] UserDto userDto)
+    public async Task<IActionResult> Post([FromBody] UserDto userDto)
     {
         try
         {
-            var user = _usersRepository.GetUserByName(userDto.UserName);
+            var user = await _usersRepository.GetUserByName(userDto.UserName);
 
             if (user.IsEmpty == false && CryptoHelper.DecryptPassword(userDto.Password, user.Password))
             {

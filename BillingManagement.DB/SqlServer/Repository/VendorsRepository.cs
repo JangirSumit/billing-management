@@ -14,20 +14,20 @@ public class VendorsRepository : IVendorsRepository
         _dataAccess = dataAccess;
     }
 
-    public bool Add(VendorDetail vendorDetail)
+    public async Task<bool> Add(VendorDetail vendorDetail)
     {
-        return _dataAccess.ExecuteNonQuery("[dbo].[AddVendor]", new SqlParameter[] {
+        return await _dataAccess.ExecuteNonQuery("[dbo].[AddVendor]", new SqlParameter[] {
             new("@name", vendorDetail.Name),
                 new("@Address",vendorDetail.Address),
                 new("@GstNumber", vendorDetail.GstNumber)
         }) > 0;
     }
 
-    public List<VendorDetail> GetAll()
+    public async Task<List<VendorDetail>> GetAll()
     {
         List<VendorDetail> vendorDetails = new();
 
-        var dt = _dataAccess.ExecuteQuery("[dbo].[GetVendors]");
+        var dt = await _dataAccess.ExecuteQuery("[dbo].[GetVendors]");
 
         if (dt == null)
             return vendorDetails;
@@ -40,25 +40,16 @@ public class VendorsRepository : IVendorsRepository
         return vendorDetails;
     }
 
-    public VendorDetail GetVendor(DataRow row)
-    {
-        return new VendorDetail(Guid.Parse(Convert.ToString(row["Id"])),
-                                                Convert.ToString(row["Name"]),
-                                                Convert.ToString(row["Address"]),
-                                                Convert.ToString(row["GstNumber"])
-                                                );
-    }
-
-    public void GetByGstNumber(string gstNumber)
+    public Task GetByGstNumber(string gstNumber)
     {
         throw new NotImplementedException();
     }
 
-    public VendorDetail GetById(Guid vendorId)
+    public async Task<VendorDetail> GetById(Guid vendorId)
     {
         VendorDetail vendorDetail = VendorDetail.Empty;
 
-        var dt = _dataAccess.ExecuteQuery("[dbo].[GetVendors]");
+        var dt = await _dataAccess.ExecuteQuery("[dbo].[GetVendors]");
 
         if (dt == null)
             return vendorDetail;
@@ -71,10 +62,19 @@ public class VendorsRepository : IVendorsRepository
         return vendorDetail;
     }
 
-    public bool Delete(Guid id)
+    public async Task<bool> Delete(Guid id)
     {
-        return _dataAccess.ExecuteNonQuery("[dbo].[DeleteVendor]", new SqlParameter[] {
+        return await _dataAccess.ExecuteNonQuery("[dbo].[DeleteVendor]", new SqlParameter[] {
             new("@Id", id)
         }) > 0;
+    }
+
+    private VendorDetail GetVendor(DataRow row)
+    {
+        return new VendorDetail(Guid.Parse(Convert.ToString(row["Id"])),
+                                                Convert.ToString(row["Name"]),
+                                                Convert.ToString(row["Address"]),
+                                                Convert.ToString(row["GstNumber"])
+                                                );
     }
 }

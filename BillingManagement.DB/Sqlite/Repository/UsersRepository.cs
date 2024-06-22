@@ -13,41 +13,47 @@ public class UsersRepository : IUsersRepository
         _dataAccess = dataAccess;
     }
 
-    public int Add(UserDetail userDetail)
+    public async Task<int> Add(UserDetail userDetail)
     {
-        string query = @"
+        var query = @"
                 INSERT INTO Users (Name, Password)
                 VALUES (@name, @password)";
 
-        return _dataAccess.ExecuteNonQuery(query, new SqliteParameter[]
-        {
-            new("@name", userDetail.UserName),
-            new("@password", userDetail.Password)
-        });
+        return await Task.Run(() =>
+            _dataAccess.ExecuteNonQuery(query, new SqliteParameter[]
+            {
+                new("@name", userDetail.UserName),
+                new("@password", userDetail.Password)
+            })
+        );
     }
 
-    public int ChangePassword(string userName, string newPassword)
+    public async Task<int> ChangePassword(string userName, string newPassword)
     {
-        string query = @"
+        var query = @"
                 UPDATE Users
                 SET Password = @newPassword
                 WHERE Name = @name";
 
-        return _dataAccess.ExecuteNonQuery(query, new SqliteParameter[]
-        {
-            new("@name", userName),
-            new("@newPassword", newPassword)
-        });
+        return await Task.Run(() =>
+            _dataAccess.ExecuteNonQuery(query, new SqliteParameter[]
+            {
+                new("@name", userName),
+                new("@newPassword", newPassword)
+            })
+        );
     }
 
-    public UserDetail GetUserByName(string userName)
+    public async Task<UserDetail> GetUserByName(string userName)
     {
-        string query = "SELECT * FROM Users WHERE Name = @name";
+        var query = "SELECT * FROM Users WHERE Name = @name";
 
-        var result = _dataAccess.ExecuteQuery(query, new SqliteParameter[]
-        {
-            new("@name", userName)
-        });
+        var result = await Task.Run(() =>
+            _dataAccess.ExecuteQuery(query, new SqliteParameter[]
+            {
+                new("@name", userName)
+            })
+        );
 
         if (result?.Rows?.Count > 0)
         {

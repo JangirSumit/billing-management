@@ -15,37 +15,42 @@ public class DataAccess : IDataAccess
         _connectionString = configuration.GetConnectionString("Hosted") ?? throw new NotImplementedException("Connection String not found...");
     }
 
-    public DataTable ExecuteQuery(string query, DbParameter[] parameters = null)
+    public async Task<DataTable> ExecuteQuery(string query, DbParameter[]? parameters = null)
     {
         using var connection = new SqlConnection(_connectionString);
         using var command = InitializeCommand(connection, query, parameters);
 
-        DataTable dataTable = new();
-        using var adapter = new SqlDataAdapter(command);
-        adapter.Fill(dataTable);
+        return await Task.Run(() =>
+        {
+            DataTable dataTable = new();
+            using var adapter = new SqlDataAdapter(command);
+            adapter.Fill(dataTable);
 
-        return dataTable;
+            return dataTable;
+        });
     }
 
-    public int ExecuteNonQuery(string query, DbParameter[] parameters = null)
-    {
-        using var connection = new SqlConnection(_connectionString);
-        using var command = InitializeCommand(connection, query, parameters);
-
-        connection.Open();
-        return command.ExecuteNonQuery();
-    }
-
-    public object ExecuteScalar(string query, DbParameter[] parameters = null)
+    public async Task<int> ExecuteNonQuery(string query, DbParameter[]? parameters = null)
     {
         using var connection = new SqlConnection(_connectionString);
         using var command = InitializeCommand(connection, query, parameters);
 
         connection.Open();
-        return command.ExecuteScalar();
+
+        return await command.ExecuteNonQueryAsync();
     }
 
-    private static SqlCommand InitializeCommand(SqlConnection connection, string query, DbParameter[] parameters)
+    public async Task<object> ExecuteScalar(string query, DbParameter[]? parameters = null)
+    {
+        using var connection = new SqlConnection(_connectionString);
+        using var command = InitializeCommand(connection, query, parameters);
+
+        connection.Open();
+
+        return await command.ExecuteScalarAsync();
+    }
+
+    private static SqlCommand InitializeCommand(SqlConnection connection, string query, DbParameter[]? parameters)
     {
         var command = new SqlCommand(query, connection)
         {

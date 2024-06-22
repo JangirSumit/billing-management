@@ -13,25 +13,25 @@ public class UsersRepository : IUsersRepository
         _dataAccess = dataAccess;
     }
 
-    public int Add(UserDetail userDetail)
+    public async Task<int> Add(UserDetail userDetail)
     {
-        return _dataAccess.ExecuteNonQuery("[dbo].[AddUser]", new SqlParameter[] {
+        return await _dataAccess.ExecuteNonQuery("[dbo].[AddUser]", new SqlParameter[] {
             new("@name", userDetail.UserName),
             new("@password", userDetail.Password)
         });
     }
 
-    public int ChangePassword(string userName, string newPassword)
+    public async Task<int> ChangePassword(string userName, string newPassword)
     {
-        return _dataAccess.ExecuteNonQuery("[dbo].[ChangePassword]", new SqlParameter[] {
+        return await _dataAccess.ExecuteNonQuery("[dbo].[ChangePassword]", new SqlParameter[] {
             new("@name", userName),
             new("@newPassword", newPassword)
         });
     }
 
-    public UserDetail GetUserByName(string userName)
+    public async Task<UserDetail> GetUserByName(string userName)
     {
-        var result = _dataAccess.ExecuteQuery("[dbo].[GetUserByName]", new SqlParameter[] {
+        var result = await _dataAccess.ExecuteQuery("[dbo].[GetUserByName]", new SqlParameter[] {
              new("@name", userName)
         });
 

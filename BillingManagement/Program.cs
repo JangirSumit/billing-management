@@ -1,3 +1,4 @@
+using BillingManagement.Contracts.Abstrations;
 using BillingManagement.ExtensionMethods;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
@@ -68,7 +69,8 @@ builder.Services.AddSwaggerGen(swagger =>
 });
 
 builder.Services.AddApplicationServices(builder.Configuration["UseDb"]);
-builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(typeof(Program).Assembly));
+builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssemblies(typeof(Program).Assembly,
+    typeof(IDataAccess).Assembly));
 
 builder.Services.AddAuthorization(options =>
 {

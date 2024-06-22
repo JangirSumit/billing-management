@@ -5,7 +5,7 @@ namespace BillingManagement.Contracts.Abstrations;
 
 public interface IDataAccess
 {
-    DataTable ExecuteQuery(string query, DbParameter[] parameters = null);
-    int ExecuteNonQuery(string query, DbParameter[] parameters = null);
-    object ExecuteScalar(string query, DbParameter[] parameters = null);
+    Task<DataTable> ExecuteQuery(string query, DbParameter[]? parameters = null);
+    Task<int> ExecuteNonQuery(string query, DbParameter[]? parameters = null);
+    Task<object> ExecuteScalar(string query, DbParameter[]? parameters = null);
 }

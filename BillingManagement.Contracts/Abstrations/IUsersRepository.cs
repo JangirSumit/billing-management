@@ -4,7 +4,7 @@ namespace BillingManagement.Contracts.Abstrations;
 
 public interface IUsersRepository
 {
-    int Add(UserDetail userDetail);
-    int ChangePassword(string userName, string newPassword);
-    UserDetail GetUserByName(string userName);
+    Task<int> Add(UserDetail userDetail);
+    Task<int> ChangePassword(string userName, string newPassword);
+    Task<UserDetail> GetUserByName(string userName);
 }

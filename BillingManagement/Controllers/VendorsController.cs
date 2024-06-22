@@ -19,27 +19,27 @@ public class VendorsController : ControllerBase
     }
 
     [HttpGet]
-    public List<VendorDto> Get()
+    public async Task<List<VendorDto>> Get()
     {
-        return _vendorsRepository.GetAll().Map();
+        return (await _vendorsRepository.GetAll()).Map();
     }
 
     [HttpGet("{id}")]
-    public VendorDto Get(Guid id)
+    public async Task<VendorDto> Get(Guid id)
     {
-        return _vendorsRepository.GetById(id).Map();
+        return (await _vendorsRepository.GetById(id)).Map();
     }
 
     [HttpPost]
-    public bool Post([FromBody] VendorDto vendorDto)
+    public async Task<bool> Post([FromBody] VendorDto vendorDto)
     {
         var vendorDetail = vendorDto.Map();
-        return _vendorsRepository.Add(vendorDetail);
+        return await _vendorsRepository.Add(vendorDetail);
     }
 
     [HttpDelete("{id}")]
-    public bool Delete(Guid id)
+    public async Task<bool> Delete(Guid id)
     {
-        return _vendorsRepository.Delete(id);
+        return await _vendorsRepository.Delete(id);
     }
 }

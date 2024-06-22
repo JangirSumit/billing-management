@@ -3,6 +3,8 @@ using BillingManagement.Contracts.Enums;
 using BillingManagement.Contracts.Models;
 using BillingManagement.Dto;
 using BillingManagement.Helpers;
+using BillingManagement.Query;
+using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -15,20 +17,22 @@ public class UsersController : ControllerBase
 {
     private readonly IConfiguration _configuration;
     private readonly IUsersRepository _usersRepository;
+    private readonly IMediator _mediator;
 
-    public UsersController(IConfiguration configuration, IUsersRepository usersRepository)
+    public UsersController(IConfiguration configuration, IUsersRepository usersRepository, IMediator mediator)
     {
         _configuration = configuration;
         _usersRepository = usersRepository;
+        _mediator = mediator;
     }
 
     [HttpPost]
     [Route("register")]
-    public IActionResult PostAddUser([FromBody] UserDto userDto)
+    public async Task<IActionResult> PostAddUser([FromBody] GetUserByNameQuery getUserByNameQuery)
     {
         try
         {
-            var user = _usersRepository.GetUserByName(userDto.UserName);
+            var user = await _mediator.Send(getUserByNameQuery);
 
             if (user.IsEmpty == false)
             {
@@ -39,9 +43,9 @@ public class UsersController : ControllerBase
                 });
             }
 
-            var passwordEncrypted = CryptoHelper.EncryptPassword(userDto.Password);
+            var passwordEncrypted = CryptoHelper.EncryptPassword(getUserByNameQuery.Password);
 
-            if (_usersRepository.Add(new UserDetail(userDto.UserName, passwordEncrypted)) > 0)
+            if (await _usersRepository.Add(new UserDetail(getUserByNameQuery.UserName, passwordEncrypted)) > 0)
             {
                 return Ok();
             }
@@ -60,11 +64,11 @@ public class UsersController : ControllerBase
 
     [HttpPost]
     [Route("changePassword")]
-    public IActionResult PostChangePassword([FromBody] ChangePasswordDto changePasswordDto)
+    public async Task<IActionResult> PostChangePassword([FromBody] ChangePasswordDto changePasswordDto)
     {
         try
         {
-            var user = _usersRepository.GetUserByName(changePasswordDto.UserName);
+            var user = await _usersRepository.GetUserByName(changePasswordDto.UserName);
 
             if (user.IsEmpty)
             {
@@ -86,7 +90,7 @@ public class UsersController : ControllerBase
 
             var password = CryptoHelper.EncryptPassword(changePasswordDto.NewPassword);
 
-            if (_usersRepository.ChangePassword(changePasswordDto.UserName, password) > 0)
+            if (await _usersRepository.ChangePassword(changePasswordDto.UserName, password) > 0)
             {
                 return Ok();
             }

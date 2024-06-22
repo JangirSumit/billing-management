@@ -15,7 +15,7 @@ public class DataAccess : IDataAccess
         _connectionString = configuration.GetConnectionString("Hosted") ?? throw new NotImplementedException("Connection String not found...");
     }
 
-    public DataTable ExecuteQuery(string query, DbParameter[] parameters = null)
+    public async Task<DataTable> ExecuteQuery(string query, DbParameter[] parameters = null)
     {
         using var connection = new SqliteConnection(_connectionString);
         using var command = InitializeCommand(connection, query, parameters);
@@ -23,28 +23,28 @@ public class DataAccess : IDataAccess
         DataTable dataTable = new();
 
         connection.Open();
-        using var reader = command.ExecuteReader();
+        using var reader = await command.ExecuteReaderAsync();
         dataTable.Load(reader);
 
         return dataTable;
     }
 
-    public int ExecuteNonQuery(string query, DbParameter[] parameters = null)
+    public async Task<int> ExecuteNonQuery(string query, DbParameter[] parameters = null)
     {
         using var connection = new SqliteConnection(_connectionString);
         using var command = InitializeCommand(connection, query, parameters);
 
         connection.Open();
-        return command.ExecuteNonQuery();
+        return await command.ExecuteNonQueryAsync();
     }
 
-    public object ExecuteScalar(string query, DbParameter[] parameters = null)
+    public async Task<object> ExecuteScalar(string query, DbParameter[] parameters = null)
     {
         using var connection = new SqliteConnection(_connectionString);
         using var command = InitializeCommand(connection, query, parameters);
 
         connection.Open();
-        return command.ExecuteScalar();
+        return await command.ExecuteScalarAsync();
     }
 
     private static SqliteCommand InitializeCommand(SqliteConnection connection, string query, DbParameter[] parameters)

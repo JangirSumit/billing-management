@@ -15,9 +15,9 @@ public class ItemsRepository : IItemsRepository
         _dataAccess = dataAccess;
     }
 
-    public bool Add(ItemDetail item)
+    public async Task<bool> Add(ItemDetail item)
     {
-        return _dataAccess.ExecuteNonQuery("[dbo].[AddItem]", new SqlParameter[] {
+        return await _dataAccess.ExecuteNonQuery("[dbo].[AddItem]", new SqlParameter[] {
             new("@name", item.Name),
             new("@description", item.Description),
             new("@unit", item.Unit),
@@ -28,18 +28,18 @@ public class ItemsRepository : IItemsRepository
         }) > 0;
     }
 
-    public bool Delete(Guid id)
+    public async Task<bool> Delete(Guid id)
     {
-        return _dataAccess.ExecuteNonQuery("[dbo].[DeleteItem]", new SqlParameter[] {
+        return await _dataAccess.ExecuteNonQuery("[dbo].[DeleteItem]", new SqlParameter[] {
             new("@id", id)
         }) > 0;
     }
 
-    public List<ItemDetail> Get()
+    public async Task<List<ItemDetail>> Get()
     {
         var result = new List<ItemDetail>();
 
-        var dt = _dataAccess.ExecuteQuery("[dbo].[GetItems]");
+        var dt = await _dataAccess.ExecuteQuery("[dbo].[GetItems]");
 
         if (dt == null)
             return result;
@@ -50,6 +50,15 @@ public class ItemsRepository : IItemsRepository
         }
 
         return result;
+    }
+
+    public async Task<ItemDetail> GetById(Guid id)
+    {
+        var dt = await _dataAccess.ExecuteQuery("[dbo].[GetItemById]", new SqlParameter[] {
+            new("@id", id)
+        });
+
+        return dt.Rows.Count > 0 ? GetItem(dt.Rows[0]) : default;
     }
 
     private static ItemDetail GetItem(DataRow row)
@@ -63,14 +72,5 @@ public class ItemsRepository : IItemsRepository
                                                 Convert.ToDouble(row["Sgst"]),
                                                 Convert.ToDouble(row["Cgst"])
                                                 );
-    }
-
-    public ItemDetail GetById(Guid id)
-    {
-        var dt = _dataAccess.ExecuteQuery("[dbo].[GetItemById]", new SqlParameter[] {
-            new("@id", id)
-        });
-
-        return dt.Rows.Count > 0 ? GetItem(dt.Rows[0]) : default;
     }
 }

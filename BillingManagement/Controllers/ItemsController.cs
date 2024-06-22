@@ -19,26 +19,26 @@ public class ItemsController : ControllerBase
     }
 
     [HttpGet]
-    public IEnumerable<ItemDto> Get()
+    public async Task<IEnumerable<ItemDto>> Get()
     {
-        return _itemsRepository.Get().Map();
+        return (await _itemsRepository.Get()).Map();
     }
 
     [HttpGet("{id}")]
-    public ItemDto Get(Guid id)
+    public async Task<ItemDto> Get(Guid id)
     {
-        return _itemsRepository.GetById(id).Map();
+        return (await _itemsRepository.GetById(id)).Map();
     }
 
     [HttpPost]
-    public bool Post([FromBody] ItemDto item)
+    public async Task<bool> Post([FromBody] ItemDto item)
     {
-        return _itemsRepository.Add(item.Map());
+        return await _itemsRepository.Add(item.Map());
     }
 
     [HttpDelete("{id}")]
-    public bool Delete(Guid id)
+    public async Task<bool> Delete(Guid id)
     {
-        return _itemsRepository.Delete(id);
+        return await _itemsRepository.Delete(id);
     }
 }

@@ -16,8 +16,6 @@
 
   <ItemGroup>
     <Folder Include="Command\" />
-    <Folder Include="Handler\" />
-    <Folder Include="Query\" />
     <Folder Include="wwwroot\images\" />
   </ItemGroup>
 

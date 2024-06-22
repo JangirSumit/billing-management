@@ -14,13 +14,13 @@ public class VendorsRepository : IVendorsRepository
         _dataAccess = dataAccess;
     }
 
-    public bool Add(VendorDetail vendorDetail)
+    public async Task<bool> Add(VendorDetail vendorDetail)
     {
         string query = @"
                 INSERT INTO Vendors (Name, Address, GstNumber)
                 VALUES (@name, @Address, @GstNumber)";
 
-        return _dataAccess.ExecuteNonQuery(query, new SqliteParameter[]
+        return await _dataAccess.ExecuteNonQuery(query, new SqliteParameter[]
         {
             new("@name", vendorDetail.Name),
             new("@Address", vendorDetail.Address),
@@ -28,12 +28,12 @@ public class VendorsRepository : IVendorsRepository
         }) > 0;
     }
 
-    public List<VendorDetail> GetAll()
+    public async Task<List<VendorDetail>> GetAll()
     {
         List<VendorDetail> vendorDetails = new();
 
         string query = "SELECT * FROM Vendors";
-        var dt = _dataAccess.ExecuteQuery(query);
+        var dt = await _dataAccess.ExecuteQuery(query);
 
         if (dt == null)
             return vendorDetails;
@@ -46,22 +46,12 @@ public class VendorsRepository : IVendorsRepository
         return vendorDetails;
     }
 
-    public static VendorDetail GetVendor(DataRow row)
-    {
-        return new VendorDetail(
-            Guid.Parse(Convert.ToString(row["Id"])),
-            Convert.ToString(row["Name"]),
-            Convert.ToString(row["Address"]),
-            Convert.ToString(row["GstNumber"])
-        );
-    }
-
-    public VendorDetail GetById(Guid vendorId)
+    public async Task<VendorDetail> GetById(Guid vendorId)
     {
         VendorDetail vendorDetail = VendorDetail.Empty;
 
         string query = "SELECT * FROM Vendors WHERE Id = @Id";
-        var dt = _dataAccess.ExecuteQuery(query, new SqliteParameter[]
+        var dt = await _dataAccess.ExecuteQuery(query, new SqliteParameter[]
         {
             new("@Id", vendorId)
         });
@@ -72,19 +62,29 @@ public class VendorsRepository : IVendorsRepository
         return GetVendor(dt.Rows[0]);
     }
 
-    public bool Delete(Guid id)
+    public async Task<bool> Delete(Guid id)
     {
         string query = "DELETE FROM Vendors WHERE Id = @Id";
 
-        return _dataAccess.ExecuteNonQuery(query, new SqliteParameter[]
+        return await _dataAccess.ExecuteNonQuery(query, new SqliteParameter[]
         {
             new("@Id", id)
         }) > 0;
     }
 
     // Not implemented in the original code, added method definition for consistency
-    public void GetByGstNumber(string gstNumber)
+    public Task GetByGstNumber(string gstNumber)
     {
         throw new NotImplementedException();
+    }
+
+    private static VendorDetail GetVendor(DataRow row)
+    {
+        return new VendorDetail(
+            Guid.Parse(Convert.ToString(row["Id"])),
+            Convert.ToString(row["Name"]),
+            Convert.ToString(row["Address"]),
+            Convert.ToString(row["GstNumber"])
+        );
     }
 }
