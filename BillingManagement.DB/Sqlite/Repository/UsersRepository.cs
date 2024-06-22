@@ -51,7 +51,7 @@ public class UsersRepository : IUsersRepository
 
         if (result?.Rows?.Count > 0)
         {
-            return new UserDetail(result.Rows[0]["UserName"].ToString(), result.Rows[0]["Password"].ToString());
+            return new UserDetail(result.Rows[0]["Name"].ToString(), result.Rows[0]["Password"].ToString());
         }
 
         return UserDetail.Empty;

@@ -68,6 +68,7 @@ builder.Services.AddSwaggerGen(swagger =>
 });
 
 builder.Services.AddApplicationServices(builder.Configuration["UseDb"]);
+builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(typeof(Program).Assembly));
 
 builder.Services.AddAuthorization(options =>
 {
